@@ -1,6 +1,6 @@
 import { ref } from "vue"
 import { supabase } from "./supabaseClient"
-import { sessionHandler } from '@/lib/sessionHandler'
+import { authHandler } from '@/lib/authHandler'
 
 const avatar_url = ref('')
 const username = ref('')
@@ -9,7 +9,7 @@ const full_name = ref('')
 const website_title = ref('')
 const website_url = ref('')
 
-const { session } = sessionHandler()
+const { session } = authHandler()
 
 interface Profile {
     username: string

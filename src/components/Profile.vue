@@ -2,7 +2,7 @@
 import { onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
-import Heading from './Sidebar.vue'
+import Heading from './Heading.vue'
 import AccountInfoDisplay from './blocks/AccountInfoDisplay.vue'
 import AccountMedia from './blocks/AccountMedia.vue'
 
@@ -39,11 +39,9 @@ onMounted(async () => {
 
 
 <template>
-    <div class="flex-row flex justify-between min-h-screen">
-        <Heading class="basis-1/12 h-full" />
-        <div class="m-4 flex flex-row gap-4 justify-between">
-            <AccountInfoDisplay class=" basis-1/4 w-auto h-fit" />
-            <AccountMedia class="basis-3/4 w-auto h-fit" />
-        </div>
+    <Heading class=" z-50"/>
+    <div class="z-10 m-4 flex flex-row gap-4 justify-between">
+        <AccountInfoDisplay class="basis-1/4 w-auto h-fit" />
+        <AccountMedia class="basis-3/4 w-auto h-fit" />
     </div>
 </template>

@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue'
 import { supabase } from './supabaseClient'
 import type { Ref } from 'vue'
-import { sessionHandler } from './sessionHandler'
+import { authHandler } from './authHandler'
 
 export type SizeType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16
 export type GridCell = GridItem | BlockCell | SizeCell | null
@@ -41,7 +41,7 @@ export interface SizeCell {
     ownerId: string
 }
 
-const { session } = sessionHandler()
+const { session } = authHandler()
 
 const title = ref('')
 const description = ref('')

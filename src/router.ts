@@ -1,12 +1,15 @@
 import { createWebHistory, createRouter } from 'vue-router'
-import { supabase } from '@/lib/supabaseClient'
 
 import login from './components/forms/login.vue'
 import account from './components/Account.vue'
 import forgotPass from './components/forms/forgot-password.vue'
 import signUp from './components/forms/sign-up.vue'
-import updatePass from './components/forms/update-password.vue'
+import updatePass from '../dep/update-password.vue'
 import profile from './components/Profile.vue'
+import home from './components/Home.vue'
+import { authHandler } from './lib/authHandler'
+
+const { session } = authHandler()
 
 const routes = [
   {
@@ -41,26 +44,27 @@ const routes = [
     component: profile
   },
   {
+    path: '/home',
+    name: 'home',
+    component: home
+  },
+  {
     path: '/',
-    redirect: '/login'
+    redirect: '/home'
   }
 ]
 
 const router = createRouter({
-  history: createWebHistory(), // ← critical change
+  history: createWebHistory(), 
   routes
 })
 
 router.beforeEach(async (to) => {
-  const {
-    data: { session }
-  } = await supabase.auth.getSession()
-
-  if (to.meta.guestOnly && session) {
+  if (to.meta.guestOnly && session.value) {
     return { name: 'account' }
   }
 
-  if (to.meta.requiresAuth && !session) {
+  if (to.meta.requiresAuth && !session.value) {
     return { name: 'auth' }
   }
 

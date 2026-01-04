@@ -23,5 +23,5 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue"
-, "src/lib/supabaseClient.ts", "dep/AccountMedia-dep.vue"  ]
+, "src/lib/supabaseClient.ts", "dep/AccountMedia-dep.vue", "dep/login-form-dep.vue", "dep/update-password.vue"  ]
 }

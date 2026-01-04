@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import Avatar from './AvatarEdit.vue'
 import { infoHandler } from '@/lib/infoHandler'
-import { sessionHandler } from '@/lib/sessionHandler'
+import { authHandler } from '@/lib/authHandler'
 import Button from '../ui/button/Button.vue'
 
 const { avatar_url, username, bio, full_name, website_title, website_url, updateProfile } = infoHandler()
-const { session } = sessionHandler()
+const { session } = authHandler()
 
 </script>
 

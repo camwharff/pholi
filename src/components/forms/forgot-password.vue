@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from "vue"
-import { supabase } from "@/lib/supabaseClient"
 import { Button } from "@/components/ui/button"
 import {
     Card,
@@ -11,32 +9,10 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { authHandler } from "@/lib/authHandler"
 
+const { email, error, success, isLoading, handleForgotPassword } = authHandler()
 
-const email = ref("")
-const error = ref<string | null>(null)
-const success = ref(false)
-const isLoading = ref(false)
-
-const handleForgotPassword = async (e: Event) => {
-    e.preventDefault()
-    isLoading.value = true
-    error.value = null
-
-    try {
-        const { error: supabaseError } =
-            await supabase.auth.resetPasswordForEmail(email.value, {
-                redirectTo: `${window.location.origin}/update-password`
-            })
-
-        if (supabaseError) throw supabaseError
-        success.value = true
-    } catch (err: unknown) {
-        error.value = err instanceof Error ? err.message : "An error occurred"
-    } finally {
-        isLoading.value = false
-    }
-}
 </script>
 
 <template>
@@ -56,8 +32,8 @@ const handleForgotPassword = async (e: Event) => {
         <Card v-else>
             <CardHeader>
                 <CardTitle class="text-2xl">Reset Your Password</CardTitle>
-                <CardDescription>
-                    Type in your email and we&apos;ll send you a link to reset your password
+                <CardDescription  class="text-black">
+                    Type in your email and we&apos;ll send you a link to reset your password.
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -69,12 +45,8 @@ const handleForgotPassword = async (e: Event) => {
                         </div>
                         <p v-if="error" class="text-sm text-red-500">{{ error }}</p>
                         <Button type="submit" class="w-full" :disabled="isLoading">
-                            {{ isLoading ? "Sending..." : "Send reset email" }}
+                            {{ isLoading ? "Sending..." : "Sent reset email" }}
                         </Button>
-                    </div>
-                    <div class="mt-4 text-center text-sm">
-                        Already have an account?
-                        <a href="/login" class="underline underline-offset-4">Login</a>
                     </div>
                 </form>
             </CardContent>

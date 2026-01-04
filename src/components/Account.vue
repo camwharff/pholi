@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { supabase } from '../lib/supabaseClient'
 import { ref } from 'vue'
-import router from '../router'
 import AccountInfoEdit from './blocks/AccountInfoEdit.vue'
 import AccountInfoDisplay from './blocks/AccountInfoDisplay.vue'
 import AccountMedia from './blocks/AccountMedia.vue'
@@ -10,7 +8,7 @@ import ManageMedia from './blocks/ManageMedia.vue'
 import { onMounted } from 'vue'
 import { mediaHandler } from '@/lib/mediaHandler'
 import { infoHandler } from '@/lib/infoHandler'
-import { sessionHandler } from '@/lib/sessionHandler'
+import { authHandler } from '@/lib/authHandler'
 import {
     Tabs,
     TabsContent,
@@ -22,7 +20,7 @@ import Button from './ui/button/Button.vue'
 
 const { loadMedia } = mediaHandler()
 const { getProfile } = infoHandler()
-const { loadSession, session } = sessionHandler()
+const { loadSession, session, signOut } = authHandler()
 
 onMounted(async () => {
     await loadSession()
@@ -35,7 +33,6 @@ onMounted(async () => {
 
 const editInfo = ref(false)
 const editPholi = ref(false)
-const loading = ref(true)
 
 async function toggleEdit() {
     editInfo.value = !editInfo.value
@@ -49,25 +46,11 @@ async function savePholi() {
     editPholi.value = false
 }
 
-async function signOut() {
-    try {
-        loading.value = true
-        const { error } = await supabase.auth.signOut()
-        if (error) throw error
-
-        router.push({ name: 'auth' })
-    } catch (error) {
-        if (error instanceof Error) alert(error.message)
-    } finally {
-        loading.value = false
-    }
-}
-
 </script>
 
 <template>
     <Heading />
-    <div class="flex m-4 h-fit">
+    <div class="flex h-fit">
         <Tabs default-value="profile" class="basis-1/4 flex-col flex m-4 h-full w-full gap-4 items-center">
             <TabsList>
                 <TabsTrigger value="profile" @click.prevent="savePholi">

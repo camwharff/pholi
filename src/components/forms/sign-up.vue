@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from "vue"
-import { supabase } from "@/lib/supabaseClient"
 import { Button } from "@/components/ui/button"
 import {
     Card,
@@ -11,48 +9,14 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { authHandler } from "@/lib/authHandler"
 
-const email = ref("")
-const password = ref("")
-const repeatPassword = ref("")
-const error = ref<string | null>(null)
-const isLoading = ref(false)
-const success = ref(false)
-const full_name = ref('')
-const username = ref('')
+const { success, handleSignUp, full_name, username, email, password, repeatPassword, error, isLoading, changeMode } = authHandler()
 
-const handleSignUp = async () => {
-    error.value = null
-
-    if (password.value !== repeatPassword.value) {
-        error.value = "Passwords do not match"
-        return
-    }
-
-    isLoading.value = true
-    try {
-        const { error: supabaseError } = await supabase.auth.signUp({
-            email: email.value,
-            password: password.value,
-            options: {
-                data: {
-                    full_name: full_name.value,
-                    username: username.value
-                }
-            }
-        })
-        if (supabaseError) throw supabaseError
-        success.value = true
-    } catch (err: unknown) {
-        error.value = err instanceof Error ? err.message : "An error occurred"
-    } finally {
-        isLoading.value = false
-    }
-}
 </script>
 
 <template>
-    <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-6 ">
         <Card v-if="success">
             <CardHeader>
                 <CardTitle class="text-2xl">Thank you for signing up!</CardTitle>
@@ -68,8 +32,8 @@ const handleSignUp = async () => {
 
         <Card v-else>
             <CardHeader>
-                <CardTitle className="text-2xl">Sign up</CardTitle>
-                <CardDescription>Create a new account</CardDescription>
+                <CardTitle className="text-2xl font-semibold">Sign up</CardTitle>
+                <CardDescription  class="text-black">Create a new account</CardDescription>
             </CardHeader>
             <CardContent>
                 <form @submit.prevent="handleSignUp">
@@ -115,7 +79,7 @@ const handleSignUp = async () => {
 
                     <div class="mt-4 text-center text-sm">
                         Already have an account?
-                        <RouterLink to="/" class="underline underline-offset-4">Login</RouterLink>
+                    <a href="#" class="hover:underline" @click.prevent="changeMode('LOGIN')">Log In!</a>
                     </div>
                 </form>
             </CardContent>

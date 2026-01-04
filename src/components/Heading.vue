@@ -6,11 +6,10 @@ import {
     NavigationMenuItem,
     NavigationMenuLink,
     NavigationMenuList,
-    NavigationMenuTrigger,
-    navigationMenuTriggerStyle,
+    NavigationMenuTrigger
 } from './ui/navigation-menu'
-// eslint-disable-next-line import/no-named-default
 import { default as ListItem } from './ui/navigation-menu/NavigationMenuItem.vue'
+import Auth from './Auth.vue'
 
 const components: { title: string, href: string, description: string }[] = [
     {
@@ -52,10 +51,14 @@ const components: { title: string, href: string, description: string }[] = [
 </script>
 
 <template>
-    <div class="flex w-full align-middle justify-between px-20 text-center flex-row gap-18 p-8 py-0 bg-sky-950 h-[10vh] min-h-25">
+    <div
+        class="flex w-full align-middle justify-between px-20 text-center flex-row gap-18 p-8 py-0 bg-sky-950 h-[10vh] min-h-25">
         <h1 class="p-0 my-auto mx-0">Pholi</h1>
-        <NavigationMenu :viewport="false">
+        <NavigationMenu :viewport="false" class="z-50">
             <NavigationMenuList>
+                <NavigationMenuItem>
+                    <Auth />
+                </NavigationMenuItem>
                 <NavigationMenuItem>
                     <NavigationMenuTrigger>Home</NavigationMenuTrigger>
                     <NavigationMenuContent>
@@ -95,11 +98,6 @@ const components: { title: string, href: string, description: string }[] = [
                             </ListItem>
                         </ul>
                     </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <NavigationMenuLink as-child :class="navigationMenuTriggerStyle()">
-                        <a href="/docs">Docs</a>
-                    </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                     <NavigationMenuTrigger>List</NavigationMenuTrigger>
