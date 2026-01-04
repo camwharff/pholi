@@ -1,4 +1,5 @@
-import { createMemoryHistory, createRouter } from 'vue-router'
+import { createWebHistory, createRouter } from 'vue-router'
+import { supabase } from '@/lib/supabaseClient'
 
 import login from './components/forms/login.vue'
 import account from './components/Account.vue'
@@ -6,14 +7,13 @@ import forgotPass from './components/forms/forgot-password.vue'
 import signUp from './components/forms/sign-up.vue'
 import updatePass from './components/forms/update-password.vue'
 import profile from './components/Profile.vue'
-import { supabase } from '@/lib/supabaseClient'
 
 const routes = [
   {
     path: '/login',
+    name: 'auth',
     component: login,
-    meta: { guestOnly: true },
-    name: 'auth'
+    meta: { guestOnly: true }
   },
   {
     path: '/sign-up',
@@ -31,15 +31,14 @@ const routes = [
   },
   {
     path: '/account',
+    name: 'account',
     component: account,
-    meta: { requiresAuth: true },
-    name: 'account'
+    meta: { requiresAuth: true }
   },
   {
-    path: '/account',
-    component: profile,
-    meta: { requiresAuth: false },
-    name: 'profile'
+    path: '/users/:username',
+    name: 'public-profile',
+    component: profile
   },
   {
     path: '/',
@@ -48,7 +47,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createMemoryHistory(),
+  history: createWebHistory(), // ← critical change
   routes
 })
 
@@ -57,13 +56,15 @@ router.beforeEach(async (to) => {
     data: { session }
   } = await supabase.auth.getSession()
 
-  if (to.meta.guestOnly === true && session) {
+  if (to.meta.guestOnly && session) {
     return { name: 'account' }
   }
 
-  if (to.meta.requiresAuth === true && !session) {
+  if (to.meta.requiresAuth && !session) {
     return { name: 'auth' }
   }
+
+  return true
 })
 
 export default router

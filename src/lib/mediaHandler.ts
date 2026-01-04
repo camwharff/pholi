@@ -232,6 +232,28 @@ async function downloadMedia() {
     }
 }
 
+async function setMedia(username: string) {
+
+    try {
+
+        const { data, error, status } = await supabase
+            .from('profiles')
+            .select('media, pholi')
+            .eq('username', username)
+            .single()
+
+        if (error && status !== 406) throw error
+
+        if (data) {
+            media_raw.value = data.media ?? []
+            pholi.value = JSON.parse(data.pholi) ?? []
+        }
+        await downloadMedia()
+    } catch (error) {
+        if (error instanceof Error) alert(error.message)
+    }
+}
+
 const draggedItem = ref<GridItem | null>(null)
 const sizing = ref(false)
 
@@ -417,6 +439,7 @@ export function mediaHandler() {
         removeItem,
         changeHeight,
         changeWidth,
-        loadMedia
+        loadMedia,
+        setMedia
     }
 }

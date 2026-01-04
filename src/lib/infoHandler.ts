@@ -11,6 +11,26 @@ const website_url = ref('')
 
 const { session } = sessionHandler()
 
+interface Profile {
+    username: string
+    full_name: string | null
+    avatar_url: string | null
+    bio: string | null
+    website: {
+        url: string
+        title: string
+    }
+}
+
+function setProfile(data: Profile): void {
+    username.value = data.username ?? ''
+    avatar_url.value = data.avatar_url ?? ''
+    full_name.value = data.full_name ?? ''
+    bio.value = data.bio ?? ''
+    website_title.value = data.website.title ?? ''
+    website_url.value = data.website.url ?? ''
+}
+
 async function getProfile() {
     if (!session.value) return
 
@@ -74,6 +94,7 @@ export function infoHandler() {
         website_title,
         website_url,
         getProfile,
+        setProfile,
         updateProfile
     }
 }
