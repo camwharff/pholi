@@ -1,6 +1,8 @@
 import { ref } from "vue"
 import { supabase } from "./supabaseClient"
 import { authHandler } from '@/lib/authHandler'
+import router from '@/router'
+import { uiHandler } from "./uiHandler"
 
 const avatar_url = ref('')
 const username = ref('')
@@ -10,6 +12,7 @@ const website_title = ref('')
 const website_url = ref('')
 
 const { user } = authHandler()
+const { shortAlert } = uiHandler()
 
 interface Profile {
     username: string
@@ -21,6 +24,28 @@ interface Profile {
         title: string
     }
 }
+
+async function searchUsers(userSearchParam: string) {
+    if (!userSearchParam) return
+
+    try {
+        const { data, error, status } = await supabase
+            .from('profiles')
+            .select('username')
+            .eq('username', userSearchParam)
+
+        if (error && status !== 406) throw error
+        if (data?.length) {
+            router.push({ name: 'public-profile', params: { username: userSearchParam } })
+        } else {
+            console.log(userSearchParam)
+            shortAlert(`No user found with username \"${userSearchParam}\"`)
+        }
+    } catch (error) {
+        if (error instanceof Error) alert(error.message)
+    }
+}
+
 
 function setProfile(data: Profile): void {
     username.value = data.username ?? ''
@@ -91,8 +116,10 @@ export function infoHandler() {
         full_name,
         website_title,
         website_url,
+        alert,
         getProfile,
         setProfile,
-        updateProfile
+        updateProfile,
+        searchUsers
     }
 }

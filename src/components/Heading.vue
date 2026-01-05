@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CircleCheckIcon, CircleHelpIcon, CircleIcon, UserRoundSearch } from 'lucide-vue-next'
+import { CircleCheckIcon, CircleHelpIcon, CircleIcon, UserRoundSearch, X } from 'lucide-vue-next'
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -9,7 +9,6 @@ import {
     NavigationMenuTrigger
 } from './ui/navigation-menu'
 import Button from './ui/button/Button.vue'
-import Input from './ui/input/Input.vue'
 import {
     Dialog,
     DialogTrigger
@@ -17,8 +16,22 @@ import {
 import { default as ListItem } from './ui/navigation-menu/NavigationMenuItem.vue'
 import Auth from './blocks/AuthDialog.vue'
 import { authHandler } from '@/lib/authHandler'
+import { ref } from 'vue'
+import TempAlerts from './blocks/TempAlerts.vue'
+import { infoHandler } from '@/lib/infoHandler'
+import Input from './ui/input/Input.vue'
+
+const { searchUsers } = infoHandler()
+
+const username = ref('')
+const showSignupBar = ref(true)
 
 const { user, signOut, changeMode } = authHandler()
+const searchVisible = ref(false)
+
+function toggleSearch() {
+    searchVisible.value = !searchVisible.value
+}
 
 const components: { title: string, href: string, description: string }[] = [
     {
@@ -42,7 +55,7 @@ const components: { title: string, href: string, description: string }[] = [
 </script>
 
 <template>
-    <div v-if="!user" class="p-1 h-fit bg-white text-black text-sm text-center">
+    <div v-if="!user" class="absolute m-auto left-0 right-0 w-fit flex flex-row items-center py-2 px-4 rounded-b-xl gap-2 h-fit bg-white text-black text-base text-center transition-all duration-1000" :class="showSignupBar ? '' : '-translate-y-full'">
         New to Pholi?
         <Dialog>
             <DialogTrigger as-child>
@@ -52,12 +65,35 @@ const components: { title: string, href: string, description: string }[] = [
             </DialogTrigger>
             <Auth />
         </Dialog>
+        <button @click.prevent="showSignupBar = false">
+            <X />
+        </button>
     </div>
     <div
         class="flex w-full align-middle justify-between px-20 text-center flex-row gap-18 p-8 py-0 bg-sky-950 h-[10vh] min-h-25">
-        <h1 class="p-0 my-auto mx-0">Pholi</h1>
+        <RouterLink to="/home" class="p-0 my-auto mx-0">
+            <h1 class="p-0 m-0">Pholi</h1>
+        </RouterLink>
         <NavigationMenu :viewport="false" class="z-50 w-fit flex-initial">
             <NavigationMenuList class="w-fit h-fit gap-4">
+                <NavigationMenuItem v-if="searchVisible">
+                    <Input type="search" id="userSearch" placeholder="Enter to search" name="userSearch"
+                        v-model="username" @keyup.enter="searchUsers(username)" />
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                    <button v-if="username" @click.prevent="searchUsers(username)"
+                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center bg-sky-900 hover:bg-sky-700 transition rounded-xl">
+                        <p>
+                            <UserRoundSearch />
+                        </p>
+                    </button>
+                    <button v-else @click.prevent="toggleSearch"
+                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center bg-sky-900 hover:bg-sky-700 transition rounded-xl">
+                        <p>
+                            <UserRoundSearch />
+                        </p>
+                    </button>
+                </NavigationMenuItem>
                 <NavigationMenuItem>
                     <NavigationMenuTrigger
                         class="cursor-pointer bg-sky-900 h-full hover:bg-sky-700 font-medium px-4 py-2 transition rounded-xl text-base flex-row flex items-center gap-1">
@@ -121,18 +157,10 @@ const components: { title: string, href: string, description: string }[] = [
                         </Dialog>
                     </template>
                 </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <button
-                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center bg-sky-900 hover:bg-sky-700 transition rounded-xl">
-                        <p><UserRoundSearch /></p>
-                    </Button>
-                    <NavigationMenuContent>
-                        <Input type="search" id="userSearch" name="userSearch" />
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
             </NavigationMenuList>
         </NavigationMenu>
     </div>
+    <TempAlerts class="m-auto w-full" />
 </template>
 
 <style scoped>
