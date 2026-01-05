@@ -20,7 +20,7 @@ const {password, error, isLoading, handleUpdatePassword } = authHandler()
         <Card>
             <CardHeader>
                 <CardTitle class="text-2xl">Reset Your Password</CardTitle>
-                <CardDescription>Please enter your new password below.</CardDescription>
+                <CardDescription class="text-black">Please enter your new password below.</CardDescription>
             </CardHeader>
             <CardContent>
                 <form @submit.prevent="handleUpdatePassword">

@@ -9,7 +9,7 @@ import {
     NavigationMenuTrigger
 } from './ui/navigation-menu'
 import { default as ListItem } from './ui/navigation-menu/NavigationMenuItem.vue'
-import Auth from './Auth.vue'
+import Auth from './blocks/AuthBtn.vue'
 
 const components: { title: string, href: string, description: string }[] = [
     {
@@ -56,7 +56,7 @@ const components: { title: string, href: string, description: string }[] = [
         <h1 class="p-0 my-auto mx-0">Pholi</h1>
         <NavigationMenu :viewport="false" class="z-50">
             <NavigationMenuList>
-                <NavigationMenuItem>
+                <NavigationMenuItem class="hover:bg-sky-700">
                     <Auth />
                 </NavigationMenuItem>
                 <NavigationMenuItem>

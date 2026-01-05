@@ -8,18 +8,18 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog'
 import { authHandler } from '@/lib/authHandler'
-import login from './forms/login.vue'
-import signUp from './forms/sign-up.vue'
-import forgotPassword from './forms/forgot-password.vue'
+import login from '../forms/login.vue'
+import signUp from '../forms/sign-up.vue'
+import forgotPassword from '../forms/forgot-password.vue'
 import { VisuallyHidden } from 'reka-ui'
 
-const { session, signOut, mode } = authHandler()
+const { user, signOut, mode, changeMode } = authHandler()
 
 </script>
 
 <template>
-    <template v-if="session">
-        <Button @click.prevent="signOut">
+    <template v-if="user">
+        <Button @click.prevent="signOut" class="bg-none">
             Log Out
         </Button>
     </template>
@@ -27,7 +27,7 @@ const { session, signOut, mode } = authHandler()
     <template v-else>
         <Dialog>
             <DialogTrigger as-child>
-                <Button>
+                <Button class="bg-none" @click.prevent="changeMode('SIGNUP')">
                     Sign Up!
                 </Button>
             </DialogTrigger>

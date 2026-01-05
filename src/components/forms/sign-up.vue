@@ -20,7 +20,7 @@ const { success, handleSignUp, full_name, username, email, password, repeatPassw
         <Card v-if="success">
             <CardHeader>
                 <CardTitle class="text-2xl">Thank you for signing up!</CardTitle>
-                <CardDescription>Check your email to confirm</CardDescription>
+                <CardDescription class="text-black">Check your email to confirm</CardDescription>
             </CardHeader>
             <CardContent>
                 <p class="text-sm text-muted-foreground">
@@ -33,7 +33,7 @@ const { success, handleSignUp, full_name, username, email, password, repeatPassw
         <Card v-else>
             <CardHeader>
                 <CardTitle className="text-2xl font-semibold">Sign up</CardTitle>
-                <CardDescription  class="text-black">Create a new account</CardDescription>
+                <CardDescription class="text-black">Create a new account</CardDescription>
             </CardHeader>
             <CardContent>
                 <form @submit.prevent="handleSignUp">

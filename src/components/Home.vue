@@ -5,7 +5,9 @@ import Heading from './Heading.vue';
 
 <template>
     <Heading />
-    <div>
-        plonk
+    <div class="w-full h-full flex p-4">
+        <div class="m-auto bg-sky-700 rounded-3xl p-4 w-fit">
+            plonk
+        </div>
     </div>
 </template>

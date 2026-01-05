@@ -3,6 +3,8 @@ import { supabase } from './supabaseClient'
 import type { Ref } from 'vue'
 import { authHandler } from './authHandler'
 
+const { user } = authHandler()
+
 export type SizeType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16
 export type GridCell = GridItem | BlockCell | SizeCell | null
 type GridMatrix = GridCell[][]
@@ -41,8 +43,6 @@ export interface SizeCell {
     ownerId: string
 }
 
-const { session } = authHandler()
-
 const title = ref('')
 const description = ref('')
 const src = ref('')
@@ -50,65 +50,21 @@ const width = ref([2])
 const height = ref([2])
 const media_raw: Ref<MediaRaw[]> = ref([])
 const media_list: Ref<MediaItem[]> = ref([])
-const pholi: Ref<({
-    id: string
-    label: string
-    width: SizeType
-    height: SizeType
-    primary: boolean
-    description: string
-} | BlockCell | SizeCell | null)[][], GridMatrix | ({
-    id: string
-    label: string
-    width: SizeType
-    height: SizeType
-    primary: boolean
-    description: string
-} | BlockCell | SizeCell | null)[][]> = ref([])
+const pholi: Ref<({id: string, label: string, width: SizeType, height: SizeType, primary: boolean, description: string} | BlockCell | SizeCell | null)[][], GridMatrix | ({id: string, label: string, width: SizeType, height: SizeType, primary: boolean, description: string} | BlockCell | SizeCell | null)[][]> = ref([])
 
 const COLS = 16
 const ROWS = 9
 
 const widthConfig: Record<SizeType, string> = {
-    1: 'w-[100%]',
-    2: 'w-[200%]',
-    3: 'w-[300%]',
-    4: 'w-[400%]',
-    5: 'w-[500%]',
-    6: 'w-[600%]',
-    7: 'w-[700%]',
-    8: 'w-[800%]',
-    9: 'w-[900%]',
-    10: 'w-[1000%]',
-    11: 'w-[1100%]',
-    12: 'w-[1200%]',
-    13: 'w-[1300%]',
-    14: 'w-[1400%]',
-    15: 'w-[1500%]',
-    16: 'w-[1600%]'
+    1: 'w-[100%]', 2: 'w-[200%]', 3: 'w-[300%]', 4: 'w-[400%]', 5: 'w-[500%]', 6: 'w-[600%]', 7: 'w-[700%]', 8: 'w-[800%]', 9: 'w-[900%]', 10: 'w-[1000%]', 11: 'w-[1100%]', 12: 'w-[1200%]', 13: 'w-[1300%]', 14: 'w-[1400%]', 15: 'w-[1500%]', 16: 'w-[1600%]'
 }
 
 const heightConfig: Record<SizeType, string> = {
-    1: 'h-[100%]',
-    2: 'h-[200%]',
-    3: 'h-[300%]',
-    4: 'h-[400%]',
-    5: 'h-[500%]',
-    6: 'h-[600%]',
-    7: 'h-[700%]',
-    8: 'h-[800%]',
-    9: 'h-[900%]',
-    10: 'h-[1000%]',
-    11: 'h-[1100%]',
-    12: 'h-[1200%]',
-    13: 'h-[1300%]',
-    14: 'h-[1400%]',
-    15: 'h-[1500%]',
-    16: 'h-[1600%]'
+    1: 'h-[100%]', 2: 'h-[200%]', 3: 'h-[300%]', 4: 'h-[400%]', 5: 'h-[500%]', 6: 'h-[600%]', 7: 'h-[700%]', 8: 'h-[800%]', 9: 'h-[900%]', 10: 'h-[1000%]', 11: 'h-[1100%]', 12: 'h-[1200%]', 13: 'h-[1300%]', 14: 'h-[1400%]', 15: 'h-[1500%]', 16: 'h-[1600%]'
 }
 
 const uploadMedia = async (evt: Event) => {
-    if (!session.value) return
+    if (!user.value) return
 
     const form = evt.target as HTMLFormElement
     const target = form.elements[0] as HTMLInputElement
@@ -121,7 +77,6 @@ const uploadMedia = async (evt: Event) => {
     const file = target.files[0]
 
     if (file) {
-        const { user } = session.value
         const fileExt = file.name.split('.').pop()
         const filePath = `${Math.random()}.${fileExt}`
         const new_media = {
@@ -133,7 +88,7 @@ const uploadMedia = async (evt: Event) => {
         }
         try {
             await supabase.storage.from('media').upload(filePath, file)
-            await supabase.from('profiles').update({ media: [...media_raw.value, new_media] }).eq('id', user?.id)
+            await supabase.from('profiles').update({ media: [...media_raw.value, new_media] }).eq('id', user.value.id)
             loadMedia()
             src.value = ''
             form.reset()
@@ -170,15 +125,13 @@ const stagedItems = computed(() =>
 )
 
 async function updatePholi() {
-    if (!session.value) return
+    if (!user.value) return
     try {
-        const { user } = session.value
-
         const updates = {
             pholi: JSON.stringify(pholi.value),
             updated_at: new Date()
         }
-        const { error } = await supabase.from('profiles').update(updates).eq('id', user.id)
+        const { error } = await supabase.from('profiles').update(updates).eq('id', user.value.id)
         if (error) throw error
     } catch (error) {
         if (error instanceof Error) alert(error.message)
@@ -187,15 +140,13 @@ async function updatePholi() {
 }
 
 async function loadMedia() {
-    if (!session.value) return
+    if (!user.value) return
 
     try {
-        const { user } = session.value
-
         const { data, error, status } = await supabase
             .from('profiles')
             .select('media, pholi')
-            .eq('id', user.id)
+            .eq('id', user.value.id)
             .single()
 
         if (error && status !== 406) throw error
@@ -419,7 +370,6 @@ export function mediaHandler() {
         src,
         title,
         description,
-        session,
         width,
         height,
         pholi,

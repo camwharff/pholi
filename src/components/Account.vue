@@ -20,14 +20,14 @@ import Button from './ui/button/Button.vue'
 
 const { loadMedia } = mediaHandler()
 const { getProfile } = infoHandler()
-const { loadSession, session, signOut } = authHandler()
+const { user, signOut } = authHandler()
 
 onMounted(async () => {
-    await loadSession()
-
-    if (session.value) {
+    if (user.value) {
         await loadMedia()
         await getProfile()
+    } else {
+        signOut()
     }
 })
 

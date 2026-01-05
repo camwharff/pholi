@@ -1,37 +1,14 @@
 import { createWebHistory, createRouter } from 'vue-router'
 
-import login from './components/forms/login.vue'
 import account from './components/Account.vue'
-import forgotPass from './components/forms/forgot-password.vue'
-import signUp from './components/forms/sign-up.vue'
-import updatePass from '../dep/update-password.vue'
 import profile from './components/Profile.vue'
 import home from './components/Home.vue'
 import { authHandler } from './lib/authHandler'
+import updatePassword from './components/forms/update-password.vue'
 
-const { session } = authHandler()
+const { user } = authHandler()
 
 const routes = [
-  {
-    path: '/login',
-    name: 'auth',
-    component: login,
-    meta: { guestOnly: true }
-  },
-  {
-    path: '/sign-up',
-    component: signUp,
-    meta: { guestOnly: true }
-  },
-  {
-    path: '/forgot-password',
-    component: forgotPass,
-    meta: { guestOnly: true }
-  },
-  {
-    path: '/update-password',
-    component: updatePass
-  },
   {
     path: '/account',
     name: 'account',
@@ -42,6 +19,11 @@ const routes = [
     path: '/users/:username',
     name: 'public-profile',
     component: profile
+  },
+  {
+    path: '/update-password',
+    component: updatePassword,
+    meta: { requiresAuth: true }
   },
   {
     path: '/home',
@@ -60,12 +42,12 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to) => {
-  if (to.meta.guestOnly && session.value) {
+  if (to.meta.guestOnly && user) {
     return { name: 'account' }
   }
 
-  if (to.meta.requiresAuth && !session.value) {
-    return { name: 'auth' }
+  if (to.meta.requiresAuth && !user) {
+    return { name: 'home' }
   }
 
   return true

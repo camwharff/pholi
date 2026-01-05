@@ -1,11 +1,11 @@
-import type { Session } from "@supabase/supabase-js"
+import type { User } from "@supabase/supabase-js"
 import { ref } from 'vue'
 import { supabase } from "./supabaseClient"
 import router from "@/router"
 
 type Mode = 'SIGNUP' | 'LOGIN' | 'MANAGE'
 
-const session = ref<Session | null>(null)
+const user = ref<User | null>(null)
 const success = ref(false)
 const error = ref<string | null>(null)
 const isLoading = ref(false)
@@ -20,28 +20,30 @@ async function changeMode(newMode: Mode) {
     mode.value = newMode
 }
 
-async function loadSession() {
+async function loadUser() {
     const {
-        data: { session: currentSession }
-    } = await supabase.auth.getSession()
-
-    session.value = currentSession
+        data: { user: currentUser }
+    } = await supabase.auth.getUser()
+    user.value = currentUser
 }
 
 async function signOut() {
+    if (!user.value) {
+        router.push({ name: 'home' })
+        return
+    }
     try {
         const { error } = await supabase.auth.signOut()
         if (error) throw error
-
-        router.push({ name: 'auth' })
+        await loadUser()
+        router.push({ name: 'home' })
     } catch (error) {
         if (error instanceof Error) alert(error.message)
     }
 }
 
-async function handleLogin() {
+const handleLogin = async () => {
     error.value = null
-
     isLoading.value = true
     try {
         const { error: supabaseError } = await supabase.auth.signInWithPassword({
@@ -49,7 +51,8 @@ async function handleLogin() {
             password: password.value,
         })
         if (supabaseError) throw supabaseError
-        window.location.href = "/"
+        await loadUser()
+        router.push({ name: 'account' })
         success.value = true
     } catch (err: unknown) {
         error.value = err instanceof Error ? err.message : "An error occurred"
@@ -58,7 +61,7 @@ async function handleLogin() {
     }
 }
 
-async function handleSignUp() {
+const handleSignUp = async () => {
     error.value = null
 
     if (password.value !== repeatPassword.value) {
@@ -79,6 +82,8 @@ async function handleSignUp() {
             }
         })
         if (supabaseError) throw supabaseError
+        await loadUser()
+        router.push({ name: 'account' })
         success.value = true
     } catch (err: unknown) {
         error.value = err instanceof Error ? err.message : "An error occurred"
@@ -107,9 +112,27 @@ async function handleForgotPassword(e: Event) {
     }
 }
 
+async function handleUpdatePassword() {
+    isLoading.value = true
+    error.value = null
+
+    try {
+        const { error: supabaseError } = await supabase.auth.updateUser({
+            password: password.value,
+        })
+        if (supabaseError) throw supabaseError
+        await loadUser()
+        router.push({ name: 'account' })
+    } catch (err: unknown) {
+        error.value = err instanceof Error ? err.message : "An error occurred"
+    } finally {
+        isLoading.value = false
+    }
+}
+
 export function authHandler() {
     return {
-        session,
+        user,
         error,
         success,
         isLoading,
@@ -120,29 +143,11 @@ export function authHandler() {
         username,
         repeatPassword,
         changeMode,
-        loadSession,
+        loadUser,
         signOut,
         handleLogin,
         handleSignUp,
         handleForgotPassword,
         handleUpdatePassword
-    }
-}
-
-// should not be used, password updates should go through the email
-async function handleUpdatePassword() {
-    isLoading.value = true
-    error.value = null
-
-    try {
-        const { error: supabaseError } = await supabase.auth.updateUser({
-            password: password.value,
-        })
-        if (supabaseError) throw supabaseError
-        location.href = "/protected"
-    } catch (err: unknown) {
-        error.value = err instanceof Error ? err.message : "An error occurred"
-    } finally {
-        isLoading.value = false
     }
 }

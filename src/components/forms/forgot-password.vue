@@ -20,7 +20,7 @@ const { email, error, success, isLoading, handleForgotPassword } = authHandler()
         <Card v-if="success">
             <CardHeader>
                 <CardTitle class="text-2xl">Check Your Email</CardTitle>
-                <CardDescription>Password reset instructions sent</CardDescription>
+                <CardDescription class="text-black">Password reset instructions sent</CardDescription>
             </CardHeader>
             <CardContent>
                 <p class="text-sm text-muted-foreground">
@@ -33,7 +33,7 @@ const { email, error, success, isLoading, handleForgotPassword } = authHandler()
             <CardHeader>
                 <CardTitle class="text-2xl">Reset Your Password</CardTitle>
                 <CardDescription  class="text-black">
-                    Type in your email and we&apos;ll send you a link to reset your password.
+                    Type in your email and we&apos;ll send you a link to reset your password if you have an account.
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -45,7 +45,7 @@ const { email, error, success, isLoading, handleForgotPassword } = authHandler()
                         </div>
                         <p v-if="error" class="text-sm text-red-500">{{ error }}</p>
                         <Button type="submit" class="w-full" :disabled="isLoading">
-                            {{ isLoading ? "Sending..." : "Sent reset email" }}
+                            {{ isLoading ? "Sending..." : "Send reset email" }}
                         </Button>
                     </div>
                 </form>

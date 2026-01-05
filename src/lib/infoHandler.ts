@@ -9,7 +9,7 @@ const full_name = ref('')
 const website_title = ref('')
 const website_url = ref('')
 
-const { session } = authHandler()
+const { user } = authHandler()
 
 interface Profile {
     username: string
@@ -32,15 +32,14 @@ function setProfile(data: Profile): void {
 }
 
 async function getProfile() {
-    if (!session.value) return
+    if (!user.value) return
 
     try {
-        const { user } = session.value
 
         const { data, error, status } = await supabase
             .from('profiles')
             .select('username, avatar_url, full_name, bio, website')
-            .eq('id', user.id)
+            .eq('id', user.value.id)
             .single()
 
         if (error && status !== 406) throw error
@@ -61,13 +60,12 @@ async function getProfile() {
 }
 
 async function updateProfile() {
-    if (!session.value) return
+    if (!user.value) return
 
     try {
-        const { user } = session.value
 
         const updates = {
-            id: user.id,
+            id: user.value.id,
             username: username.value,
             website: {
                 url: website_url.value,
