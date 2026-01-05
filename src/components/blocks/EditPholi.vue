@@ -15,8 +15,8 @@ const { pholi, onDrop, onDragStaged, onDragSize, widthConfig, heightConfig, getS
     <div class="grid grid-cols-16 rounded-3xl bg-sky-950 border-sky-950 border-4 p-2">
         <template v-for="(row, rowIndex) in pholi" :key="rowIndex">
             <div v-for="(cell, colIndex) in row" :key="`${rowIndex}-${colIndex}`"
-                class="relative overflow-visible aspect-square outline-1 outline-dashed m-0"
-                @dragover.prevent @drop="onDrop(rowIndex, colIndex)">
+                class="relative overflow-visible aspect-square outline-1 outline-dashed m-0" @dragover.prevent
+                @drop="onDrop(rowIndex, colIndex)">
                 <div v-if="cell && 'id' in cell && cell.id !== 'block' && !cell.id.startsWith('size-')" :class="[
                     widthConfig[(cell as GridItem).width as SizeType],
                     heightConfig[(cell as GridItem).height as SizeType],
@@ -27,8 +27,9 @@ const { pholi, onDrop, onDragStaged, onDragSize, widthConfig, heightConfig, getS
                     </div>
                     <ContextMenu class="w-full h-full">
                         <ContextMenuTrigger class="w-full h-full p-2">
-                            <img :src="getSrc((cell as GridItem).id)" :alt="(cell as GridItem).label"
-                                class="object-cover w-full h-full border-4 border-sky-700 bg-sky-700 rounded-3xl" />
+                            <div class="object-cover w-full h-full border-4 border-sky-700 bg-sky-700 rounded-3xl">ß
+                                <img :src="getSrc((cell as GridItem).id)" :alt="(cell as GridItem).label" />
+                            </div>
                         </ContextMenuTrigger>
                         <ContextMenuContent>
                             <ContextMenuItem @click="removeItem(cell.id)" inset>

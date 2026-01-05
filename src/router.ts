@@ -6,7 +6,7 @@ import home from './components/Home.vue'
 import { authHandler } from './lib/authHandler'
 import updatePassword from './components/forms/update-password.vue'
 
-const { user } = authHandler()
+const { user, loadUser } = authHandler()
 
 const routes = [
   {
@@ -42,6 +42,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to) => {
+  await loadUser()
   if (to.meta.guestOnly && user) {
     return { name: 'account' }
   }
