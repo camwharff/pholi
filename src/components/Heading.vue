@@ -9,6 +9,7 @@ import {
     NavigationMenuTrigger
 } from './ui/navigation-menu'
 import Button from './ui/button/Button.vue'
+import Input from './ui/input/Input.vue'
 import {
     Dialog,
     DialogTrigger
@@ -111,7 +112,7 @@ const components: { title: string, href: string, description: string }[] = [
                         <Dialog>
                             <DialogTrigger as-child>
                                 <Button
-                                    class="cursor-pointer h-full bg-sky-900 hover:bg-sky-700 px-4 py-2 transition rounded-xl text-base flex-row flex items-center gap-1"
+                                    class="cursor-pointer h-full bg-sky-900 hover:bg-sky-700 px-4 py-2 leading-none transition rounded-xl text-base flex-row flex items-center gap-1"
                                     @click.prevent="changeMode('LOGIN')">
                                     Log In
                                 </Button>
@@ -121,10 +122,13 @@ const components: { title: string, href: string, description: string }[] = [
                     </template>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <NavigationMenuTrigger
-                        class="cursor-pointer h-full bg-sky-900 hover:bg-sky-700 px-4 py-2 transition rounded-xl text-base flex-row flex items-center gap-1">
-                        <UserRoundSearch />
-                    </NavigationMenuTrigger>
+                    <button
+                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center bg-sky-900 hover:bg-sky-700 transition rounded-xl">
+                        <p><UserRoundSearch /></p>
+                    </Button>
+                    <NavigationMenuContent>
+                        <Input type="search" id="userSearch" name="userSearch" />
+                    </NavigationMenuContent>
                 </NavigationMenuItem>
             </NavigationMenuList>
         </NavigationMenu>

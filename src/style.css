@@ -134,3 +134,7 @@
   }
 }
 
+button svg {
+  width: auto;
+  height: auto;
+}
