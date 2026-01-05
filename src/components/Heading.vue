@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from 'lucide-vue-next'
+import { CircleCheckIcon, CircleHelpIcon, CircleIcon, UserRoundSearch } from 'lucide-vue-next'
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -101,20 +101,30 @@ const components: { title: string, href: string, description: string }[] = [
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                     <template v-if="user">
-                        <Button class="cursor-pointer bg-sky-900 h-full hover:bg-sky-700 px-4 py-2 transition rounded-xl text-base flex-row flex items-center gap-1" @click.prevent="signOut">
+                        <Button
+                            class="cursor-pointer bg-sky-900 h-full hover:bg-sky-700 px-4 py-2 transition rounded-xl text-base flex-row flex items-center gap-1"
+                            @click.prevent="signOut">
                             Log Out
                         </Button>
                     </template>
                     <template v-else>
                         <Dialog>
                             <DialogTrigger as-child>
-                                <Button class="cursor-pointer h-full bg-sky-900 hover:bg-sky-700 px-4 py-2 transition rounded-xl text-base flex-row flex items-center gap-1" @click.prevent="changeMode('LOGIN')">
+                                <Button
+                                    class="cursor-pointer h-full bg-sky-900 hover:bg-sky-700 px-4 py-2 transition rounded-xl text-base flex-row flex items-center gap-1"
+                                    @click.prevent="changeMode('LOGIN')">
                                     Log In
                                 </Button>
                             </DialogTrigger>
                             <Auth />
                         </Dialog>
                     </template>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                    <NavigationMenuTrigger
+                        class="cursor-pointer h-full bg-sky-900 hover:bg-sky-700 px-4 py-2 transition rounded-xl text-base flex-row flex items-center gap-1">
+                        <UserRoundSearch />
+                    </NavigationMenuTrigger>
                 </NavigationMenuItem>
             </NavigationMenuList>
         </NavigationMenu>
