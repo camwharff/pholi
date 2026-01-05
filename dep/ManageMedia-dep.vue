@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import type { Session } from '@supabase/supabase-js'
-import { supabase } from '../../lib/supabaseClient'
+import { supabase } from '../src/lib/supabaseClient'
 import type { Ref } from 'vue'
 
-import Input from '../ui/input/Input.vue'
+import Input from '../src/components/ui/input/Input.vue'
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
-} from '../ui/accordion'
+} from '../src/components/ui/accordion'
 
 const title = ref('')
 const description = ref('')

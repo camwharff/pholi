@@ -134,16 +134,3 @@
   }
 }
 
-
-.NavigationMenuIndicator {
-  background-color: grey;
-  position: absolute;
-  transition: width, transform, 250ms ease;
-}
-
-.NavigationMenuIndicator[data-orientation="horizontal"] {
-  left: 0;
-  height: 3px;
-  transform: translateX(var(--reka-navigation-menu-indicator-position));
-  width: var(--reka-navigation-menu-indicator-size);
-}
