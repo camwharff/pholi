@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CircleCheckIcon, CircleHelpIcon, CircleIcon, Search, X, UserRound, LogOut } from 'lucide-vue-next'
+import { CircleCheckIcon, CircleHelpIcon, CircleIcon, Search, X, UserRound, LogOut, LogIn } from 'lucide-vue-next'
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -20,6 +20,8 @@ import { ref } from 'vue'
 import TempAlerts from './blocks/TempAlerts.vue'
 import { infoHandler } from '@/lib/infoHandler'
 import Input from './ui/input/Input.vue'
+import logoCircleBack from '@/assets/logo-circle-back.vue'
+import logoCircleFront from '@/assets/logo-circle-front.vue'
 
 const { searchUsers } = infoHandler()
 
@@ -71,9 +73,10 @@ const components: { title: string, href: string, description: string }[] = [
             <X />
         </button>
     </div>
+    <logoCircleBack width="200" height="200" class=" rounded-full mx-auto z-10 absolute inset-0 inline" />
     <div
-        class="flex w-full items-center justify-between px-20 text-center flex-row gap-18 p-8 py-0 bg-sky-950 h-[10vh] min-h-25">
-        <NavigationMenu :viewport="false" class="z-40 w-fit flex-initial h-full">
+        class="z-50 relative flex w-full items-center justify-between px-20 text-center flex-row gap-18 p-8 py-0 bg-sky-950 h-[10vh] min-h-25">
+        <NavigationMenu :viewport="false" class="z-40 relative w-fit flex-initial h-full">
             <NavigationMenuList class="w-fit h-fit gap-4">
                 <NavigationMenuItem>
                     <NavigationMenuTrigger
@@ -120,9 +123,10 @@ const components: { title: string, href: string, description: string }[] = [
                 </NavigationMenuItem>
             </NavigationMenuList>
         </NavigationMenu>
-        <div class="h-inherit w-fit absolute right-0 left-0 m-auto">
+        <div class="h-inherit w-fit inset-0 m-auto">
             <RouterLink to="/home" class="h-fit w-fit p-0 m-auto inset-0">
-                <h1 class="p-0 m-0">Pholi</h1>
+                <logoCircleFront width="200" height="200"
+                    class="p-2 rounded-full mx-auto z-50 absolute inset-0 inline border-4 border-transparent" />
             </RouterLink>
         </div>
         <NavigationMenu :viewport="false" class="z-40 w-fit flex-initial">
@@ -161,7 +165,7 @@ const components: { title: string, href: string, description: string }[] = [
                                 <Button
                                     class="cursor-pointer h-full bg-sky-900 hover:bg-sky-700 px-4 py-2 leading-none transition rounded-xl text-base flex-row flex items-center gap-1"
                                     @click.prevent="changeMode('LOGIN')">
-                                    Log In
+                                    <LogIn />
                                 </Button>
                             </DialogTrigger>
                             <Auth />

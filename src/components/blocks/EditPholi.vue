@@ -27,7 +27,7 @@ const { pholi, onDrop, onDragStaged, onDragSize, widthConfig, heightConfig, getS
                     </div>
                     <ContextMenu class="w-full h-full">
                         <ContextMenuTrigger class="w-full h-full p-2">
-                            <div class="object-cover w-full h-full border-4 border-sky-700 bg-sky-700 rounded-3xl">ß
+                            <div class="object-cover w-full h-full border-4 border-sky-700 bg-sky-700 rounded-3xl">
                                 <img :src="getSrc((cell as GridItem).id)" :alt="(cell as GridItem).label" />
                             </div>
                         </ContextMenuTrigger>
