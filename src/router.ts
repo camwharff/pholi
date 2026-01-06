@@ -5,6 +5,7 @@ import profile from './components/Profile.vue'
 import home from './components/Home.vue'
 import { authHandler } from './lib/authHandler'
 import updatePassword from './components/forms/update-password.vue'
+import swatches from './components/Swatches.vue'
 
 const { user, loadUser } = authHandler()
 
@@ -29,6 +30,10 @@ const routes = [
     path: '/home',
     name: 'home',
     component: home
+  },
+  {
+    path: '/swatch',
+    component: swatches
   },
   {
     path: '/',
