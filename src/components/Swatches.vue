@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import {
     Card,
-    CardAction,
     CardContent,
     CardDescription,
     CardFooter,
@@ -44,28 +44,23 @@ const chartData = [
     { date: new Date("2024-01-01"), desktop: 186, mobile: 80 },
     { date: new Date("2024-02-01"), desktop: 305, mobile: 200 },
     { date: new Date("2024-03-01"), desktop: 237, mobile: 120 },
-];
+]
 type Data = (typeof chartData)[number]
 
 const chartConfig = {
-    desktop: {
-        label: "Desktop",
-        color: "var(--chart-1)",
-    },
-    mobile: {
-        label: "Mobile",
-        color: "var(--chart-2)",
-    },
+    desktop: { label: "Desktop", color: "var(--chart-1)" },
+    mobile: { label: "Mobile", color: "var(--chart-2)" },
 } satisfies ChartConfig
 
-import { ref } from 'vue'
+const themes = ['blue', 'root', 'dark']
+const currentTheme = ref(document.documentElement.classList.contains('root') ? 'root' : 'blue')
 
-const isDark = ref(document.documentElement.classList.contains('blue'))
-
-function setMode() {
-    isDark.value = !isDark.value
-    document.documentElement.classList.toggle('blue', isDark.value)
+function applyTheme(theme: string) {
+    themes.forEach(t => document.documentElement.classList.remove(t))
+    document.documentElement.classList.add(theme)
+    currentTheme.value = theme
 }
+
 </script>
 
 <template>
@@ -88,64 +83,58 @@ function setMode() {
                         </SidebarMenuItem>
                     </SidebarMenu>
                 </SidebarHeader>
+
                 <SidebarContent>
                     <SidebarGroup>
                         <SidebarGroupLabel>Platform</SidebarGroupLabel>
                         <SidebarGroupContent>
                             <SidebarMenu>
                                 <SidebarMenuItem>
+                                    <label for="themes">Choose Theme:</label>
+                                    <select id="themes" :value="currentTheme"
+                                        @change="(e) => applyTheme((e.target as HTMLSelectElement).value)">
+                                        <option v-for="theme in themes" :key="theme" :value="theme">{{ theme }}</option>
+                                    </select>
+                                </SidebarMenuItem>
+
+                                <SidebarMenuItem>
                                     <SidebarMenuButton as-child>
-                                        <a href="#" @click.prevent="setMode">
-                                            <Home />
-                                            <span>{{ isDark ? 'Light Mode' : 'Dark Mode' }}</span>
-                                        </a>
+                                        <RouterLink to="/home">Go home</RouterLink>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             </SidebarMenu>
                         </SidebarGroupContent>
                     </SidebarGroup>
                 </SidebarContent>
+
                 <SidebarFooter />
                 <SidebarRail />
             </Sidebar>
         </SidebarProvider>
+
         <div class="grid grid-cols-4 gap-4 m-4 auto-rows-min">
             <Card class="w-full p-4 h-min bg-primary text-primary-foreground">
-                <CardTitle>
-                    Primary
-                </CardTitle>
-                <CardContent>
-                    this is what primary colors look like
-                </CardContent>
+                <CardTitle>Primary</CardTitle>
+                <CardContent>This card follows the selected theme</CardContent>
             </Card>
+
             <Card class="w-full p-4 h-min bg-secondary text-secondary-foreground">
-                <CardTitle>
-                    Secondary
-                </CardTitle>
-                <CardContent>
-                    this is what secondary colors look like
-                </CardContent>
+                <CardTitle>Secondary</CardTitle>
+                <CardContent>This card follows the selected theme</CardContent>
             </Card>
+
             <Card class="w-full p-4 h-min bg-muted text-muted-foreground">
-                <CardTitle>
-                    Muted
-                </CardTitle>
-                <CardContent>
-                    this is what muted colors look like
-                </CardContent>
+                <CardTitle>Muted</CardTitle>
+                <CardContent>This card follows the selected theme</CardContent>
             </Card>
+
             <Card class="w-full p-4 h-min bg-accent text-accent-foreground">
-                <CardTitle>
-                    Accent
-                </CardTitle>
-                <CardContent>
-                    this is what accent colors look like
-                </CardContent>
+                <CardTitle>Accent</CardTitle>
+                <CardContent>This card follows the selected theme</CardContent>
             </Card>
+
             <Card class="w-full p-4 h-min">
-                <CardTitle>
-                    Chart
-                </CardTitle>
+                <CardTitle>Chart</CardTitle>
                 <CardContent>
                     <ChartContainer :config="chartConfig" class="h-full w-full">
                         <VisXYContainer :data="chartData">
@@ -154,33 +143,29 @@ function setMode() {
                             <ChartTooltip />
                             <ChartCrosshair :template="componentToString(chartConfig, ChartTooltipContent, {
                                 labelFormatter(d) {
-                                    return new Date(d).toLocaleDateString('en-US', {
-                                        month: 'long',
-                                    });
+                                    return new Date(d).toLocaleDateString('en-US', { month: 'long' })
                                 },
-                            })
-                                " :color="[chartConfig.desktop.color, chartConfig.mobile.color]" />
+                            })" :color="[chartConfig.desktop.color, chartConfig.mobile.color]" />
                         </VisXYContainer>
                     </ChartContainer>
                 </CardContent>
             </Card>
-            <Card class="w-full p-4 h-min">
-                <CardTitle>
-                    Popover
-                </CardTitle>
+            <Card class="w-full p-4 h-min bg-primary text-primary-foreground">
+                <CardHeader>
+                    <CardTitle>Popover with Inputs</CardTitle>
+                    <CardDescription>
+                        Popover contains form controls
+                    </CardDescription>
+                </CardHeader>
                 <CardContent>
                     <Popover>
                         <PopoverTrigger as-child>
-                            <Button variant="outline">
-                                Open popover
-                            </Button>
+                            <Button variant="outline">Open Popover</Button>
                         </PopoverTrigger>
                         <PopoverContent class="w-80">
                             <div class="grid gap-4">
                                 <div class="space-y-2">
-                                    <h4 class="font-medium leading-none">
-                                        Dimensions
-                                    </h4>
+                                    <h4 class="font-medium leading-none">Dimensions</h4>
                                     <p class="text-sm text-muted-foreground">
                                         Set the dimensions for the layer.
                                     </p>
@@ -188,19 +173,19 @@ function setMode() {
                                 <div class="grid gap-2">
                                     <div class="grid grid-cols-3 items-center gap-4">
                                         <Label for="width">Width</Label>
-                                        <Input id="width" default-value="100%" class="col-span-2 h-8" />
+                                        <Input id="width" placeholder="100%" class="col-span-2 h-8" />
                                     </div>
                                     <div class="grid grid-cols-3 items-center gap-4">
-                                        <Label for="maxWidth">Max. width</Label>
-                                        <Input id="maxWidth" default-value="300px" class="col-span-2 h-8" />
+                                        <Label for="maxWidth">Max Width</Label>
+                                        <Input id="maxWidth" placeholder="300px" class="col-span-2 h-8" />
                                     </div>
                                     <div class="grid grid-cols-3 items-center gap-4">
                                         <Label for="height">Height</Label>
-                                        <Input id="height" default-value="25px" class="col-span-2 h-8" />
+                                        <Input id="height" placeholder="25px" class="col-span-2 h-8" />
                                     </div>
                                     <div class="grid grid-cols-3 items-center gap-4">
-                                        <Label for="maxHeight">Max. height</Label>
-                                        <Input id="maxHeight" default-value="none" class="col-span-2 h-8" />
+                                        <Label for="maxHeight">Max Height</Label>
+                                        <Input id="maxHeight" placeholder="none" class="col-span-2 h-8" />
                                     </div>
                                 </div>
                             </div>
@@ -208,42 +193,32 @@ function setMode() {
                     </Popover>
                 </CardContent>
             </Card>
-            <Card class="w-full p-4 h-min">
+
+            <Card class="w-full p-4 h-min bg-secondary text-secondary-foreground">
                 <CardHeader>
-                    <CardTitle>Default Card + Input and Button</CardTitle>
+                    <CardTitle>Form Card</CardTitle>
                     <CardDescription>
-                        Card Description
+                        Card contains an input and button
                     </CardDescription>
-                    <CardAction>
-                        <Button variant="link">
-                            Button, link variant
-                        </Button>
-                    </CardAction>
                 </CardHeader>
                 <CardContent>
-                    <form>
-                        <div class="grid w-full items-center gap-4">
-                            <div class="flex flex-col space-y-1.5">
-                                <div class="flex items-center">
-                                    <Label for="email">Input w/placeholder</Label>
-                                    <a href="#" class="ml-auto inline-block text-sm underline">
-                                        Link
-                                    </a>
-                                </div>
-                                <Input id="password" type="password" placeholder="m@example.com" />
+                    <form class="grid w-full items-center gap-4">
+                        <div class="flex flex-col space-y-2">
+                            <div class="flex items-center justify-between">
+                                <Label for="email">Email</Label>
+                                <a href="#" class="text-sm underline">Help</a>
                             </div>
+                            <Input id="email" type="email" placeholder="m@example.com" class="h-10" />
                         </div>
                     </form>
                 </CardContent>
                 <CardFooter class="flex flex-col gap-2">
-                    <Button class="w-full">
-                        Regular Button
-                    </Button>
-                    <Button variant="outline" class="w-full">
-                        Button, outline variant
-                    </Button>
+                    <Button class="w-full">Submit</Button>
+                    <Button variant="outline" class="w-full">Cancel</Button>
                 </CardFooter>
             </Card>
+
         </div>
     </div>
+
 </template>
