@@ -34,18 +34,6 @@ onMounted(async () => {
 const editInfo = ref(false)
 const editPholi = ref(false)
 
-async function toggleEdit() {
-    editInfo.value = !editInfo.value
-}
-
-async function editPholiOn() {
-    editPholi.value = true
-}
-
-async function savePholi() {
-    editPholi.value = false
-}
-
 </script>
 
 <template>
@@ -53,29 +41,32 @@ async function savePholi() {
     <div class="flex h-fit">
         <Tabs default-value="profile" class="basis-1/4 flex-col flex m-4 h-full w-full gap-4 items-center">
             <TabsList>
-                <TabsTrigger value="profile" @click.prevent="savePholi">
+                <TabsTrigger value="profile" @click.prevent="editPholi = false">
                     Profile
                 </TabsTrigger>
-                <TabsTrigger value="media" @click.prevent="editPholiOn">
+                <TabsTrigger value="media" @click.prevent="editPholi = true">
                     Manage Media
                 </TabsTrigger>
             </TabsList>
             <TabsContent value="profile">
                 <div class="flex flex-row">
                     <div class="flex flex-col items-center gap-4">
+                        <div class="flex flex-row gap-4 ">
+                            <Button v-if="editInfo" @click.prevent="editInfo = false">
+                                Close Editor
+                            </Button>
+                            <Button @click.prevent="editInfo = true" v-else>
+                                Edit Info
+                            </Button>
+                            <Button @click.prevent="signOut">
+                                Sign Out
+                            </Button>
+                        </div>
                         <div v-if="editInfo">
                             <AccountInfoEdit />
                         </div>
                         <div v-else>
                             <AccountInfoDisplay />
-                        </div>
-                        <div class="flex flex-row gap-4 ">
-                            <Button @click.prevent="toggleEdit">
-                                Edit info
-                            </Button>
-                            <Button @click.prevent="signOut">
-                                Sign Out
-                            </Button>
                         </div>
                     </div>
                 </div>

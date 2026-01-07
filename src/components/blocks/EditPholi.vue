@@ -12,10 +12,10 @@ const { pholi, onDrop, onDragStaged, onDragSize, widthConfig, heightConfig, getS
 </script>
 
 <template>
-    <div class="grid grid-cols-16 rounded-3xl bg-primary border-primary border-4 p-2">
+    <div class="grid grid-cols-16 rounded-3xl bg-accent border-accent border-4 p-2">
         <template v-for="(row, rowIndex) in pholi" :key="rowIndex">
             <div v-for="(cell, colIndex) in row" :key="`${rowIndex}-${colIndex}`"
-                class="relative overflow-visible aspect-square outline-1 outline-dashed m-0" @dragover.prevent
+                class="relative overflow-visible aspect-square outline-1 outline-white/30 outline-dashed m-0" @dragover.prevent
                 @drop="onDrop(rowIndex, colIndex)">
                 <div v-if="cell && 'id' in cell && cell.id !== 'block' && !cell.id.startsWith('size-')" :class="[
                     widthConfig[(cell as GridItem).width as SizeType],

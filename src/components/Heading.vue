@@ -75,7 +75,7 @@ const components: { title: string, href: string, description: string }[] = [
     </div>
     <logoCircleBack width="200" height="200" class=" rounded-full mx-auto z-10 absolute inset-0 inline" />
     <div
-        class="z-50 relative flex w-full items-center justify-between px-20 text-center flex-row gap-18 p-8 py-0 bg-primary h-[10vh] min-h-25">
+        class="z-50 relative flex w-full items-center justify-between px-20 text-center flex-row gap-18 p-8 py-0 bg-accent h-[10vh] min-h-25">
         <NavigationMenu :viewport="false" class="z-40 relative w-fit flex-initial h-full">
             <NavigationMenuList class="w-fit h-fit gap-4">
                 <NavigationMenuItem>

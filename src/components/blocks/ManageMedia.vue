@@ -30,7 +30,7 @@ const { src, title, description, unplacedItems, stagedItems, preview, uploadMedi
             </TabsList>
 
             <TabsContent value="upload" class="w-full">
-                <div class="flex w-inherit items-center bg-primary rounded-3xl shadow-md text-white text-sm p-8 z-10">
+                <div class="flex w-inherit items-center bg-accent rounded-3xl shadow-md text-white text-sm p-8 z-10">
                     <form @submit.prevent="uploadMedia" class="w-full flex flex-col justify-around gap-4 text-sm"
                         name="addForm">
 
@@ -54,7 +54,7 @@ const { src, title, description, unplacedItems, stagedItems, preview, uploadMedi
 
             <TabsContent value="all" class="w-full">
                 <div
-                    class="grid grid-cols-2 auto-rows-max gap-4 w-inherit items-center bg-primary h-[65vh] rounded-3xl shadow-md text-white text-sm p-4 overflow-y-scroll">
+                    class="grid grid-cols-2 auto-rows-max gap-4 w-inherit items-center bg-accent h-[65vh] rounded-3xl shadow-md text-white text-sm p-4 overflow-y-scroll">
                     <div draggable="true" @dragstart="onDragFiller()"
                         class="cursor-move border-secondary bg-secondary border-4 text-white aspect-square rounded-3xl overflow-hidden w-full h-full">
                     </div>
@@ -67,11 +67,11 @@ const { src, title, description, unplacedItems, stagedItems, preview, uploadMedi
 
             <TabsContent value="staged" class="w-full">
                 <div v-if="stagedItems.length == 0"
-                    class="bg-primary rounded-3xl shadow-md text-white text-md text-center p-4">
+                    class="bg-accent rounded-3xl shadow-md text-white text-md text-center p-4">
                     Empty!
                 </div>
                 <div v-else
-                    class="grid grid-cols-2 gap-4 h-[65vh] auto-rows-max w-inherit items-center bg-primary rounded-3xl shadow-md text-white text-sm p-4 z-10 overflow-y-scroll">
+                    class="grid grid-cols-2 gap-4 h-[65vh] auto-rows-max w-inherit items-center bg-accent rounded-3xl shadow-md text-white text-sm p-4 z-10 overflow-y-scroll">
                     <div v-for="item in stagedItems" :key="item.id"
                         class="cursor-move border-secondary border-4 text-white aspect-square rounded-3xl overflow-hidden">
                         <img :src="item.src" :alt="item.label" class="object-cover border-0 w-full h-full" />

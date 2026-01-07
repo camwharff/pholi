@@ -51,7 +51,7 @@ const components: { title: string, href: string, description: string }[] = [
 </script>
 
 <template>
-    <div class="bg-primary min-h-screen">
+    <div class="bg-accent min-h-screen">
         <div class="flex w-fit min-w-[10vw] align-middle text-center flex-col py-8 h-full gap-8">
             <h1 class="mx-auto">Pholi</h1>
             <NavigationMenu :viewport="false">

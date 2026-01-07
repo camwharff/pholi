@@ -18,7 +18,7 @@ const { pholi, widthConfig, heightConfig, getSrc } = mediaHandler()
 </script>
 
 <template>
-    <div class="grid grid-cols-16 rounded-3xl bg-primary border-primary border-4 p-2">
+    <div class="grid grid-cols-16 rounded-3xl bg-accent border-accent border-4 p-2">
         <template v-for="(row, rowIndex) in pholi" :key="rowIndex">
             <div v-for="(cell, colIndex) in row" :key="`${rowIndex}-${colIndex}`"
                 class="relative overflow-visible aspect-square rounded-lg m-0">
@@ -39,7 +39,7 @@ const { pholi, widthConfig, heightConfig, getSrc } = mediaHandler()
                                 </VisuallyHidden>
                                 <div class="object-contain w-max h-[75vh] overflow-hidden flex justify-center">
                                     <Card
-                                        class="mx-4 bg-primary border-secondary border-4 rounded-3xl h-fit w-[15vw] text-white">
+                                        class="mx-4 bg-accent border-secondary border-4 rounded-3xl h-fit w-[15vw] text-white">
                                         <CardHeader>
                                             <h1 class="m-0">{{ (cell as GridItem).label }}</h1>
                                         </CardHeader>
@@ -50,7 +50,7 @@ const { pholi, widthConfig, heightConfig, getSrc } = mediaHandler()
                                         </div>
                                     </Card>
                                     <img :src="getSrc((cell as GridItem).id)" :alt="(cell as GridItem).label"
-                                        class="w-fit h-full border-secondary bg-primary rounded-3xl border-4" />
+                                        class="w-fit h-full border-secondary bg-accent rounded-3xl border-4" />
                                 </div>
                             </DialogContent>
                         </Dialog>

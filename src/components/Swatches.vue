@@ -61,9 +61,11 @@ function applyTheme(theme: string) {
     currentTheme.value = theme
 }
 
+import Heading from './Heading.vue'
 </script>
 
 <template>
+    <Heading />
     <div class="flex flex-row">
         <SidebarProvider class="w-1/5 m-4 h-min">
             <Sidebar>
@@ -113,7 +115,7 @@ function applyTheme(theme: string) {
         </SidebarProvider>
 
         <div class="grid grid-cols-4 gap-4 m-4 auto-rows-min">
-            <Card class="w-full p-4 h-min bg-primary text-primary-foreground">
+            <Card class="w-full p-4 h-min bg-accent text-primary-foreground">
                 <CardTitle>Primary</CardTitle>
                 <CardContent>This card follows the selected theme</CardContent>
             </Card>
@@ -150,7 +152,7 @@ function applyTheme(theme: string) {
                     </ChartContainer>
                 </CardContent>
             </Card>
-            <Card class="w-full p-4 h-min bg-primary text-primary-foreground">
+            <Card class="w-full p-4 h-min bg-accent text-primary-foreground">
                 <CardHeader>
                     <CardTitle>Popover with Inputs</CardTitle>
                     <CardDescription>
