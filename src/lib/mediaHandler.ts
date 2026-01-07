@@ -18,19 +18,13 @@ export interface GridItem {
     primary: boolean
 }
 
-interface MediaRaw {
-    id: string
-    label: string
-    description: string
-    path: string
-    timestamp: number
-}
-
-interface MediaItem {
+interface MediaCell {
     id: string
     label: string
     description: string
     src: string
+    type: string
+    cover: string | undefined
 }
 
 interface BlockCell {
@@ -43,14 +37,34 @@ export interface SizeCell {
     ownerId: string
 }
 
-const title = ref('')
-const description = ref('')
-const src = ref('')
+interface MediaRaw {
+    id: string
+    path: string
+    timeStamp: number
+    type: string
+    label?: string
+    description?: string
+    date?: string
+    cover?: string
+}
+
+export interface NewMedia {
+    file: File
+    type: string
+    url: string
+    title?: string
+    date?: string
+    description?: string
+    cover?: File
+}
+
+const newMedia = ref<NewMedia[]>([])
 const width = ref([2])
 const height = ref([2])
+const preview = ref<NewMedia>()
 const media_raw: Ref<MediaRaw[]> = ref([])
-const media_list: Ref<MediaItem[]> = ref([])
-const pholi: Ref<({id: string, label: string, width: SizeType, height: SizeType, primary: boolean, description: string} | BlockCell | SizeCell | null)[][], GridMatrix | ({id: string, label: string, width: SizeType, height: SizeType, primary: boolean, description: string} | BlockCell | SizeCell | null)[][]> = ref([])
+const media_list: Ref<MediaCell[]> = ref([])
+const pholi: Ref<(GridItem | BlockCell | SizeCell | null)[][], GridMatrix | (GridItem | BlockCell | SizeCell | null)[][]> = ref([])
 
 const COLS = 16
 const ROWS = 9
@@ -63,50 +77,80 @@ const heightConfig: Record<SizeType, string> = {
     1: 'h-[100%]', 2: 'h-[200%]', 3: 'h-[300%]', 4: 'h-[400%]', 5: 'h-[500%]', 6: 'h-[600%]', 7: 'h-[700%]', 8: 'h-[800%]', 9: 'h-[900%]', 10: 'h-[1000%]', 11: 'h-[1100%]', 12: 'h-[1200%]', 13: 'h-[1300%]', 14: 'h-[1400%]', 15: 'h-[1500%]', 16: 'h-[1600%]'
 }
 
+async function selectMedia(evt: Event) {
+
+    const input = evt.target as HTMLInputElement
+    const selectedFiles = input.files
+
+    if (selectedFiles)
+        for (const newFile of selectedFiles) {
+            newMedia.value.push({
+                file: newFile,
+                type: newFile.type.split('/')![0] as string,
+                url: URL.createObjectURL(newFile)
+            })
+        }
+}
+
+function addCover(evt: Event) {
+
+    const input = evt.target as HTMLInputElement
+    return input.files![0]
+
+}
+
+async function deleteMedia(id: string) {
+    if (user.value) {
+        console.log(id)
+        console.log(media_raw.value)
+        const index = media_raw.value.findIndex(item => item.id === id)
+        media_raw.value.splice(index, 1)
+        await supabase.from('profiles').update({ media: [...media_raw.value] }).eq('id', user.value.id)
+        await supabase.storage.from('media').remove([id])
+    }
+}
+
 const uploadMedia = async (evt: Event) => {
     if (!user.value) return
 
     const form = evt.target as HTMLFormElement
-    const target = form.elements[0] as HTMLInputElement
 
-    if (!target || !target.files || target.files.length === 0) {
-        alert('You must select an image to upload.')
+    if (newMedia.value.length === 0) {
+        alert('You must select at least one file to upload.')
         return
     }
 
-    const file = target.files[0]
-
-    if (file) {
-        const fileExt = file.name.split('.').pop()
-        const filePath = `${Math.random()}.${fileExt}`
-        const new_media = {
-            id: filePath,
-            path: filePath,
-            label: title.value,
-            timeStamp: Date.now(),
-            description: description.value
-        }
-        try {
-            await supabase.storage.from('media').upload(filePath, file)
-            await supabase.from('profiles').update({ media: [...media_raw.value, new_media] }).eq('id', user.value.id)
-            loadMedia()
-            src.value = ''
-            form.reset()
-        } catch (error) {
-            if (error instanceof Error) alert(error.message)
+    for (const media of newMedia.value) {
+        if (media.file) {
+            const fileExt = media.file.name.split('.').pop()
+            const filePath = `${Math.random()}.${fileExt}`
+            const new_media: MediaRaw = {
+                id: filePath,
+                path: filePath,
+                label: media.title,
+                timeStamp: Date.now(),
+                description: media.description,
+                type: media.type,
+                date: media.date
+            }
+            try {
+                if (media.cover) {
+                    const coverExt = media.cover.name.split('.').pop()
+                    new_media.cover = `${Math.random()}.${coverExt}`
+                    await supabase.storage.from('media').upload(new_media.cover, media.cover)
+                }
+                await supabase.storage.from('media').upload(filePath, media.file)
+                await supabase.from('profiles').update({ media: [...media_raw.value, new_media] }).eq('id', user.value.id)
+            } catch (error) {
+                if (error instanceof Error) alert(error.message)
+            }
         }
     }
+
+    loadMedia()
+    form.reset()
+    newMedia.value = []
 }
-
-const preview = async (evt: Event) => {
-    const files = (evt.target as HTMLInputElement).files
-
-    if (files && files.length > 0) {
-        const file = files[0] as Blob
-        src.value = URL.createObjectURL(file)
-    }
-}
-
 
 const unplacedItems = computed(() =>
     media_list.value.filter(
@@ -165,22 +209,33 @@ async function downloadMedia() {
     for (let item of Object.values(media_raw.value)) {
         if (!media_list.value.find(entry => item.id == entry.id)) {
             try {
+                const coverUrl = ref<string>()
                 const { data, error } = await supabase.storage.from('media').download(item.path)
                 if (error) {
                     throw error
                 }
                 const url = URL.createObjectURL(data)
+                if (item.cover) {
+                    const { data, error } = await supabase.storage.from('media').download(item.cover)
+                    if (error) {
+                        throw error
+                    }
+                    coverUrl.value = URL.createObjectURL(data)
+                }
                 media_list.value.push({
                     id: `${item.id}`,
                     label: `${item.label}`,
                     description: `${item.description}`,
-                    src: url
+                    src: url,
+                    type: item.type,
+                    cover: coverUrl.value
                 })
             } catch (error) {
                 if (error instanceof Error) alert(error.message)
             }
         }
     }
+    console.log(media_list)
 }
 
 async function setMedia(username: string) {
@@ -213,7 +268,7 @@ function onDragStaged(item: GridItem) {
     sizing.value = false
 }
 
-function onDragUnstaged(item: MediaItem) {
+function onDragUnstaged(item: MediaCell) {
     draggedItem.value = {
         id: item.id,
         label: item.label,
@@ -367,18 +422,18 @@ const changeHeight = (newValue: number[] | undefined, id: string) => {
 
 export function mediaHandler() {
     return {
-        src,
-        title,
-        description,
+        preview,
         width,
         height,
+        newMedia,
         pholi,
         unplacedItems,
         stagedItems,
         widthConfig,
         heightConfig,
+        addCover,
+        deleteMedia,
         getSrc,
-        preview,
         uploadMedia,
         updatePholi,
         onDragStaged,
@@ -390,6 +445,7 @@ export function mediaHandler() {
         changeHeight,
         changeWidth,
         loadMedia,
-        setMedia
+        setMedia,
+        selectMedia
     }
 }
