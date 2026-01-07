@@ -51,13 +51,13 @@ const components: { title: string, href: string, description: string }[] = [
 </script>
 
 <template>
-    <div class="bg-sky-950 min-h-screen">
+    <div class="bg-primary min-h-screen">
         <div class="flex w-fit min-w-[10vw] align-middle text-center flex-col py-8 h-full gap-8">
             <h1 class="mx-auto">Pholi</h1>
             <NavigationMenu :viewport="false">
                 <NavigationMenuList class="flex-col h-fit w-full gap-2">
                     <NavigationMenuItem class="w-full flex-row">
-                        <NavigationMenuTrigger class="bg-sky-700 w-full rounded-none">Home</NavigationMenuTrigger>
+                        <NavigationMenuTrigger class="bg-secondary w-full rounded-none">Home</NavigationMenuTrigger>
                         <NavigationMenuContent>
                             <ul class="flex flex-row gap-2">
                                 <li>
@@ -78,7 +78,7 @@ const components: { title: string, href: string, description: string }[] = [
                         </NavigationMenuContent>
                     </NavigationMenuItem>
                     <NavigationMenuItem class="w-full">
-                        <NavigationMenuTrigger class="bg-sky-700 w-full rounded-none">Components</NavigationMenuTrigger>
+                        <NavigationMenuTrigger class="bg-secondary w-full rounded-none">Components</NavigationMenuTrigger>
                         <NavigationMenuContent>
                             <ul class="grid w-100 gap-2 md:w-125 md:grid-cols-2 lg:w-150">
                                 <ListItem v-for="component in components" :key="component.title"
@@ -89,12 +89,12 @@ const components: { title: string, href: string, description: string }[] = [
                         </NavigationMenuContent>
                     </NavigationMenuItem>
                     <NavigationMenuItem class="w-full">
-                        <NavigationMenuLink as-child class="w-full bg-sky-700 rounded-none">
+                        <NavigationMenuLink as-child class="w-full bg-secondary rounded-none">
                             <a href="/docs">Docs</a>
                         </NavigationMenuLink>
                     </NavigationMenuItem>
                     <NavigationMenuItem class="w-full">
-                        <NavigationMenuTrigger class="bg-sky-700 w-full rounded-none">List</NavigationMenuTrigger>
+                        <NavigationMenuTrigger class="bg-secondary w-full rounded-none">List</NavigationMenuTrigger>
                         <NavigationMenuContent>
                             <ul class="grid w-75 gap-4">
                                 <li>
@@ -127,7 +127,7 @@ const components: { title: string, href: string, description: string }[] = [
                         </NavigationMenuContent>
                     </NavigationMenuItem>
                     <NavigationMenuItem class="w-full">
-                        <NavigationMenuTrigger class="bg-sky-700 w-full rounded-none">Simple</NavigationMenuTrigger>
+                        <NavigationMenuTrigger class="bg-secondary w-full rounded-none">Simple</NavigationMenuTrigger>
                         <NavigationMenuContent>
                             <ul class="grid w-50 gap-4">
                                 <li>
@@ -145,7 +145,7 @@ const components: { title: string, href: string, description: string }[] = [
                         </NavigationMenuContent>
                     </NavigationMenuItem>
                     <NavigationMenuItem class="w-full">
-                        <NavigationMenuTrigger class="bg-sky-700 w-full rounded-none">With Icon</NavigationMenuTrigger>
+                        <NavigationMenuTrigger class="bg-secondary w-full rounded-none">With Icon</NavigationMenuTrigger>
                         <NavigationMenuContent>
                             <ul class="grid w-50 gap-4">
                                 <li>

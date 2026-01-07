@@ -75,12 +75,12 @@ const components: { title: string, href: string, description: string }[] = [
     </div>
     <logoCircleBack width="200" height="200" class=" rounded-full mx-auto z-10 absolute inset-0 inline" />
     <div
-        class="z-50 relative flex w-full items-center justify-between px-20 text-center flex-row gap-18 p-8 py-0 bg-sky-950 h-[10vh] min-h-25">
+        class="z-50 relative flex w-full items-center justify-between px-20 text-center flex-row gap-18 p-8 py-0 bg-primary h-[10vh] min-h-25">
         <NavigationMenu :viewport="false" class="z-40 relative w-fit flex-initial h-full">
             <NavigationMenuList class="w-fit h-fit gap-4">
                 <NavigationMenuItem>
                     <NavigationMenuTrigger
-                        class="cursor-pointer bg-sky-900 h-full hover:bg-sky-700 font-medium px-4 py-2 transition rounded-xl text-base flex-row flex items-center gap-1">
+                        class="cursor-pointer bg-accent h-full hover:bg-secondary font-medium px-4 py-2 transition rounded-xl text-base flex-row flex items-center gap-1">
                         Components</NavigationMenuTrigger>
                     <NavigationMenuContent>
                         <ul class="grid w-50 gap-4">
@@ -93,7 +93,7 @@ const components: { title: string, href: string, description: string }[] = [
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                     <NavigationMenuTrigger
-                        class="cursor-pointer bg-sky-900 h-full hover:bg-sky-700 font-medium px-4 py-2 transition rounded-xl text-base flex-row flex items-center gap-1">
+                        class="cursor-pointer bg-accent h-full hover:bg-secondary font-medium px-4 py-2 transition rounded-xl text-base flex-row flex items-center gap-1">
                         With Icon
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
@@ -126,7 +126,7 @@ const components: { title: string, href: string, description: string }[] = [
         <div class="h-inherit w-fit inset-0 m-auto">
             <RouterLink to="/home" class="h-fit w-fit p-0 m-auto inset-0">
                 <logoCircleFront width="200" height="200"
-                    class="p-2 rounded-full mx-auto z-50 absolute inset-0 inline border-4 border-transparent" />
+                    class="p-2 rounded-full mx-auto z-50 absolute inset-0 inline border-4 border-transparent border-none" />
             </RouterLink>
         </div>
         <NavigationMenu :viewport="false" class="z-40 w-fit flex-initial">
@@ -137,24 +137,24 @@ const components: { title: string, href: string, description: string }[] = [
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                     <button v-if="username" @click.prevent="searchUsers(username)"
-                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center hover:bg-sky-700 transition rounded-xl">
+                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center hover:bg-secondary transition rounded-xl">
                         <Search />
                     </button>
                     <button v-else @click.prevent="toggleSearch"
-                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center hover:bg-sky-700 transition rounded-xl">
+                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center hover:bg-secondary transition rounded-xl">
                         <Search />
                     </button>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                     <RouterLink v-if="user" to="/account"
-                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center hover:bg-sky-700 transition rounded-xl">
+                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center hover:bg-secondary transition rounded-xl">
                         <UserRound />
                     </RouterLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                     <template v-if="user">
                         <Button
-                            class="cursor-pointer h-full hover:bg-sky-700 px-4 py-2 transition rounded-xl text-base flex-row flex items-center gap-1"
+                            class="cursor-pointer h-full hover:bg-secondary px-4 py-2 transition rounded-xl text-base flex-row flex items-center gap-1"
                             @click.prevent="signOut">
                             <LogOut />
                         </Button>
@@ -163,7 +163,7 @@ const components: { title: string, href: string, description: string }[] = [
                         <Dialog>
                             <DialogTrigger as-child>
                                 <Button
-                                    class="cursor-pointer h-full bg-sky-900 hover:bg-sky-700 px-4 py-2 leading-none transition rounded-xl text-base flex-row flex items-center gap-1"
+                                    class="cursor-pointer h-full hover:bg-secondary px-4 py-2 leading-none transition rounded-xl text-base flex-row flex items-center gap-1"
                                     @click.prevent="changeMode('LOGIN')">
                                     <LogIn />
                                 </Button>

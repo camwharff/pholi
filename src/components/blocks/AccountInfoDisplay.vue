@@ -7,7 +7,7 @@ const { avatar_url, username, bio, full_name, website_title, website_url } = inf
 </script>
 
 <template>
-    <div class="p-8 bg-sky-700 rounded-3xl shadow-md text-white text-sm">
+    <div class="p-8 bg-secondary rounded-3xl shadow-md text-white text-sm">
         <Avatar v-model:path="avatar_url" />
         <h2 class="mt-4">{{ full_name }}</h2>
         <h3 class="mt-2">@{{ username }}</h3>

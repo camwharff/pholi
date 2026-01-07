@@ -5,13 +5,13 @@ import { authHandler } from '@/lib/authHandler'
 import Button from '../ui/button/Button.vue'
 
 const { avatar_url, username, bio, full_name, website_title, website_url, updateProfile } = infoHandler()
-const { session } = authHandler()
+const { user } = authHandler()
 
 </script>
 
 <template>
     <div class="flex">
-        <div class="p-8 bg-sky-700 rounded-3xl shadow-md text-white text-sm" v-if="session">
+        <div class="p-8 bg-secondary rounded-3xl shadow-md text-white text-sm" v-if="user">
             <form class="form-widget" @submit.prevent="updateProfile">
                 <Avatar v-model:path="avatar_url" @upload="updateProfile" />
 

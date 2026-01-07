@@ -65,8 +65,8 @@ watchEffect(() => {
     <div class="flex flex-col items-center">
         <div class="w-full aspect-square overflow-hidden">
             <img v-if="src" :src="src" alt="Avatar"
-                class="w-full h-full avatar image rounded-3xl border-sky-950 border-5 object-cover" />
-            <div v-else class="min-w-full min-h-full avatar image rounded-3xl bg-sky-950 border-sky-950 border-5"></div>
+                class="w-full h-full avatar image rounded-3xl border-primary border-5 object-cover" />
+            <div v-else class="min-w-full min-h-full avatar image rounded-3xl bg-primary border-primary border-5"></div>
         </div>
 
         <div class="flex w-auto items-center space-x-2 ml-0 mr-0 mt-6 mb-6">
