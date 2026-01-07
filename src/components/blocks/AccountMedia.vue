@@ -33,14 +33,15 @@ const { pholi, widthConfig, heightConfig, getSrc, getCover } = mediaHandler()
                     <div class="w-full h-full p-2">
                         <Dialog class="w-full h-full">
                             <DialogTrigger class="w-full h-full cursor-help">
-                                <Image v-if="(cell as GridItem).type === 'image'" :src="(getSrc((cell as GridItem).id) ?? '')"
-                                    :alt="(cell as GridItem).label"
+                                <Image v-if="(cell as GridItem).type === 'image'"
+                                    :src="(getSrc((cell as GridItem).id) ?? '')" :alt="(cell as GridItem).label"
                                     class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
-                                <Vid v-if="(cell as GridItem).type === 'video'" :src="(getSrc((cell as GridItem).id) ?? '')"
-                                    :alt="(cell as GridItem).label"
+                                <Vid v-if="(cell as GridItem).type === 'video'"
+                                    :src="(getSrc((cell as GridItem).id) ?? '')" :alt="(cell as GridItem).label"
                                     class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
-                                <Aud v-if="(cell as GridItem).type === 'audio'" :src="(getSrc((cell as GridItem).id) ?? '')"
-                                    :alt="(cell as GridItem).label" :cover="(getCover((cell as GridItem).id) ?? '')"
+                                <Aud v-if="(cell as GridItem).type === 'audio'"
+                                    :src="(getSrc((cell as GridItem).id) ?? '')" :alt="(cell as GridItem).label"
+                                    :cover="(getCover((cell as GridItem).id) ?? '')"
                                     class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
                                 <Filler v-if="(cell as GridItem).type === 'filler'" :text="(cell as GridItem).label"
                                     class="w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
@@ -49,7 +50,7 @@ const { pholi, widthConfig, heightConfig, getSrc, getCover } = mediaHandler()
                                 <VisuallyHidden asChild>
                                     <DialogTitle :value="(cell as GridItem).label" />
                                 </VisuallyHidden>
-                                <div class="object-contain w-max h-[75vh] overflow-hidden flex justify-center">
+                                <div class="object-contain w-fit h-[75vh] overflow-hidden flex justify-center">
                                     <Card
                                         class="mx-4 bg-accent border-secondary border-4 rounded-3xl h-fit w-[15vw] text-white">
                                         <CardHeader>
@@ -61,7 +62,15 @@ const { pholi, widthConfig, heightConfig, getSrc, getCover } = mediaHandler()
                                             </CardContent>
                                         </div>
                                     </Card>
-                                    <img :src="getSrc((cell as GridItem).id)" :alt="(cell as GridItem).label"
+                                    <Image v-if="(cell as GridItem).type === 'image'"
+                                        :src="(getSrc((cell as GridItem).id) ?? '')" :alt="(cell as GridItem).label"
+                                        class="w-fit h-full border-secondary bg-accent rounded-3xl border-4" />
+                                    <Vid v-if="(cell as GridItem).type === 'video'"
+                                        :src="(getSrc((cell as GridItem).id) ?? '')" :alt="(cell as GridItem).label"
+                                        class="w-fit h-full border-secondary bg-accent rounded-3xl border-4" />
+                                    <Aud v-if="(cell as GridItem).type === 'audio'"
+                                        :src="(getSrc((cell as GridItem).id) ?? '')" :alt="(cell as GridItem).label"
+                                        :cover="(getCover((cell as GridItem).id) ?? '')"
                                         class="w-fit h-full border-secondary bg-accent rounded-3xl border-4" />
                                 </div>
                             </DialogContent>

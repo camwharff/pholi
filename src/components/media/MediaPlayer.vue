@@ -37,10 +37,9 @@ onMounted(() => {
         <div v-if="type === 'audio'">
             <img :src="cover" alt="Audio Cover"
                 class="absolute inset-0 w-full h-full object-cover" />
-            <audio ref="mediaRef" :src="src" class="w-full" preload="metadata"></audio>
+            <audio ref="mediaRef" :src="src" class="w-full"></audio>
         </div>
-        <video v-if="type === 'video'" ref="mediaRef" :src="src" class="w-full h-full object-cover"
-            preload="metadata"></video>
+        <video v-if="type === 'video'" ref="mediaRef" :src="src" class="w-full h-full object-cover"></video>
         <div
             class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 w-fit bg-black/30 hover:bg-black/70 rounded-md flex items-center gap-4 p-2 justify-center">
             <button @click="togglePlay" class="text-white p-2 rounded hover:bg-gray-700">
