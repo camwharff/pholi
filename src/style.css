@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin 'tailwind-scrollbar';
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
@@ -146,17 +147,20 @@
 }
 
 @layer {
+  * {
+    @apply scrollbar scrollbar-thumb-background/50 active:scrollbar-thumb-background scrollbar-track-accent
+  }
   body {
-    @apply text-foreground h-fit min-h-full m-0 bg-background;
+    @apply text-foreground h-fit min-h-full m-0 bg-background
   }
   h1 {
-    @apply text-4xl font-bold text-foreground mr-8 ml-8;
+    @apply text-4xl font-bold text-foreground mr-8 ml-8
   }
   h2 {
-    @apply text-3xl font-bold;
+    @apply text-3xl font-bold
   }
   h3 {
-    @apply text-xl font-normal;
+    @apply text-xl font-normal
   }
   html, #app, main {
     @apply min-h-full h-fit text-lg

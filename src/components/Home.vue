@@ -22,7 +22,7 @@ onMounted(async () => {
 
 <template>
     <Heading />
-    <div class="w-full h-full flex p-4">
+    <div class="w-full h-full flex flex-col gap-4 p-4">
         <div class="m-auto bg-secondary rounded-3xl p-4 w-full">
             plonk
         </div>

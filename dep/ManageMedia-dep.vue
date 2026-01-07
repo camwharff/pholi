@@ -154,7 +154,7 @@ const uploadMedia = async (evt: Event) => {
                             <label for="description">Description</label>
                             <Input id="description" type="text" v-model="description" />
                         </div>
-                        <input type="submit" class="button rounded-md text-white block max-w-fit p-2 bg-sky-700"
+                        <input type="submit" class="button rounded-lg text-white block max-w-fit p-2 bg-sky-700"
                             value="Submit" />
                     </form>
                 </div>
@@ -168,7 +168,7 @@ const uploadMedia = async (evt: Event) => {
                 <div
                     class="grid grid-cols-2 gap-2 grid-flow-row justify-start w-inherit items-start bg-sky-950 rounded-3xl rounded-t-none shadow-md text-white text-sm p-4 -mb-4 pt-12 -mt-12 z-10 max-h-[50vh] overflow-y-scroll">
                     <div v-for="item in media_list" :key="item.id">
-                        <img :src="item.src" alt="media" :class="['w-full rounded-xl border-sky-700 border-5 aspect-square object-cover']" />
+                        <img :src="item.src" alt="media" :class="['w-full rounded-lg border-sky-700 border-5 aspect-square object-cover']" />
                     </div>
                 </div>
             </AccordionContent>

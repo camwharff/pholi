@@ -80,7 +80,7 @@ const components: { title: string, href: string, description: string }[] = [
             <NavigationMenuList class="w-fit h-fit gap-4">
                 <NavigationMenuItem>
                     <NavigationMenuTrigger
-                        class="cursor-pointer bg-accent h-full hover:bg-secondary font-medium px-4 py-2 transition rounded-xl text-base flex-row flex items-center gap-1">
+                        class="cursor-pointer bg-accent h-full hover:bg-secondary font-medium px-4 py-2 transition rounded-lg text-base flex-row flex items-center gap-1">
                         Components</NavigationMenuTrigger>
                     <NavigationMenuContent>
                         <ul class="grid w-50 gap-4">
@@ -93,7 +93,7 @@ const components: { title: string, href: string, description: string }[] = [
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                     <NavigationMenuTrigger
-                        class="cursor-pointer bg-accent h-full hover:bg-secondary font-medium px-4 py-2 transition rounded-xl text-base flex-row flex items-center gap-1">
+                        class="cursor-pointer bg-accent h-full hover:bg-secondary font-medium px-4 py-2 transition rounded-lg text-base flex-row flex items-center gap-1">
                         With Icon
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
@@ -137,24 +137,24 @@ const components: { title: string, href: string, description: string }[] = [
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                     <button v-if="username" @click.prevent="searchUsers(username)"
-                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center hover:bg-secondary transition rounded-xl">
+                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center hover:bg-secondary transition rounded-lg">
                         <Search />
                     </button>
                     <button v-else @click.prevent="toggleSearch"
-                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center hover:bg-secondary transition rounded-xl">
+                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center hover:bg-secondary transition rounded-lg">
                         <Search />
                     </button>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                     <RouterLink v-if="user" to="/account"
-                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center hover:bg-secondary transition rounded-xl">
+                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center hover:bg-secondary transition rounded-lg">
                         <UserRound />
                     </RouterLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                     <template v-if="user">
                         <Button
-                            class="cursor-pointer h-full hover:bg-secondary px-4 py-2 transition rounded-xl text-base flex-row flex items-center gap-1"
+                            class="cursor-pointer h-full hover:bg-secondary px-4 py-2 transition rounded-lg text-base flex-row flex items-center gap-1"
                             @click.prevent="signOut">
                             <LogOut />
                         </Button>
@@ -163,7 +163,7 @@ const components: { title: string, href: string, description: string }[] = [
                         <Dialog>
                             <DialogTrigger as-child>
                                 <Button
-                                    class="cursor-pointer h-full hover:bg-secondary px-4 py-2 leading-none transition rounded-xl text-base flex-row flex items-center gap-1"
+                                    class="cursor-pointer h-full hover:bg-secondary px-4 py-2 leading-none transition rounded-lg text-base flex-row flex items-center gap-1"
                                     @click.prevent="changeMode('LOGIN')">
                                     <LogIn />
                                 </Button>

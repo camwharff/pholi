@@ -40,14 +40,13 @@ const { src, title, description, unplacedItems, stagedItems, preview, uploadMedi
                             @change="preview" />
                         <div>
                             <label for="title">Title</label>
-                            <Input id="title" type="text" v-model="title" required />
+                            <Input id="title" type="text" v-model="title" required  placeholder="Media Title"/>
                         </div>
                         <div>
                             <label for="description">Description</label>
-                            <Input id="description" type="text" v-model="description" />
+                            <Input id="description" type="text" v-model="description" placeholder="Media Description"/>
                         </div>
-                        <input type="submit" class="button rounded-md text-white block max-w-fit p-2 bg-secondary"
-                            value="Submit" />
+                        <Button type="submit" class=" rounded-lg text-white block p-2 w-fit bg-primary" >Upload</Button>
                     </form>
                 </div>
             </TabsContent>
