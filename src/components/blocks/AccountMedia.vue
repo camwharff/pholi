@@ -12,8 +12,11 @@ import {
     CardHeader
 } from '@/components/ui/card'
 import { VisuallyHidden } from 'reka-ui'
+import {
+    Aud, Vid, Image, Filler
+} from '@/components/media'
 
-const { pholi, widthConfig, heightConfig, getSrc } = mediaHandler()
+const { pholi, widthConfig, heightConfig, getSrc, getCover } = mediaHandler()
 
 </script>
 
@@ -30,8 +33,17 @@ const { pholi, widthConfig, heightConfig, getSrc } = mediaHandler()
                     <div class="w-full h-full p-2">
                         <Dialog class="w-full h-full">
                             <DialogTrigger class="w-full h-full cursor-help">
-                                <img :src="getSrc((cell as GridItem).id)" :alt="(cell as GridItem).label"
+                                <Image v-if="(cell as GridItem).type === 'image'" :src="(getSrc((cell as GridItem).id) ?? '')"
+                                    :alt="(cell as GridItem).label"
                                     class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
+                                <Vid v-if="(cell as GridItem).type === 'video'" :src="(getSrc((cell as GridItem).id) ?? '')"
+                                    :alt="(cell as GridItem).label"
+                                    class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
+                                <Aud v-if="(cell as GridItem).type === 'audio'" :src="(getSrc((cell as GridItem).id) ?? '')"
+                                    :alt="(cell as GridItem).label" :cover="(getCover((cell as GridItem).id) ?? '')"
+                                    class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
+                                <Filler v-if="(cell as GridItem).type === 'filler'" :text="(cell as GridItem).label"
+                                    class="w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
                             </DialogTrigger>
                             <DialogContent class="w-auto h-auto p-8 shadow-none" :aria-describedby="undefined">
                                 <VisuallyHidden asChild>

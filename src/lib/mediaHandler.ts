@@ -2,7 +2,9 @@ import { ref, computed } from 'vue'
 import { supabase } from './supabaseClient'
 import type { Ref } from 'vue'
 import { authHandler } from './authHandler'
+import { uiHandler } from './uiHandler'
 
+const { shortAlert } = uiHandler()
 const { user } = authHandler()
 
 export type SizeType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16
@@ -16,6 +18,8 @@ export interface GridItem {
     width: SizeType
     height: SizeType
     primary: boolean
+    type: string
+    cover?: string
 }
 
 interface MediaCell {
@@ -24,7 +28,8 @@ interface MediaCell {
     description: string
     src: string
     type: string
-    cover: string | undefined
+    coverId?: string
+    cover?: string | undefined
 }
 
 interface BlockCell {
@@ -58,6 +63,8 @@ export interface NewMedia {
     cover?: File
 }
 
+const disableUpload = ref(false)
+
 const newMedia = ref<NewMedia[]>([])
 const width = ref([2])
 const height = ref([2])
@@ -66,6 +73,7 @@ const media_raw: Ref<MediaRaw[]> = ref([])
 const media_list: Ref<MediaCell[]> = ref([])
 const pholi: Ref<(GridItem | BlockCell | SizeCell | null)[][], GridMatrix | (GridItem | BlockCell | SizeCell | null)[][]> = ref([])
 
+const filler = ['text', 'blank']
 const COLS = 16
 const ROWS = 9
 
@@ -82,14 +90,20 @@ async function selectMedia(evt: Event) {
     const input = evt.target as HTMLInputElement
     const selectedFiles = input.files
 
-    if (selectedFiles)
+    if (selectedFiles) {
         for (const newFile of selectedFiles) {
+            if (newFile.size > 50000000) {
+                shortAlert(`${newFile.name} exceeds size limit of 50mb`)
+                continue
+            }
             newMedia.value.push({
                 file: newFile,
                 type: newFile.type.split('/')![0] as string,
                 url: URL.createObjectURL(newFile)
             })
         }
+    }
+    input.value = ''
 }
 
 function addCover(evt: Event) {
@@ -103,16 +117,18 @@ async function deleteMedia(id: string) {
     if (user.value) {
         console.log(id)
         console.log(media_raw.value)
-        const index = media_raw.value.findIndex(item => item.id === id)
-        media_raw.value.splice(index, 1)
+        const indexRaw = media_raw.value.findIndex(item => item.id === id)
+        media_raw.value.splice(indexRaw, 1)
         await supabase.from('profiles').update({ media: [...media_raw.value] }).eq('id', user.value.id)
         await supabase.storage.from('media').remove([id])
+        const index = media_list.value.findIndex(item => item.id === id)
+        media_list.value.splice(index, 1)
     }
 }
 
 const uploadMedia = async (evt: Event) => {
     if (!user.value) return
-
+    disableUpload.value = true
     const form = evt.target as HTMLFormElement
 
     if (newMedia.value.length === 0) {
@@ -133,20 +149,41 @@ const uploadMedia = async (evt: Event) => {
                 type: media.type,
                 date: media.date
             }
-            try {
-                if (media.cover) {
-                    const coverExt = media.cover.name.split('.').pop()
-                    new_media.cover = `${Math.random()}.${coverExt}`
-                    await supabase.storage.from('media').upload(new_media.cover, media.cover)
+            if (media.cover) {
+                const coverExt = media.cover.name.split('.').pop()
+                new_media.cover = `${Math.random()}.${coverExt}`
+                try {
+                    const { error } = await supabase.storage.from('media').upload(new_media.cover, media.cover)
+                    if (error) throw error
+                } catch (error) {
+                    if (error instanceof Error) {
+                        alert(error.message)
+                        continue
+                    }
                 }
-                await supabase.storage.from('media').upload(filePath, media.file)
-                await supabase.from('profiles').update({ media: [...media_raw.value, new_media] }).eq('id', user.value.id)
+            }
+            try {
+                const { error } = await supabase.storage.from('media').upload(filePath, media.file)
+                if (error) throw error
             } catch (error) {
-                if (error instanceof Error) alert(error.message)
+                if (error instanceof Error) {
+                    alert(error.message)
+                    continue
+                }
+            }
+            try {
+                const { error } = await supabase.from('profiles').update({ media: [...media_raw.value, new_media] }).eq('id', user.value.id)
+                if (error) throw error
+            } catch (error) {
+                if (error instanceof Error) {
+                    alert(error.message)
+                    continue
+                }
             }
         }
     }
 
+    disableUpload.value = false
     loadMedia()
     form.reset()
     newMedia.value = []
@@ -212,6 +249,7 @@ async function downloadMedia() {
                 const coverUrl = ref<string>()
                 const { data, error } = await supabase.storage.from('media').download(item.path)
                 if (error) {
+                    console.log(item)
                     throw error
                 }
                 const url = URL.createObjectURL(data)
@@ -228,18 +266,17 @@ async function downloadMedia() {
                     description: `${item.description}`,
                     src: url,
                     type: item.type,
-                    cover: coverUrl.value
+                    cover: coverUrl.value,
+                    coverId: item.cover
                 })
             } catch (error) {
-                if (error instanceof Error) alert(error.message)
+                if (error instanceof Error) alert(`download error: ${error.message}`)
             }
         }
     }
-    console.log(media_list)
 }
 
 async function setMedia(username: string) {
-
     try {
 
         const { data, error, status } = await supabase
@@ -263,6 +300,10 @@ async function setMedia(username: string) {
 const draggedItem = ref<GridItem | null>(null)
 const sizing = ref(false)
 
+function changeText(item: GridItem) {
+    item.label = "text added"
+}
+
 function onDragStaged(item: GridItem) {
     draggedItem.value = item
     sizing.value = false
@@ -275,7 +316,9 @@ function onDragUnstaged(item: MediaCell) {
         width: 2,
         height: 2,
         primary: true,
-        description: item.description
+        description: item.description,
+        type: item.type,
+        cover: item.cover
     }
     sizing.value = false
 }
@@ -293,13 +336,18 @@ function onDragFiller() {
         width: 2,
         height: 2,
         primary: true,
-        description: ''
+        description: '',
+        type: 'filler'
     }
     sizing.value = false
 }
 
 function getSrc(id: string) {
     return media_list.value.find(item => item.id === id)?.src
+}
+
+function getCover(id: string) {
+    return media_list.value.find(item => item.id === id)?.cover
 }
 
 function resize(r: number, c: number, id: string) {
@@ -340,7 +388,9 @@ function onDrop(row: number, col: number) {
         width: draggedItem.value.width,
         height: draggedItem.value.height,
         primary: draggedItem.value.primary,
-        description: draggedItem.value.description
+        description: draggedItem.value.description,
+        type: draggedItem.value.type,
+        cover: draggedItem.value.cover
     }
     const width = item.width
     const height = item.height
@@ -422,6 +472,7 @@ const changeHeight = (newValue: number[] | undefined, id: string) => {
 
 export function mediaHandler() {
     return {
+        disableUpload,
         preview,
         width,
         height,
@@ -431,9 +482,12 @@ export function mediaHandler() {
         stagedItems,
         widthConfig,
         heightConfig,
+        filler,
+        changeText,
         addCover,
         deleteMedia,
         getSrc,
+        getCover,
         uploadMedia,
         updatePholi,
         onDragStaged,

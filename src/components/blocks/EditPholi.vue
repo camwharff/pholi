@@ -5,9 +5,12 @@ import {
     ContextMenuContent,
     ContextMenuItem
 } from '@/components/ui/context-menu'
+import {
+    Aud, Vid, Image, Filler
+} from '@/components/media'
 import { mediaHandler, type SizeType, type GridItem, type SizeCell } from '@/lib/mediaHandler'
 
-const { pholi, onDrop, onDragStaged, onDragSize, widthConfig, heightConfig, getSrc, removeItem } = mediaHandler()
+const { changeText, pholi, onDrop, onDragStaged, onDragSize, widthConfig, heightConfig, getSrc, getCover, removeItem } = mediaHandler()
 
 </script>
 
@@ -20,19 +23,32 @@ const { pholi, onDrop, onDragStaged, onDragSize, widthConfig, heightConfig, getS
                 <div v-if="cell && 'id' in cell && cell.id !== 'block' && !cell.id.startsWith('size-')" :class="[
                     widthConfig[(cell as GridItem).width as SizeType],
                     heightConfig[(cell as GridItem).height as SizeType],
-                    'absolute top-0 left-0 flex items-center justify-center text-xs text-white overflow-hidden'
+                    'absolute top-0 left-0 flex items-center justify-center text-xs text-white overflow-hidden text-center'
                 ]">
-                    <div draggable="true" @dragstart="onDragStaged(cell as GridItem)"
-                        class="absolute top-0 left-0 w-8 h-8 items-start justify-start cursor-move flex">
-                    </div>
                     <ContextMenu class="w-full h-full">
                         <ContextMenuTrigger class="w-full h-full p-2 rounded-3xl">
-                            <img :src="getSrc((cell as GridItem).id)" :alt="(cell as GridItem).label"
+                            <div draggable="true" @dragstart="onDragStaged(cell as GridItem)"
+                                class="absolute top-0 left-0 w-8 h-8 items-start justify-start cursor-move flex">
+                            </div>
+                            <Image v-if="(cell as GridItem).type === 'image'"
+                                :src="(getSrc((cell as GridItem).id) as string)" :alt="(cell as GridItem).label"
                                 class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
+                            <Vid v-if="(cell as GridItem).type === 'video'"
+                                :src="(getSrc((cell as GridItem).id) as string)" :alt="(cell as GridItem).label"
+                                class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
+                            <Aud v-if="(cell as GridItem).type === 'audio'"
+                                :src="(getSrc((cell as GridItem).id) as string)" :alt="(cell as GridItem).label" :cover="(getCover((cell as GridItem).id) as string)"
+                                class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
+                            <Filler v-if="(cell as GridItem).type === 'filler'" :text="(cell as GridItem).label"
+                                class="w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
                         </ContextMenuTrigger>
                         <ContextMenuContent>
                             <ContextMenuItem @click="removeItem(cell.id)" inset>
                                 Remove
+                            </ContextMenuItem>
+                            <ContextMenuItem v-if="cell.id.startsWith('filler-')" @click="changeText(cell as GridItem)"
+                                inset>
+                                Edit Text
                             </ContextMenuItem>
                         </ContextMenuContent>
                     </ContextMenu>
