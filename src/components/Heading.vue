@@ -1,19 +1,15 @@
 <script setup lang="ts">
-import { CircleCheckIcon, CircleHelpIcon, CircleIcon, Search, X, UserRound, LogOut, LogIn } from 'lucide-vue-next'
+import { Search, X, UserRound, LogOut, LogIn } from 'lucide-vue-next'
 import {
     NavigationMenu,
-    NavigationMenuContent,
     NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-    NavigationMenuTrigger
+    NavigationMenuList
 } from './ui/navigation-menu'
 import Button from './ui/button/Button.vue'
 import {
     Dialog,
     DialogTrigger
 } from './ui/dialog'
-import { default as ListItem } from './ui/navigation-menu/NavigationMenuItem.vue'
 import Auth from './blocks/AuthDialog.vue'
 import { authHandler } from '@/lib/authHandler'
 import { ref } from 'vue'
@@ -34,26 +30,6 @@ const searchVisible = ref(false)
 function toggleSearch() {
     searchVisible.value = !searchVisible.value
 }
-
-const components: { title: string, href: string, description: string }[] = [
-    {
-        title: 'Scroll-area',
-        href: '/docs/primitives/scroll-area',
-        description: 'Visually or semantically separates content.',
-    },
-    {
-        title: 'Tabs',
-        href: '/docs/primitives/tabs',
-        description:
-            'A set of layered sections of content—known as tab panels—that are displayed one at a time.',
-    },
-    {
-        title: 'Tooltip',
-        href: '/docs/primitives/tooltip',
-        description:
-            'A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.',
-    },
-]
 </script>
 
 <template>
