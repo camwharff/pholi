@@ -42,7 +42,7 @@ export interface SizeCell {
     ownerId: string
 }
 
-interface MediaRaw {
+export interface MediaRaw {
     id: string
     path: string
     timeStamp: number
@@ -500,6 +500,7 @@ export function mediaHandler() {
         changeWidth,
         loadMedia,
         setMedia,
-        selectMedia
+        selectMedia,
+        downloadMedia
     }
 }

@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import AccountInfoEdit from './blocks/AccountInfoEdit.vue'
 import AccountInfoDisplay from './blocks/AccountInfoDisplay.vue'
 import AccountMedia from './blocks/AccountMedia.vue'
+import AccountFeed from './blocks/AccountFeed.vue'
 import Heading from './Heading.vue'
 import ManageMedia from './blocks/ManageMedia.vue'
+import AddPost from './blocks/AddPost.vue'
 import { onMounted } from 'vue'
 import { mediaHandler } from '@/lib/mediaHandler'
 import { infoHandler } from '@/lib/infoHandler'
 import { authHandler } from '@/lib/authHandler'
+import { postHandler } from '@/lib/postHandler'
 import {
     Tabs,
     TabsContent,
@@ -17,13 +20,28 @@ import {
 } from '@/components/ui/tabs'
 import EditPholi from './blocks/EditPholi.vue'
 import Button from './ui/button/Button.vue'
-
+const { loadPosts } = postHandler()
 const { loadMedia } = mediaHandler()
 const { getProfile } = infoHandler()
 const { user, signOut } = authHandler()
+const infoTab = ref<'profile' | 'media' | 'post'>('profile')
+const displayTab = ref<'pholi' | 'feed'>('pholi')
+
+watch(infoTab, (value) => {
+    if (value === 'profile'){
+        editPholi.value = false
+    } else if (value === 'media') {
+        displayTab.value = 'pholi'
+        editPholi.value = true
+    } else {
+        displayTab.value = 'feed'
+        editPholi.value = false
+    }
+})
 
 onMounted(async () => {
     if (user.value) {
+        await loadPosts()
         await loadMedia()
         await getProfile()
     } else {
@@ -39,13 +57,16 @@ const editPholi = ref(false)
 <template>
     <Heading />
     <div class="flex h-fit">
-        <Tabs default-value="profile" class="basis-1/4 flex-col flex m-4 h-full w-full gap-4 items-center">
+        <Tabs v-model="infoTab" default-value="profile" class="basis-1/4 flex-col flex m-4 h-full w-full gap-4 items-center">
             <TabsList>
-                <TabsTrigger value="profile" @click.prevent="editPholi = false">
+                <TabsTrigger value="profile">
                     Profile
                 </TabsTrigger>
-                <TabsTrigger value="media" @click.prevent="editPholi = true">
+                <TabsTrigger value="media">
                     Manage Media
+                </TabsTrigger>
+                <TabsTrigger value="post">
+                    Add Post
                 </TabsTrigger>
             </TabsList>
             <TabsContent value="profile">
@@ -74,9 +95,12 @@ const editPholi = ref(false)
             <TabsContent value="media" class="w-full">
                 <ManageMedia />
             </TabsContent>
+            <TabsContent value="post" class="w-full">
+                <AddPost />
+            </TabsContent>
         </Tabs>
 
-        <Tabs default-value="pholi" class="basis-3/4 flex-col flex m-4 h-fit w-full gap-4 items-center">
+        <Tabs v-model="displayTab" default-value="pholi" class="basis-3/4 flex-col flex m-4 h-fit w-full gap-4 items-center">
             <TabsList>
                 <TabsTrigger value="pholi">
                     Pholi
@@ -94,7 +118,7 @@ const editPholi = ref(false)
                 </div>
             </TabsContent>
             <TabsContent value="feed" class="w-full">
-                <AccountMedia class="w-full h-fit" />
+                <AccountFeed class="w-full h-fit" />
             </TabsContent>
         </Tabs>
 

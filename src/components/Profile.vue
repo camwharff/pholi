@@ -10,6 +10,13 @@ import { mediaHandler } from '@/lib/mediaHandler'
 import { infoHandler } from '@/lib/infoHandler'
 import { supabase } from '@/lib/supabaseClient'
 
+import {
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger
+ } from './ui/tabs'
+
 const route = useRoute()
 
 const { loadMedia, setMedia } = mediaHandler()
@@ -39,9 +46,24 @@ onMounted(async () => {
 
 
 <template>
-    <Heading class=" z-50"/>
+    <Heading class=" z-50" />
     <div class="z-10 m-4 flex flex-row gap-4 justify-between">
         <AccountInfoDisplay class="basis-1/4 w-auto h-fit" />
-        <AccountMedia class="basis-3/4 w-auto h-fit" />
+        <Tabs default-value="pholi" class="basis-3/4 flex-col flex m-4 h-fit w-full gap-4 items-center">
+            <TabsList>
+                <TabsTrigger value="pholi">
+                    Pholi
+                </TabsTrigger>
+                <TabsTrigger value="feed">
+                    Feed
+                </TabsTrigger>
+            </TabsList>
+            <TabsContent value="pholi" class="w-full">
+                <AccountMedia class="w-full h-fit" />
+            </TabsContent>
+            <TabsContent value="feed" class="w-full">
+                <AccountMedia class="w-full h-fit" />
+            </TabsContent>
+        </Tabs>
     </div>
 </template>
