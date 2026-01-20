@@ -16,11 +16,10 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    // "allowImportingTsExtensions": true,
     "baseUrl": ".",
     "paths": {
       "@/*": [
-        "./src/*"
+        "src/*"
       ]
     },
     "lib": [
