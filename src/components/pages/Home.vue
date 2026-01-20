@@ -4,7 +4,8 @@ import { onMounted } from 'vue'
 
 import About from '../blocks/About.vue'
 import Features from '../blocks/Features.vue'
-import NotifSignup from '../blocks/Blurb.vue'
+import Blurb from '../blocks/Blurb.vue'
+import Footer from '../blocks/Footer.vue'
 
 import { authHandler } from '@/lib/authHandler'
 import { infoHandler } from '@/lib/infoHandler'
@@ -27,10 +28,11 @@ onMounted(async () => {
 <template>
     <Heading />
     <div class="w-full h-full flex flex-col gap-4 p-4 items-center ">
-        <div class="m-auto bg-secondary rounded-3xl p-4 w-3/4 flex flex-col items-center ">
-            <NotifSignup />
+        <div class="m-auto bg-secondary rounded-3xl w-3/4 flex flex-col items-center p-16">
+            <Blurb />
             <Features />
             <About />
         </div>
     </div>
+    <Footer />
 </template>

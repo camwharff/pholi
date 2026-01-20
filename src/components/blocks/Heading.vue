@@ -16,7 +16,6 @@ import { ref } from 'vue'
 import TempAlerts from '@/components/ui/TempAlerts.vue'
 import { infoHandler } from '@/lib/infoHandler'
 import Input from '@/components/ui/input/Input.vue'
-import logoCircleBack from '@/assets/logo-circle-back.vue'
 import logoCircleFront from '@/assets/logo-circle-front.vue'
 
 const { searchUsers } = infoHandler()
@@ -33,8 +32,8 @@ function toggleSearch() {
 </script>
 
 <template>
-    <div v-if="!user"
-        class="absolute m-auto left-0 right-0 w-fit flex flex-row items-center py-2 px-4 rounded-b-xl gap-2 h-fit bg-white text-black text-base text-center transition-all duration-1000"
+    <div v-if="!(user)"
+        class="fixed m-auto z-50 left-0 right-0 w-fit flex flex-row items-center py-2 px-4 rounded-b-xl gap-2 h-fit bg-white text-black text-base text-center transition-all duration-1000"
         :class="showSignupBar ? '' : '-translate-y-full'">
         New to Pholi?
         <Dialog>
@@ -49,56 +48,8 @@ function toggleSearch() {
             <X />
         </button>
     </div>
-    <logoCircleBack width="200" height="200" class=" rounded-full mx-auto z-10 absolute inset-0 inline" />
     <div
-        class="z-50 relative flex w-full items-center justify-between px-20 text-center flex-row gap-18 p-8 py-0 bg-accent h-[10vh] min-h-25">
-        <!-- <NavigationMenu :viewport="false" class="z-40 relative w-fit flex-initial h-full">
-            <NavigationMenuList class="w-fit h-fit gap-4">
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger
-                        class="cursor-pointer bg-accent h-full hover:bg-secondary font-medium px-4 py-2 transition rounded-lg text-base flex-row flex items-center gap-1">
-                        Components</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ul class="grid w-50 gap-4">
-                            <ListItem v-for="component in components" :key="component.title" :title="component.title"
-                                :to="component.href">
-                                {{ component.description }}
-                            </ListItem>
-                        </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger
-                        class="cursor-pointer bg-accent h-full hover:bg-secondary font-medium px-4 py-2 transition rounded-lg text-base flex-row flex items-center gap-1">
-                        With Icon
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ul class="grid w-50 gap-4">
-                            <li>
-                                <NavigationMenuLink as-child>
-                                    <a href="#" class="flex-row items-center gap-2">
-                                        <CircleHelpIcon />
-                                        Backlog
-                                    </a>
-                                </NavigationMenuLink>
-                                <NavigationMenuLink as-child>
-                                    <a href="#" class="flex-row items-center gap-2">
-                                        <CircleIcon />
-                                        To Do
-                                    </a>
-                                </NavigationMenuLink>
-                                <NavigationMenuLink as-child>
-                                    <a href="#" class="flex-row items-center gap-2">
-                                        <CircleCheckIcon />
-                                        Done
-                                    </a>
-                                </NavigationMenuLink>
-                            </li>
-                        </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
-            </NavigationMenuList>
-        </NavigationMenu> -->
+        class="z-40 fixed flex w-full items-center justify-between px-20 text-center flex-row gap-18 p-8 py-0 bg-accent h-[10vh] min-h-25">
         <div class="h-inherit w-fit inset-0 m-auto">
             <RouterLink to="/home" class="h-fit w-fit p-0 m-auto inset-0">
                 <logoCircleFront width="200" height="200"
@@ -150,6 +101,9 @@ function toggleSearch() {
                 </NavigationMenuItem>
             </NavigationMenuList>
         </NavigationMenu>
+    </div>
+    <div class="h-[10vh]">
+        
     </div>
     <TempAlerts class="m-auto w-full" />
 </template>

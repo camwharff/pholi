@@ -2,7 +2,7 @@
 </script>
 
 <template>
-    <div class="my-8 w-full lg:w-2/3 flex flex-col items-center">
+    <div class="mb-16 w-full lg:w-2/3 flex flex-col items-center">
         <p class="text-7xl font-medium leading-tight mb-8">About Pholi</p>
         <div class="bg-sky-950/90 border border-sky-700 rounded-2xl text-white p-16 flex flex-col gap-8 items-center">
             <p >
