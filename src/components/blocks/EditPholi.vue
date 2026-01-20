@@ -5,9 +5,9 @@ import {
     ContextMenuContent,
     ContextMenuItem
 } from '@/components/ui/context-menu'
-import Aud from '@/components/media/Audio.vue'
-import Vid from '@/components/media/Video.vue'
-import Image from '@/components/media/Image.vue'
+import Aud from '@/components/media/Aud.vue'
+import Vid from '@/components/media/Vid.vue'
+import Image from '@/components/media/Imag.vue'
 import Filler from '@/components/media/Filler.vue'
 import { mediaHandler, type SizeType, type GridItem, type SizeCell } from '@/lib/mediaHandler'
 

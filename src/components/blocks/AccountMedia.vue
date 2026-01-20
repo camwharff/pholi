@@ -12,9 +12,9 @@ import {
     CardHeader
 } from '@/components/ui/card'
 import { VisuallyHidden } from 'reka-ui'
-import Aud from '../media/Audio.vue'
-import Vid from '../media/Video.vue'
-import Image from '../media/Image.vue'
+import Aud from '../media/Aud.vue'
+import Vid from '../media/Vid.vue'
+import Image from '../media/Imag.vue'
 import Filler from '../media/Filler.vue'
 
 const { pholi, widthConfig, heightConfig, getSrc, getCover } = mediaHandler()
