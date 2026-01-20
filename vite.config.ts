@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [vue(), tailwindcss()],
+  base: '/pholi/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
