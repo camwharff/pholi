@@ -2,7 +2,7 @@
 import { onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
-import Heading from '@/components/Heading.vue'
+import Heading from '@/components/blocks/Heading.vue'
 import AccountInfoDisplay from '@/components/blocks/AccountInfoDisplay.vue'
 import AccountMedia from '@/components/blocks/AccountMedia.vue'
 

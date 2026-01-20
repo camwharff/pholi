@@ -13,7 +13,7 @@ import {
 import Auth from '@/components/blocks/AuthDialog.vue'
 import { authHandler } from '@/lib/authHandler'
 import { ref } from 'vue'
-import TempAlerts from '@/components/blocks/TempAlerts.vue'
+import TempAlerts from '@/components/ui/TempAlerts.vue'
 import { infoHandler } from '@/lib/infoHandler'
 import Input from '@/components/ui/input/Input.vue'
 import logoCircleBack from '@/assets/logo-circle-back.vue'
