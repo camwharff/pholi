@@ -2,9 +2,9 @@
 import { onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
-import Heading from './Heading.vue'
-import AccountInfoDisplay from './blocks/AccountInfoDisplay.vue'
-import AccountMedia from './blocks/AccountMedia.vue'
+import Heading from '@/components/Heading.vue'
+import AccountInfoDisplay from '@/components/blocks/AccountInfoDisplay.vue'
+import AccountMedia from '@/components/blocks/AccountMedia.vue'
 
 import { mediaHandler } from '@/lib/mediaHandler'
 import { infoHandler } from '@/lib/infoHandler'
@@ -15,7 +15,7 @@ import {
     TabsContent,
     TabsList,
     TabsTrigger
- } from './ui/tabs'
+ } from '@/components/ui/tabs'
 
 const route = useRoute()
 

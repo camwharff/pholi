@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Avatar from './AvatarDisplay.vue'
+import Avatar from '@/components/blocks/AvatarDisplay.vue'
 import { infoHandler } from '@/lib/infoHandler'
 
 const { avatar_url, username, bio, full_name, website_title, website_url } = infoHandler()

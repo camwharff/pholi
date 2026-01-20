@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Avatar from './AvatarEdit.vue'
+import Avatar from '@/components/blocks/AvatarEdit.vue'
 import { infoHandler } from '@/lib/infoHandler'
 import { authHandler } from '@/lib/authHandler'
 import Button from '../ui/button/Button.vue'

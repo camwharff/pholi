@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import AccountInfoEdit from './blocks/AccountInfoEdit.vue'
-import AccountInfoDisplay from './blocks/AccountInfoDisplay.vue'
-import AccountMedia from './blocks/AccountMedia.vue'
-import AccountFeed from './blocks/AccountFeed.vue'
-import Heading from './Heading.vue'
-import ManageMedia from './blocks/ManageMedia.vue'
-import AddPost from './blocks/AddPost.vue'
+import AccountInfoEdit from '@/components/blocks/AccountInfoEdit.vue'
+import AccountInfoDisplay from '@/components/blocks/AccountInfoDisplay.vue'
+import AccountMedia from '@/components/blocks/AccountMedia.vue'
+import AccountFeed from '@/components/blocks/AccountFeed.vue'
+import Heading from '@/components/Heading.vue'
+import ManageMedia from '@/components/blocks/ManageMedia.vue'
+import AddPost from '@/components/blocks/AddPost.vue'
 import { onMounted } from 'vue'
 import { mediaHandler } from '@/lib/mediaHandler'
 import { infoHandler } from '@/lib/infoHandler'
@@ -18,8 +18,8 @@ import {
     TabsList,
     TabsTrigger,
 } from '@/components/ui/tabs'
-import EditPholi from './blocks/EditPholi.vue'
-import Button from './ui/button/Button.vue'
+import EditPholi from '@/components/blocks/EditPholi.vue'
+import Button from '@/components/ui/button/Button.vue'
 const { loadPosts } = postHandler()
 const { loadMedia } = mediaHandler()
 const { getProfile } = infoHandler()

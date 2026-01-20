@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
-import './style.css'
-import App from './App.vue'
-import router from './router'
+import '@/style.css'
+import App from '@/App.vue'
+import router from '@/router'
 // @ts-ignore
 import VuePlyr from 'vue-plyr'
 import 'vue-plyr/dist/vue-plyr.css'

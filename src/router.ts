@@ -1,11 +1,11 @@
 import { createWebHistory, createRouter } from 'vue-router'
 
-import account from './components/Account.vue'
-import profile from './components/Profile.vue'
-import home from './components/Home.vue'
-import { authHandler } from './lib/authHandler'
-import updatePassword from './components/forms/update-password.vue'
-import swatches from './components/Swatches.vue'
+import account from '@/components/Account.vue'
+import profile from '@/components/Profile.vue'
+import home from '@/components/Home.vue'
+import { authHandler } from '@/lib/authHandler'
+import updatePassword from '@/components/forms/update-password.vue'
+import swatches from '@/components/Swatches.vue'
 
 const { user, loadUser } = authHandler()
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Heading from './Heading.vue'
+import Heading from '@/components/Heading.vue'
 import { onMounted } from 'vue'
 
 import { authHandler } from '@/lib/authHandler'

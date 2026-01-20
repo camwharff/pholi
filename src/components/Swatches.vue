@@ -61,7 +61,7 @@ function applyTheme(theme: string) {
     currentTheme.value = theme
 }
 
-import Heading from './Heading.vue'
+import Heading from '@/components/Heading.vue'
 </script>
 
 <template>

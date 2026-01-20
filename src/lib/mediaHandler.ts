@@ -1,8 +1,8 @@
 import { ref, computed } from 'vue'
-import { supabase } from './supabaseClient'
+import { supabase } from '@/lib/supabaseClient'
 import type { Ref } from 'vue'
-import { authHandler } from './authHandler'
-import { uiHandler } from './uiHandler'
+import { authHandler } from '@/lib/authHandler'
+import { uiHandler } from '@/lib/uiHandler'
 
 const { shortAlert } = uiHandler()
 const { user } = authHandler()

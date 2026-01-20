@@ -1,9 +1,9 @@
 
 import type { Ref } from "vue"
 import { ref } from "vue"
-import { supabase } from './supabaseClient'
-import { authHandler } from './authHandler'
-import { uiHandler } from './uiHandler'
+import { supabase } from '@/lib/supabaseClient'
+import { authHandler } from '@/lib/authHandler'
+import { uiHandler } from '@/lib/uiHandler'
 import { type MediaRaw, mediaHandler } from "./mediaHandler"
 
 const { shortAlert } = uiHandler()

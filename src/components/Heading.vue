@@ -4,18 +4,18 @@ import {
     NavigationMenu,
     NavigationMenuItem,
     NavigationMenuList
-} from './ui/navigation-menu'
-import Button from './ui/button/Button.vue'
+} from '@/components/ui/navigation-menu'
+import Button from '@/components/ui/button/Button.vue'
 import {
     Dialog,
     DialogTrigger
-} from './ui/dialog'
-import Auth from './blocks/AuthDialog.vue'
+} from '@/components/ui/dialog'
+import Auth from '@/components/blocks/AuthDialog.vue'
 import { authHandler } from '@/lib/authHandler'
 import { ref } from 'vue'
-import TempAlerts from './blocks/TempAlerts.vue'
+import TempAlerts from '@/components/blocks/TempAlerts.vue'
 import { infoHandler } from '@/lib/infoHandler'
-import Input from './ui/input/Input.vue'
+import Input from '@/components/ui/input/Input.vue'
 import logoCircleBack from '@/assets/logo-circle-back.vue'
 import logoCircleFront from '@/assets/logo-circle-front.vue'
 

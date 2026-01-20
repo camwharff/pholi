@@ -7,9 +7,9 @@ import {
     NavigationMenuLink,
     NavigationMenuList,
     NavigationMenuTrigger
-} from './ui/navigation-menu'
+} from '@/components/ui/navigation-menu'
 // eslint-disable-next-line import/no-named-default
-import { default as ListItem } from './ui/navigation-menu/NavigationMenuItem.vue'
+import { default as ListItem } from '@/components/ui/navigation-menu/NavigationMenuItem.vue'
 
 const components: { title: string, href: string, description: string }[] = [
     {
