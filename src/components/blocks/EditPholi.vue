@@ -5,9 +5,10 @@ import {
     ContextMenuContent,
     ContextMenuItem
 } from '@/components/ui/context-menu'
-import {
-    Aud, Vid, Image, Filler
-} from '@/components/media'
+import Aud from '@/components/media/Audio.vue'
+import Vid from '@/components/media/Video.vue'
+import Image from '@/components/media/Image.vue'
+import Filler from '@/components/media/Filler.vue'
 import { mediaHandler, type SizeType, type GridItem, type SizeCell } from '@/lib/mediaHandler'
 
 const { changeText, pholi, onDrop, onDragStaged, onDragSize, widthConfig, heightConfig, getSrc, getCover, removeItem } = mediaHandler()
@@ -37,7 +38,8 @@ const { changeText, pholi, onDrop, onDragStaged, onDragSize, widthConfig, height
                                 :src="(getSrc((cell as GridItem).id) as string)" :alt="(cell as GridItem).label"
                                 class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
                             <Aud v-if="(cell as GridItem).type === 'audio'"
-                                :src="(getSrc((cell as GridItem).id) as string)" :alt="(cell as GridItem).label" :cover="(getCover((cell as GridItem).id) as string)"
+                                :src="(getSrc((cell as GridItem).id) as string)" :alt="(cell as GridItem).label"
+                                :cover="(getCover((cell as GridItem).id) as string)"
                                 class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
                             <Filler v-if="(cell as GridItem).type === 'filler'" :text="(cell as GridItem).label"
                                 class="w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
