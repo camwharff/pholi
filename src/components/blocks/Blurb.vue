@@ -7,10 +7,6 @@ import {
     CarouselPrevious,
 } from '@/components/ui/carousel'
 
-const items = [
-    { id: 1, src: '../standin/pholi-demo.png'},
-    { id: 2, src: '../standin/pholi-demo.png'}
-]
 </script>
 
 
@@ -22,9 +18,13 @@ const items = [
             align: 'start',
         }">
             <CarouselContent>
-                <CarouselItem v-for="item in items" :key="item.id"
+                <CarouselItem 
                     class="flex items-center w-full justify-center align-middle">
-                    <img :src="item.src" class="rounded-3xl border-4 border-background " />
+                    <img src="@/assets/pholi-demo.png" class="rounded-3xl border-4 border-background " />
+                </CarouselItem>
+                <CarouselItem 
+                    class="flex items-center w-full justify-center align-middle">
+                    <img src="@/assets/pholi-demo.png" class="rounded-3xl border-4 border-background " />
                 </CarouselItem>
             </CarouselContent>
             <CarouselPrevious />
