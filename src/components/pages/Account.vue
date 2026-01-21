@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import AccountInfoEdit from '@/components/blocks/AccountInfoEdit.vue'
-import AccountInfoDisplay from '@/components/blocks/AccountInfoDisplay.vue'
-import AccountMedia from '@/components/blocks/AccountMedia.vue'
-import AccountFeed from '@/components/blocks/AccountFeed.vue'
-import ManageMedia from '@/components/blocks/ManageMedia.vue'
-import AddPost from '@/components/blocks/AddPost.vue'
+import AccountInfoEdit from '@/components/blocks/self/AccountInfoEdit.vue'
+import AccountInfoDisplay from '@/components/blocks/self/AccountInfoDisplay.vue'
+import AccountMedia from '@/components/blocks/self/AccountMedia.vue'
+import AccountFeed from '@/components/blocks/self/AccountFeed.vue'
+import ManageMedia from '@/components/blocks/self/ManageMedia.vue'
+import AddPost from '@/components/blocks/self/AddPost.vue'
 import { onMounted } from 'vue'
 import { mediaHandler } from '@/lib/mediaHandler'
 import { infoHandler } from '@/lib/infoHandler'
@@ -17,7 +17,7 @@ import {
     TabsList,
     TabsTrigger,
 } from '@/components/ui/tabs'
-import EditPholi from '@/components/blocks/EditPholi.vue'
+import EditPholi from '@/components/blocks/self/EditPholi.vue'
 import Button from '@/components/ui/button/Button.vue'
 const { loadPosts } = postHandler()
 const { loadMedia } = mediaHandler()

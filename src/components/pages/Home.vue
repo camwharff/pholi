@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 
-import About from '../blocks/About.vue'
-import Features from '../blocks/Features.vue'
-import Blurb from '../blocks/Blurb.vue'
+import About from '@/components/blocks/admin/About.vue'
+import Features from '@/components/blocks//admin/Features.vue'
+import Blurb from '@/components/blocks/admin/Blurb.vue'
 
 import { authHandler } from '@/lib/authHandler'
 import { infoHandler } from '@/lib/infoHandler'

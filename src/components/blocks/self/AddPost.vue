@@ -1,9 +1,9 @@
 <script setup lang="ts">
 
 import Input from '@/components/ui/input/Input.vue'
-import Label from '../ui/label/Label.vue'
+import Label from '@/components/ui/label/Label.vue'
 import { postHandler } from '@/lib/postHandler'
-import Button from '../ui/button/Button.vue'
+import Button from '@/components/ui/button/Button.vue'
 import { Spinner } from '@/components/ui/spinner'
 import { Clapperboard, Music, Image } from 'lucide-vue-next'
 

@@ -32,14 +32,14 @@ const { changeText, pholi, onDrop, onDragStaged, onDragSize, widthConfig, height
                                 class="absolute top-0 left-0 w-8 h-8 items-start justify-start cursor-move flex">
                             </div>
                             <Image v-if="(cell as GridItem).type === 'image'"
-                                :src="(getSrc((cell as GridItem).id) as string)" :alt="(cell as GridItem).label"
+                                :src="(getSrc((cell as GridItem).id) ?? '')" :alt="(cell as GridItem).label"
                                 class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
                             <Vid v-if="(cell as GridItem).type === 'video'"
-                                :src="(getSrc((cell as GridItem).id) as string)" :alt="(cell as GridItem).label"
+                                :src="(getSrc((cell as GridItem).id) ?? '')" :alt="(cell as GridItem).label"
                                 class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
                             <Aud v-if="(cell as GridItem).type === 'audio'"
-                                :src="(getSrc((cell as GridItem).id) as string)" :alt="(cell as GridItem).label"
-                                :cover="(getCover((cell as GridItem).id) as string)"
+                                :src="(getSrc((cell as GridItem).id) ?? '')" :alt="(cell as GridItem).label"
+                                :cover="(getCover((cell as GridItem).id) ?? '')"
                                 class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
                             <Filler v-if="(cell as GridItem).type === 'filler'" :text="(cell as GridItem).label"
                                 class="w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />

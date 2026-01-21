@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Avatar from '@/components/blocks/AvatarEdit.vue'
+import Avatar from '@/components/blocks/self/AvatarEdit.vue'
 import { infoHandler } from '@/lib/infoHandler'
 import { authHandler } from '@/lib/authHandler'
-import Button from '../ui/button/Button.vue'
+import Button from '@/components/ui/button/Button.vue'
 
 const { avatar_url, username, bio, full_name, website_title, website_url, updateProfile } = infoHandler()
 const { user } = authHandler()

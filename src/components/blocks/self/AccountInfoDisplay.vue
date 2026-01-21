@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Avatar from '@/components/blocks/AvatarDisplay.vue'
-import HoveredPost from '@/components/blocks/HoveredPost.vue'
-import HoveredMedia from '@/components/blocks/HoveredMedia.vue'
+import Avatar from '@/components/blocks/shared/AvatarDisplay.vue'
+import HoveredPost from '@/components/blocks/shared/HoveredPost.vue'
+import HoveredMedia from '@/components/blocks/shared/HoveredMedia.vue'
 import { infoHandler } from '@/lib/infoHandler'
 import { mediaHandler } from '@/lib/mediaHandler'
 import { postHandler } from '@/lib/postHandler'

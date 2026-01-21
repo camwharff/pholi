@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import Footer from '@/components/blocks/Footer.vue'
-import Heading from '@/components/blocks/Heading.vue'
+import Footer from '@/components/blocks/admin/Footer.vue'
+import Heading from '@/components/blocks/admin/Heading.vue'
 
 onMounted(() => {
   document.documentElement.classList.remove('root')
