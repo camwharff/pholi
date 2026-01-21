@@ -6,7 +6,7 @@
     </script>
     
     <template>
-        <div class=" p-8 gap-4 grid grid-cols-4 w-3/4">
+        <div class="gap-4 grid grid-cols-4 w-3/4">
             <div v-for="post in posts" :key="post.id"
                 class="bg-accent border-4 border-secondary relative transition-all aspect-square rounded-3xl p-4 flex flex-col gap-4 w-full overflow-hidden"
                 @mouseover="viewPost(post, true)" @mouseleave="viewPost(post, false)">

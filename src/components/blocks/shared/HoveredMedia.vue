@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { mediaHandler } from '@/lib/mediaHandler'
-import Aud from '@/components/media/Aud.vue'
-import Vid from '@/components/media/Vid.vue'
 import Image from '@/components/media/Imag.vue'
 
 const { mediaViewable, getSrc, getCover } = mediaHandler()
@@ -13,10 +11,9 @@ const { mediaViewable, getSrc, getCover } = mediaHandler()
         <p v-if="mediaViewable?.description !== 'undefined'">{{ mediaViewable?.description }}</p>
         <Image v-if="(mediaViewable).type === 'image'" :src="(getSrc((mediaViewable).id) ?? '')"
             :alt="(mediaViewable).label" class="w-fit h-full border-secondary bg-accent rounded-3xl border-4" />
-        <Vid v-if="(mediaViewable).type === 'video'" :src="(getSrc((mediaViewable).id) ?? '')"
+        <video v-if="(mediaViewable).type === 'video'" :src="(getSrc((mediaViewable).id) ?? '')"
+            :alt="(mediaViewable).label" class="w-fit h-full border-secondary bg-accent rounded-3xl border-4"></video>
+        <Image v-if="(mediaViewable).type === 'audio' && getCover(mediaViewable.id)" :src="(getCover((mediaViewable).id) ?? '')"
             :alt="(mediaViewable).label" class="w-fit h-full border-secondary bg-accent rounded-3xl border-4" />
-        <Aud v-if="(mediaViewable).type === 'audio'" :src="(getSrc((mediaViewable).id) ?? '')"
-            :alt="(mediaViewable).label" :cover="(getCover((mediaViewable).id) ?? '')"
-            class="w-fit h-full border-secondary bg-accent rounded-3xl border-4" />
     </div>
 </template>

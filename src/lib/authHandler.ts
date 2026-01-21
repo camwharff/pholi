@@ -131,6 +131,10 @@ async function handleUpdatePassword() {
     }
 }
 
+function openSettings() {
+    
+}
+
 export function authHandler() {
     return {
         user,
@@ -149,6 +153,7 @@ export function authHandler() {
         handleLogin,
         handleSignUp,
         handleForgotPassword,
-        handleUpdatePassword
+        handleUpdatePassword,
+        openSettings
     }
 }

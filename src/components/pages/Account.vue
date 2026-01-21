@@ -19,10 +19,11 @@ import {
 } from '@/components/ui/tabs'
 import EditPholi from '@/components/blocks/self/EditPholi.vue'
 import Button from '@/components/ui/button/Button.vue'
+import { Settings, UserRoundPen } from 'lucide-vue-next'
 const { loadPosts } = postHandler()
 const { loadMedia } = mediaHandler()
 const { getProfile } = infoHandler()
-const { user, signOut } = authHandler()
+const { user, signOut, openSettings } = authHandler()
 const infoTab = ref<'profile' | 'media' | 'post'>('profile')
 const displayTab = ref<'pholi' | 'feed'>('pholi')
 
@@ -56,16 +57,16 @@ const editPholi = ref(false)
 <template>
     <div class="flex h-fit">
         <Tabs v-model="infoTab" default-value="profile"
-            class="basis-1/5 flex-col flex m-4 h-full w-full gap-4 items-center">
+            class="basis-1/5 flex-col flex m-4 h-full w-full gap-4 items-center relative">
             <TabsList>
                 <TabsTrigger value="profile">
                     Profile
                 </TabsTrigger>
                 <TabsTrigger value="media">
-                    Manage Media
+                    Pholi
                 </TabsTrigger>
                 <TabsTrigger value="post">
-                    Add Post
+                    Posts
                 </TabsTrigger>
             </TabsList>
             <TabsContent value="profile">
@@ -76,10 +77,10 @@ const editPholi = ref(false)
                                 Close Editor
                             </Button>
                             <Button @click.prevent="editInfo = true" v-else>
-                                Edit Info
+                                <UserRoundPen />
                             </Button>
-                            <Button @click.prevent="signOut">
-                                Sign Out
+                            <Button @click.prevent="openSettings">
+                                <Settings />
                             </Button>
                         </div>
                         <div v-if="editInfo">
