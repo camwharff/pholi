@@ -6,6 +6,7 @@ import Heading from '@/components/blocks/Heading.vue'
 import AccountInfoDisplay from '@/components/blocks/AccountInfoDisplay.vue'
 import AccountMedia from '@/components/blocks/AccountMedia.vue'
 import AccountFeed from '@/components/blocks/AccountFeed.vue'
+import Footer from '@/components/blocks/Footer.vue'
 
 import { mediaHandler } from '@/lib/mediaHandler'
 import { infoHandler } from '@/lib/infoHandler'
@@ -70,4 +71,5 @@ onMounted(async () => {
             </TabsContent>
         </Tabs>
     </div>
+    <Footer />
 </template>

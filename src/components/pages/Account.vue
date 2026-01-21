@@ -5,6 +5,7 @@ import AccountInfoDisplay from '@/components/blocks/AccountInfoDisplay.vue'
 import AccountMedia from '@/components/blocks/AccountMedia.vue'
 import AccountFeed from '@/components/blocks/AccountFeed.vue'
 import Heading from '@/components/blocks/Heading.vue'
+import Footer from '@/components/blocks/Footer.vue'
 import ManageMedia from '@/components/blocks/ManageMedia.vue'
 import AddPost from '@/components/blocks/AddPost.vue'
 import ViewedPost from '@/components/blocks/ViewedPost.vue'
@@ -127,4 +128,5 @@ const editPholi = ref(false)
         </Tabs>
 
     </div>
+    <Footer />
 </template>
