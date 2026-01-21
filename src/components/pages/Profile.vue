@@ -2,11 +2,9 @@
 import { onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
-import Heading from '@/components/blocks/Heading.vue'
 import AccountInfoDisplay from '@/components/blocks/AccountInfoDisplay.vue'
 import AccountMedia from '@/components/blocks/AccountMedia.vue'
 import AccountFeed from '@/components/blocks/AccountFeed.vue'
-import Footer from '@/components/blocks/Footer.vue'
 
 import { mediaHandler } from '@/lib/mediaHandler'
 import { infoHandler } from '@/lib/infoHandler'
@@ -51,7 +49,6 @@ onMounted(async () => {
 
 
 <template>
-    <Heading />
     <div class="z-10 m-4 flex flex-row gap-4 justify-between">
         <AccountInfoDisplay class="basis-1/4 w-auto h-fit" />
         <Tabs default-value="pholi" class="basis-3/4 flex-col flex m-4 h-fit w-full gap-4 items-center">
@@ -71,5 +68,4 @@ onMounted(async () => {
             </TabsContent>
         </Tabs>
     </div>
-    <Footer />
 </template>
