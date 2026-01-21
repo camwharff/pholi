@@ -15,17 +15,6 @@ const full_name = ref('')
 const username = ref('')
 const repeatPassword = ref("")
 const mode = ref('SIGNUP' as Mode)
-const nullPholi = [
-    [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-]
 
 async function changeMode(newMode: Mode) {
     mode.value = newMode
@@ -88,8 +77,7 @@ const handleSignUp = async () => {
             options: {
                 data: {
                     full_name: full_name.value,
-                    username: username.value,
-                    pholi: JSON.stringify(nullPholi)
+                    username: username.value
                 }
             }
         })

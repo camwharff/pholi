@@ -76,6 +76,17 @@ const pholi: Ref<(GridItem | BlockCell | SizeCell | null)[][], GridMatrix | (Gri
 const filler = ['text', 'blank']
 const COLS = 16
 const ROWS = 9
+const nullPholi = [
+    [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+]
 
 const widthConfig: Record<SizeType, string> = {
     1: 'w-[100%]', 2: 'w-[200%]', 3: 'w-[300%]', 4: 'w-[400%]', 5: 'w-[500%]', 6: 'w-[600%]', 7: 'w-[700%]', 8: 'w-[800%]', 9: 'w-[900%]', 10: 'w-[1000%]', 11: 'w-[1100%]', 12: 'w-[1200%]', 13: 'w-[1300%]', 14: 'w-[1400%]', 15: 'w-[1500%]', 16: 'w-[1600%]'
@@ -235,6 +246,9 @@ async function loadMedia() {
         if (data) {
             media_raw.value = data.media ?? []
             pholi.value = JSON.parse(data.pholi) ?? []
+        }
+        if (pholi.value.length <= 1) {
+            pholi.value = nullPholi
         }
         await downloadMedia()
     } catch (error) {

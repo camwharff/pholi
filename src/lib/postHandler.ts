@@ -107,6 +107,9 @@ async function loadPosts() {
         if (data) {
             posts_raw.value = data.posts
         }
+        if (!posts_raw.value) {
+            posts_raw.value = []
+        }
         posts.value = []
         for (const post of posts_raw.value) {
             try {
