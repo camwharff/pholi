@@ -17,7 +17,7 @@ import Vid from '@/components/media/Vid.vue'
 import Image from '@/components/media/Imag.vue'
 import Filler from '@/components/media/Filler.vue'
 
-const { pholi, widthConfig, heightConfig, getSrc, getCover } = mediaHandler()
+const { pholi, widthConfig, heightConfig, getSrc, getCover, viewMedia } = mediaHandler()
 
 </script>
 
@@ -30,7 +30,7 @@ const { pholi, widthConfig, heightConfig, getSrc, getCover } = mediaHandler()
                     widthConfig[(cell as GridItem).width as SizeType],
                     heightConfig[(cell as GridItem).height as SizeType],
                     'absolute top-0 left-0 flex items-center justify-center text-xs text-white overflow-hidden'
-                ]">
+                ]" @mouseover="viewMedia(cell, true)" @mouseleave="viewMedia(cell, false)">
                     <div class="w-full h-full p-2">
                         <Dialog class="w-full h-full">
                             <DialogTrigger class="w-full h-full cursor-help">

@@ -18,12 +18,10 @@ import {
             align: 'start',
         }">
             <CarouselContent>
-                <CarouselItem 
-                    class="flex items-center w-full justify-center align-middle">
+                <CarouselItem class="flex items-center w-full justify-center align-middle">
                     <img src="@/assets/pholi-demo.png" class="rounded-3xl border-4 border-background " />
                 </CarouselItem>
-                <CarouselItem 
-                    class="flex items-center w-full justify-center align-middle">
+                <CarouselItem class="flex items-center w-full justify-center align-middle">
                     <img src="@/assets/pholi-demo.png" class="rounded-3xl border-4 border-background " />
                 </CarouselItem>
             </CarouselContent>
@@ -34,10 +32,12 @@ import {
             Pholi is a portfolio hosting and collaboration platform designed by creatives for creatives. Show off your
             work
             like never before, meet your next collaborators, and build your unique community.
-            <br/><br/>
-            Current 
-            <br/><br/>
-            <b>Please note: Pholi is current in beta testing, so things will be changing rapidly and we will be asking for your feedback. </b>
+            <br /><br />
+            In version 0.0.0, you can create an account, build a pholi, and start posting progress updates. Stay tuned
+            for future version updates!
+            <br /><br />
+            <b>Please note: Pholi is current in beta testing, so things will be changing rapidly and we will be asking
+                for your feedback. </b>
         </p>
     </div>
 </template>

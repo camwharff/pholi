@@ -10,7 +10,7 @@ export type SizeType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 1
 export type GridCell = GridItem | BlockCell | SizeCell | null
 type GridMatrix = GridCell[][]
 
-export interface GridItem {
+export type GridItem = {
     id: string
     label: string
     description: string
@@ -19,6 +19,7 @@ export interface GridItem {
     primary: boolean
     type: string
     cover?: string
+    kind: 'media'
 }
 
 interface MediaCell {
@@ -34,11 +35,13 @@ interface MediaCell {
 interface BlockCell {
     id: 'block'
     ownerId: string
+    kind: 'block'
 }
 
 export interface SizeCell {
     id: string
     ownerId: string
+    kind: 'size'
 }
 
 export interface MediaRaw {
@@ -71,6 +74,7 @@ const preview = ref<NewMedia>()
 const media_raw: Ref<MediaRaw[]> = ref([])
 const media_list: Ref<MediaCell[]> = ref([])
 const pholi: Ref<(GridItem | BlockCell | SizeCell | null)[][], GridMatrix | (GridItem | BlockCell | SizeCell | null)[][]> = ref([])
+const mediaViewable: Ref<GridItem | undefined> = ref()
 
 const filler = ['text', 'blank']
 const COLS = 16
@@ -93,6 +97,14 @@ const widthConfig: Record<SizeType, string> = {
 
 const heightConfig: Record<SizeType, string> = {
     1: 'h-[100%]', 2: 'h-[200%]', 3: 'h-[300%]', 4: 'h-[400%]', 5: 'h-[500%]', 6: 'h-[600%]', 7: 'h-[700%]', 8: 'h-[800%]', 9: 'h-[900%]', 10: 'h-[1000%]', 11: 'h-[1100%]', 12: 'h-[1200%]', 13: 'h-[1300%]', 14: 'h-[1400%]', 15: 'h-[1500%]', 16: 'h-[1600%]'
+}
+
+function viewMedia(med: GridCell, view: boolean) {
+    if (view && med && med.kind === 'media' && med.type !== 'filler') {
+        mediaViewable.value = med ?? null
+    } else {
+        mediaViewable.value = undefined
+    }
 }
 
 async function selectMedia(evt: Event) {
@@ -335,7 +347,8 @@ function onDragUnstaged(item: MediaCell) {
         primary: true,
         description: item.description,
         type: item.type,
-        cover: item.cover
+        cover: item.cover,
+        kind: 'media'
     }
     sizing.value = false
 }
@@ -354,7 +367,8 @@ function onDragFiller() {
         height: 2,
         primary: true,
         description: '',
-        type: 'filler'
+        type: 'filler',
+        kind: 'media'
     }
     sizing.value = false
 }
@@ -382,10 +396,10 @@ function resize(r: number, c: number, id: string) {
         const gridRow = pholi.value[(row as number) + rw]
         if (!gridRow) continue
         for (let cl = 0; cl < width_new; cl++) {
-            gridRow[(col as number) + cl] = { id: 'block', ownerId: target.id }
+            gridRow[(col as number) + cl] = { id: 'block', ownerId: target.id, kind: 'block' }
         }
     }
-    pholi.value[(row as number) + target.height - 1]![(col as number) + target.width - 1] = { id: `size-${target.id}`, ownerId: target.id }
+    pholi.value[(row as number) + target.height - 1]![(col as number) + target.width - 1] = { id: `size-${target.id}`, ownerId: target.id, kind: 'size' }
     pholi.value[row!]![col!] = target
     sizing.value = false
     draggedItem.value = null
@@ -407,7 +421,8 @@ function onDrop(row: number, col: number) {
         primary: draggedItem.value.primary,
         description: draggedItem.value.description,
         type: draggedItem.value.type,
-        cover: draggedItem.value.cover
+        cover: draggedItem.value.cover,
+        kind: 'media' as const
     }
     const width = item.width
     const height = item.height
@@ -431,11 +446,11 @@ function onDrop(row: number, col: number) {
         const gridRow = pholi.value[row + r]
         if (!gridRow) continue
         for (let c = 0; c < width; c++) {
-            gridRow[col + c] = { id: 'block', ownerId: item.id }
+            gridRow[col + c] = { id: 'block', ownerId: item.id, kind: 'block' }
         }
     }
 
-    pholi.value[row + item.height - 1]![col + item.width - 1] = { id: `size-${item.id}`, ownerId: item.id }
+    pholi.value[row + item.height - 1]![col + item.width - 1] = { id: `size-${item.id}`, ownerId: item.id, kind: 'size' }
     pholi.value[row]![col] = item
     draggedItem.value = null
 }
@@ -500,6 +515,7 @@ export function mediaHandler() {
         widthConfig,
         heightConfig,
         filler,
+        mediaViewable,
         changeText,
         addCover,
         deleteMedia,
@@ -518,6 +534,7 @@ export function mediaHandler() {
         loadMedia,
         setMedia,
         selectMedia,
-        downloadMedia
+        downloadMedia,
+        viewMedia
     }
 }

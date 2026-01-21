@@ -1,17 +1,23 @@
 <script setup lang="ts">
 import Avatar from '@/components/blocks/AvatarDisplay.vue'
-import ViewedPost from '@/components/blocks/ViewedPost.vue'
+import HoveredPost from '@/components/blocks/HoveredPost.vue'
+import HoveredMedia from '@/components/blocks/HoveredMedia.vue'
 import { infoHandler } from '@/lib/infoHandler'
+import { mediaHandler } from '@/lib/mediaHandler'
 import { postHandler } from '@/lib/postHandler'
 
 const { avatar_url, username, bio, full_name, website_title, website_url } = infoHandler()
+const { mediaViewable } = mediaHandler()
 const { postViewable } = postHandler()
 
 </script>
 
 <template>
-    <div v-if="postViewable">
-        <ViewedPost />
+    <div v-if="mediaViewable" class="w-full">
+        <HoveredMedia />
+    </div>
+    <div v-else-if="postViewable" class="w-full">
+        <HoveredPost />
     </div>
     <div v-else class="p-8 bg-secondary rounded-3xl shadow-md text-white text-sm">
         <Avatar v-model:path="avatar_url" />

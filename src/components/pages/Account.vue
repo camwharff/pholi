@@ -6,7 +6,6 @@ import AccountMedia from '@/components/blocks/AccountMedia.vue'
 import AccountFeed from '@/components/blocks/AccountFeed.vue'
 import ManageMedia from '@/components/blocks/ManageMedia.vue'
 import AddPost from '@/components/blocks/AddPost.vue'
-import ViewedPost from '@/components/blocks/ViewedPost.vue'
 import { onMounted } from 'vue'
 import { mediaHandler } from '@/lib/mediaHandler'
 import { infoHandler } from '@/lib/infoHandler'
@@ -20,7 +19,7 @@ import {
 } from '@/components/ui/tabs'
 import EditPholi from '@/components/blocks/EditPholi.vue'
 import Button from '@/components/ui/button/Button.vue'
-const { loadPosts, postViewable } = postHandler()
+const { loadPosts } = postHandler()
 const { loadMedia } = mediaHandler()
 const { getProfile } = infoHandler()
 const { user, signOut } = authHandler()
@@ -28,7 +27,7 @@ const infoTab = ref<'profile' | 'media' | 'post'>('profile')
 const displayTab = ref<'pholi' | 'feed'>('pholi')
 
 watch(infoTab, (value) => {
-    if (value === 'profile'){
+    if (value === 'profile') {
         editPholi.value = false
     } else if (value === 'media') {
         displayTab.value = 'pholi'
@@ -56,7 +55,8 @@ const editPholi = ref(false)
 
 <template>
     <div class="flex h-fit">
-        <Tabs v-model="infoTab" default-value="profile" class="basis-1/5 flex-col flex m-4 h-full w-full gap-4 items-center">
+        <Tabs v-model="infoTab" default-value="profile"
+            class="basis-1/5 flex-col flex m-4 h-full w-full gap-4 items-center">
             <TabsList>
                 <TabsTrigger value="profile">
                     Profile
@@ -69,10 +69,7 @@ const editPholi = ref(false)
                 </TabsTrigger>
             </TabsList>
             <TabsContent value="profile">
-                <div v-if="postViewable">
-                    <ViewedPost />
-                </div>
-                <div v-else class="flex flex-row">
+                <div class="flex flex-row">
                     <div class="flex flex-col items-center gap-4">
                         <div class="flex flex-row gap-4 ">
                             <Button v-if="editInfo" @click.prevent="editInfo = false">
@@ -102,7 +99,8 @@ const editPholi = ref(false)
             </TabsContent>
         </Tabs>
 
-        <Tabs v-model="displayTab" default-value="pholi" class="basis-3/4 flex-col flex m-4 h-fit w-full gap-4 items-center">
+        <Tabs v-model="displayTab" default-value="pholi"
+            class="basis-3/4 flex-col flex m-4 h-fit w-full gap-4 items-center">
             <TabsList>
                 <TabsTrigger value="pholi">
                     Pholi
