@@ -13,7 +13,7 @@ const disablePost = ref(false)
 const newPost: Ref<PostMedia | undefined> = ref()
 const posts_raw: Ref<MediaRaw[]> = ref([])
 const posts: Ref<Post[]> = ref([])
-const mosaic: Ref<Post[]> = ref([])
+const postViewable: Ref<Post | undefined> = ref()
 
 export interface Post {
     id: string
@@ -30,6 +30,14 @@ interface PostMedia {
     url: string
     title?: string
     caption?: string
+}
+
+function viewPost(post: Post, view: boolean) {
+    if (view) {
+        postViewable.value = post
+    } else {
+        postViewable.value = undefined
+    }
 }
 
 async function selectPost(evt: Event) {
@@ -132,30 +140,17 @@ async function loadPosts() {
     } catch (error) {
         if (error instanceof Error) alert(`${error.message} while loading posts`)
     }
-
-    let mos0 = []
-    let mos1 = []
-    let mos2 = []
-    for (let i = 0; i < posts.value.length; i++) {
-        if ((i % 3) === 0) {
-            mos0.push(posts.value[i] as Post)
-        } else if ((i % 3) === 1) {
-            mos1.push(posts.value[i] as Post)
-        } else {
-            mos2.push(posts.value[i] as Post)
-        }
-    }
-    console.log(mos0)
-    mosaic.value = mos0.concat(mos1, mos2)
 }
 
 export function postHandler() {
     return {
-        mosaic,
+        posts,
         disablePost,
         newPost,
+        postViewable,
         addPost,
         selectPost,
-        loadPosts
+        loadPosts,
+        viewPost
     }
 }
