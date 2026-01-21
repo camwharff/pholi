@@ -11,7 +11,6 @@ const full_name = ref('')
 const website_title = ref('')
 const website_url = ref('')
 
-const { user } = authHandler()
 const { shortAlert } = uiHandler()
 
 interface Profile {
@@ -57,6 +56,7 @@ function setProfile(data: Profile): void {
 }
 
 async function getProfile() {
+    const { user } = authHandler()
     if (!user.value) return
 
     try {
@@ -64,7 +64,7 @@ async function getProfile() {
         const { data, error, status } = await supabase
             .from('profiles')
             .select('username, avatar_url, full_name, bio, website')
-            .eq('id', user.value.id)
+            .eq('id', user.value?.id ?? '')
             .single()
 
         if (error && status !== 406) throw error
@@ -85,6 +85,7 @@ async function getProfile() {
 }
 
 async function updateProfile() {
+    const { user } = authHandler()
     if (!user.value) return
 
     try {

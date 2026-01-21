@@ -13,7 +13,7 @@ onMounted(() => {
   <div class="min-h-screen flex flex-col justify-between">
     <div class="grow" >
       <Heading />
-      <router-view />
+      <router-view :key="$route.fullPath"/>
     </div>
     <Footer />
   </div>

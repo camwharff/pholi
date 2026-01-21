@@ -7,7 +7,6 @@ import { uiHandler } from '@/lib/uiHandler'
 import { type MediaRaw, mediaHandler } from "./mediaHandler"
 
 const { shortAlert } = uiHandler()
-const { user } = authHandler()
 const { downloadMedia } = mediaHandler()
 const disablePost = ref(false)
 const newPost: Ref<PostMedia | undefined> = ref()
@@ -61,6 +60,7 @@ async function selectPost(evt: Event) {
 }
 
 const addPost = async (evt: Event) => {
+    const { user } = authHandler()
     if (!user.value) return
     disablePost.value = true
     const form = evt.target as HTMLFormElement
@@ -102,6 +102,7 @@ const addPost = async (evt: Event) => {
 }
 
 async function loadPosts() {
+    const { user } = authHandler()
     if (!user.value) return
 
     try {

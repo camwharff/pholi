@@ -5,7 +5,6 @@ import { authHandler } from '@/lib/authHandler'
 import { uiHandler } from '@/lib/uiHandler'
 
 const { shortAlert } = uiHandler()
-const { user } = authHandler()
 
 export type SizeType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16
 export type GridCell = GridItem | BlockCell | SizeCell | null
@@ -125,6 +124,7 @@ function addCover(evt: Event) {
 }
 
 async function deleteMedia(id: string) {
+    const { user } = authHandler()
     if (user.value) {
         console.log(id)
         console.log(media_raw.value)
@@ -138,6 +138,7 @@ async function deleteMedia(id: string) {
 }
 
 const uploadMedia = async (evt: Event) => {
+    const { user } = authHandler()
     if (!user.value) return
     disableUpload.value = true
     const form = evt.target as HTMLFormElement
@@ -217,6 +218,7 @@ const stagedItems = computed(() =>
 )
 
 async function updatePholi() {
+    const { user } = authHandler()
     if (!user.value) return
     try {
         const updates = {
@@ -232,6 +234,7 @@ async function updatePholi() {
 }
 
 async function loadMedia() {
+    const { user } = authHandler()
     if (!user.value) return
 
     try {

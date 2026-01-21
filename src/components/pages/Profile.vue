@@ -34,7 +34,6 @@ onMounted(async () => {
             .select('username, full_name, avatar_url, bio, website')
             .eq('username', usernameParam.value)
             .single()
-
         if (!error && data) {
             setProfile(data)
             setMedia(usernameParam.value ?? '')

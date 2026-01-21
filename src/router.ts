@@ -7,8 +7,6 @@ import { authHandler } from '@/lib/authHandler'
 import updatePassword from '@/components/forms/update-password.vue'
 import swatches from '@/components/pages/Swatches.vue'
 
-const { user, loadUser } = authHandler()
-
 const routes = [
   {
     path: '/account',
@@ -42,11 +40,12 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(), 
+  history: createWebHistory(),
   routes
 })
 
 router.beforeEach(async (to) => {
+  const { user, loadUser } = authHandler()
   await loadUser()
   if (to.meta.guestOnly && user) {
     return { name: 'account' }
