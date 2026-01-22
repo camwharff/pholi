@@ -1,0 +1,101 @@
+import { defineStore } from 'pinia'
+import { supabase } from '@/lib/supabaseClient'
+import { interactionHandler } from "@/lib/interactionHandler"
+
+const { getFollowing, getFollowers, getFollowingCount, getFollowerCount } = interactionHandler()
+
+interface Profile {
+  id: string
+  username: string
+  full_name: string
+  avatar_url: string
+  bio: string
+  followingData: {
+    following: string[]
+    followers: string[]
+    followingCount: number
+    followerCount: number
+  }
+}
+
+export const useProfilesStore = defineStore('profiles', {
+  state: () => ({
+    profiles: {} as Record<string, Profile>,
+    loading: {} as Record<string, boolean>,
+  }),
+
+  actions: {
+    async fetchProfile(username: string) {
+      if (this.profiles[username]) {
+        return this.profiles[username]
+      }
+
+      if (this.loading[username]) return
+      this.loading[username] = true
+
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('username', username)
+        .single()
+
+      if (error || !data) {
+        this.loading[username] = false
+        return null
+      }
+
+      const [followingRows, followerRows, followingCountResult, followerCountResult] =
+        await Promise.all([
+          getFollowing(data.id),
+          getFollowers(data.id),
+          getFollowingCount(data.id),
+          getFollowerCount(data.id)
+        ])
+
+      const following = followingRows?.map(row => row.following_id) ?? []
+      const followers = followerRows?.map(row => row.follower_id) ?? []
+      const followingCount: number = followingCountResult ?? 0
+      const followerCount: number = followerCountResult ?? 0
+
+      const profile: Profile = {
+        id: data.id,
+        username: data.username,
+        full_name: data.full_name,
+        avatar_url: data.avatar_url,
+        bio: data.bio,
+        followingData: {
+          following,
+          followers,
+          followingCount,
+          followerCount
+        }
+      }
+
+
+      // Store in Pinia cache
+      this.profiles[username] = profile
+
+      // Persist cache
+      localStorage.setItem(
+        `profile:${username}`,
+        JSON.stringify(profile)
+      )
+
+      this.loading[username] = false
+      return profile
+    }
+    ,
+
+    loadFromCache(username: string) {
+      const cached = localStorage.getItem(`profile:${username}`)
+      if (cached) {
+        this.profiles[username] = JSON.parse(cached) as Profile
+      }
+    },
+
+    clear() {
+      this.profiles = {}
+      this.loading = {}
+    }
+  }
+})

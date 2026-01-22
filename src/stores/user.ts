@@ -1,4 +1,3 @@
-// stores/user.ts
 import { defineStore } from "pinia"
 import { supabase } from '@/lib/supabaseClient'
 import { interactionHandler } from "@/lib/interactionHandler"
