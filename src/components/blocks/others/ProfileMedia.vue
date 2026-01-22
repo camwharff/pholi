@@ -47,7 +47,7 @@ const { pholi, widthConfig, heightConfig, getSrc, getCover, viewMedia } = mediaH
                                 <Filler v-if="(cell as GridItem).type === 'filler'" :text="(cell as GridItem).label"
                                     class="w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
                             </DialogTrigger>
-                            <DialogContent class="w-auto h-auto p-8 shadow-none" :aria-describedby="undefined">
+                            <DialogContent class="w-auto h-auto p-4 shadow-none" :aria-describedby="undefined">
                                 <VisuallyHidden asChild>
                                     <DialogTitle :value="(cell as GridItem).label" />
                                 </VisuallyHidden>

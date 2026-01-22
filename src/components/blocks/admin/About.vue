@@ -4,7 +4,7 @@
 <template>
     <div class="mb-16 w-full lg:w-2/3 flex flex-col items-center">
         <p class="text-7xl font-medium leading-tight mb-8">About Pholi</p>
-        <div class="bg-sky-950/90 border border-sky-700 rounded-2xl text-white p-16 flex flex-col gap-8 items-center">
+        <div class="bg-sky-950/90 border border-sky-700 rounded-2xl text-white p-16 flex flex-col gap-4 items-center">
             <p >
                 Hi! My name is Camille, and I am the founder and (currently) sole developer of Pholi. A few pagesyears
                 ago,

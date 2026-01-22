@@ -49,10 +49,10 @@ function toggleSearch() {
         </button>
     </div>
     <div
-        class="z-40 fixed flex w-full items-center justify-between px-20 text-center flex-row gap-18 p-8 py-0 bg-accent h-[10vh] min-h-25">
+        class="z-40 fixed flex w-full items-center justify-between px-20 text-center flex-row gap-18 p-4 py-0 bg-accent h-[10vh] min-h-25">
         <div class="h-inherit w-fit inset-0 m-auto">
             <RouterLink to="/home" class="h-fit w-fit p-0 m-auto inset-0">
-                <logoCircleFront width="12vw" height="12vw"
+                <logoCircleFront width="175" height="175"
                     class="p-2 rounded-full mx-auto z-50 absolute inset-0 inline border-4 border-transparent border-none" />
             </RouterLink>
         </div>

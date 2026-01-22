@@ -142,7 +142,7 @@ const uploadMedia = async (evt: Event) => {
             </AccordionTrigger>
             <AccordionContent class="-mt-8 pt-12 overflow-visible">
                 <div
-                    class="flex w-inherit items-center bg-sky-950 rounded-3xl rounded-t-none shadow-md text-white text-sm p-8 -mb-4 pt-16 -mt-12 z-10">
+                    class="flex w-inherit items-center bg-sky-950 rounded-3xl rounded-t-none shadow-md text-white text-sm p-4 -mb-4 pt-16 -mt-12 z-10">
                     <form @submit.prevent="uploadMedia" class="w-full flex flex-col justify-around gap-4 text-sm"
                         name="addForm">
                         <Input class="bg-white w-full text-black" type="file" id="single" accept="image/*" />
@@ -179,7 +179,7 @@ const uploadMedia = async (evt: Event) => {
             </AccordionTrigger>
             <AccordionContent class="-mt-8 pt-12 overflow-visible">
                 <div
-                    class="flex w-inherit items-center bg-sky-950 rounded-3xl rounded-t-none shadow-md text-white text-sm p-8 -mb-4 pt-16 -mt-12 z-10 max-h-[50vh] overflow-scroll">
+                    class="flex w-inherit items-center bg-sky-950 rounded-3xl rounded-t-none shadow-md text-white text-sm p-4 -mb-4 pt-16 -mt-12 z-10 max-h-[50vh] overflow-scroll">
                 </div>
             </AccordionContent>
         </AccordionItem>

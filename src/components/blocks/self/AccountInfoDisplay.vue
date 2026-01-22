@@ -2,13 +2,28 @@
 import Avatar from '@/components/blocks/shared/AvatarDisplay.vue'
 import HoveredPost from '@/components/blocks/shared/HoveredPost.vue'
 import HoveredMedia from '@/components/blocks/shared/HoveredMedia.vue'
-import { infoHandler } from '@/lib/infoHandler'
+import { useUserStore } from '@/stores/user'
 import { mediaHandler } from '@/lib/mediaHandler'
 import { postHandler } from '@/lib/postHandler'
+import { onMounted, computed } from 'vue'
 
-const { avatar_url, username, bio, full_name, website_title, website_url } = infoHandler()
 const { mediaViewable } = mediaHandler()
 const { postViewable } = postHandler()
+
+const userStore = useUserStore()
+
+onMounted(async () => {
+    await userStore.loadFromCache()
+})
+
+const avatarUrl = computed(() => userStore.info?.avatar_url ?? '')
+const fullName = computed(() => userStore.info?.full_name ?? '')
+const username = computed(() => userStore.info?.username ?? '')
+const bio = computed(() => userStore.info?.bio ?? '')
+// const websiteUrl = computed(() => userStore.info?.website?.url ?? '')
+// const websiteTitle = computed(() => userStore.info?.website?.title ?? '')
+const followingCount = computed(() => userStore.followingInfo?.followingCount ?? '')
+const followerCount = computed(() => userStore.followingInfo?.followerCount ?? '')
 
 </script>
 
@@ -19,12 +34,18 @@ const { postViewable } = postHandler()
     <div v-else-if="postViewable" class="w-full">
         <HoveredPost />
     </div>
-    <div v-else class="p-8 bg-secondary rounded-3xl shadow-md text-white text-sm">
-        <Avatar v-model:path="avatar_url" />
-        <h2 class="mt-4">{{ full_name }}</h2>
-        <h3 class="mt-2">@{{ username }}</h3>
-        <h3 class="mt-2"><a target="_blank" rel="noopener noreferrer" ref="webUrl" :href="website_url">{{ website_title
-        }}</a></h3>
-        <p class="mt-2 mb-0">{{ bio }}</p>
+    <div v-else class="flex flex-col gap-2 w-full">
+        <div class="p-4 bg-secondary rounded-2xl shadow-md text-white text-sm flex flex-col gap-2">
+            <Avatar :path="avatarUrl" />
+            <div class="bg-accent p-4 shadow-md flex gap-2 flex-col rounded-xl">
+                <h2>{{ fullName }}</h2>
+                <h3>@{{ username }}</h3>
+                <p>{{ bio }}</p>
+            </div>
+            <div class="bg-accent p-4 shadow-md flex gap-2 flex-col rounded-xl">
+                <p>{{ followerCount }} Followers</p>
+                <p>{{ followingCount }} Following</p>
+            </div>
+        </div>
     </div>
 </template>

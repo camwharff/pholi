@@ -49,7 +49,7 @@ function getUrl(file: File) {
             </TabsList>
             <TabsContent value="upload" class="w-full">
                 <div
-                    class="max-h-[65vh] overflow-y-auto w-inherit bg-accent rounded-3xl shadow-md text-white text-sm p-8 z-10">
+                    class="max-h-[65vh] overflow-y-auto w-inherit bg-accent rounded-3xl shadow-md text-white text-sm p-4 z-10">
                     <form @submit.prevent="uploadMedia" class="w-full flex flex-col gap-4 text-sm" name="uploadForm">
                         <Accordion type="single" collapsible class="w-full">
                             <AccordionItem v-for="media in newMedia" :value="media.file.name" :key="media.file.name">

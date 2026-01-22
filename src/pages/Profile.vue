@@ -13,6 +13,9 @@ import {
     TabsList,
     TabsTrigger
  } from '@/components/ui/tabs'
+ import ProfileFeed from '@/components/blocks/others/ProfileFeed.vue'
+ import ProfileInfoDisplay from '@/components/blocks/others/ProfileInfoDisplay.vue'
+ import ProfileMedia from '@/components/blocks/others/ProfileMedia.vue'
 
 const route = useRoute()
 

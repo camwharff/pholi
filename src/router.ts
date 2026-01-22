@@ -1,11 +1,11 @@
 import { createWebHistory, createRouter } from 'vue-router'
 
-import account from '@/components/pages/Account.vue'
-import profile from '@/components/pages/Profile.vue'
-import home from '@/components/pages/Home.vue'
+import account from '@/pages/Account.vue'
+import profile from '@/pages/Profile.vue'
+import home from '@/pages/Home.vue'
 import { authHandler } from '@/lib/authHandler'
 import updatePassword from '@/components/forms/update-password.vue'
-import swatches from '@/components/pages/Swatches.vue'
+import swatches from '@/pages/Swatches.vue'
 
 const routes = [
   {

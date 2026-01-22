@@ -8,6 +8,7 @@ import {
     DialogTitle,
     DialogTrigger
 } from '@/components/ui/dialog'
+import Card from '@/components/ui/card/Card.vue'
 import { VisuallyHidden } from 'reka-ui'
 
 const { posts, viewPost } = postHandler()
@@ -36,8 +37,8 @@ const { getSrc, getCover } = mediaHandler()
                     <VisuallyHidden asChild>
                         <DialogTitle :value="post.title" />
                     </VisuallyHidden>
-                    <div class="h-[70vh] w-fit flex flex-row gap-8">
-                        <Card v-if="post.title || post.caption" class="bg-accent border-4 border-secondary p-8 rounded-3xl h-fit max-w-[20vw] flex flex-col gap-4">
+                    <div class="h-[70vh] w-fit flex flex-row gap-4">
+                        <Card v-if="post.title || post.caption" class="bg-accent border-4 border-secondary p-4 rounded-3xl h-fit max-w-[20vw] flex flex-col gap-4">
                             <p v-if="post.title" class="w-full text-4xl font-bold">{{ post.title }}</p>
                             <p v-if="post.caption" class="w-full text-xl ">{{ post.caption }}</p>
                         </Card>

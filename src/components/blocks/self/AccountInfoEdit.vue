@@ -11,7 +11,7 @@ const { user } = authHandler()
 
 <template>
     <div class="flex">
-        <div class="p-8 bg-secondary rounded-3xl shadow-md text-white text-sm" v-if="user">
+        <div class="p-4 bg-secondary rounded-3xl shadow-md text-white text-sm" v-if="user">
             <form class="form-widget" @submit.prevent="updateProfile">
                 <Avatar v-model:path="avatar_url" @upload="updateProfile" />
 

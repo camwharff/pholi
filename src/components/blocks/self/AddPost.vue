@@ -13,7 +13,7 @@ const { disablePost, newPost, addPost, selectPost } = postHandler()
 
 <template>
     <div class="flex flex-col gap-4">
-        <div class="max-h-[65vh] overflow-y-auto w-inherit bg-accent rounded-3xl shadow-md text-white text-sm p-8 z-10">
+        <div class="max-h-[65vh] overflow-y-auto w-inherit bg-accent rounded-3xl shadow-md text-white text-sm p-4 z-10">
             <form @submit.prevent="addPost" class="w-full flex flex-col gap-4 text-sm" name="uploadForm">
                 <div class="flex items-center gap-2 w-full min-w-0">
                     <Music v-if="newPost?.type === 'audio'" class="shrink-0" />

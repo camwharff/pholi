@@ -2,6 +2,7 @@ import type { User } from "@supabase/supabase-js"
 import { ref } from 'vue'
 import { supabase } from "./supabaseClient"
 import router from "@/router"
+import { useUserStore } from "@/stores/user"
 
 type Mode = 'SIGNUP' | 'LOGIN' | 'MANAGE'
 
@@ -46,11 +47,13 @@ const handleLogin = async () => {
     error.value = null
     isLoading.value = true
     try {
-        const { error: supabaseError } = await supabase.auth.signInWithPassword({
+        const { error: supabaseError, data } = await supabase.auth.signInWithPassword({
             email: email.value,
             password: password.value,
         })
         if (supabaseError) throw supabaseError
+        const userStore = useUserStore()
+        await userStore.loadUserData(data.user.id)
         await loadUser()
         router.push({ name: 'account' })
         success.value = true
@@ -132,7 +135,7 @@ async function handleUpdatePassword() {
 }
 
 function openSettings() {
-    
+
 }
 
 export function authHandler() {
