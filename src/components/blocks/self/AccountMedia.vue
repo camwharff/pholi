@@ -12,8 +12,6 @@ import {
     CardHeader
 } from '@/components/ui/card'
 import { VisuallyHidden } from 'reka-ui'
-import Aud from '@/components/media/Aud.vue'
-import Vid from '@/components/media/Vid.vue'
 import Image from '@/components/media/Imag.vue'
 import Filler from '@/components/media/Filler.vue'
 
@@ -37,13 +35,13 @@ const { pholi, widthConfig, heightConfig, getSrc, getCover, viewMedia } = mediaH
                                 <Image v-if="(cell as GridItem).type === 'image'"
                                     :src="(getSrc((cell as GridItem).id) ?? '')" :alt="(cell as GridItem).label"
                                     class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
-                                <Vid v-if="(cell as GridItem).type === 'video'"
+                                <video v-if="(cell as GridItem).type === 'video'"
                                     :src="(getSrc((cell as GridItem).id) ?? '')" :alt="(cell as GridItem).label"
-                                    class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
-                                <Aud v-if="(cell as GridItem).type === 'audio'"
+                                    class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" controls ></video>
+                                <audio v-if="(cell as GridItem).type === 'audio'"
                                     :src="(getSrc((cell as GridItem).id) ?? '')" :alt="(cell as GridItem).label"
                                     :cover="(getCover((cell as GridItem).id) ?? '')"
-                                    class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
+                                    class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" ></audio>
                                 <Filler v-if="(cell as GridItem).type === 'filler'" :text="(cell as GridItem).label"
                                     class="w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
                             </DialogTrigger>
@@ -66,13 +64,13 @@ const { pholi, widthConfig, heightConfig, getSrc, getCover, viewMedia } = mediaH
                                     <Image v-if="(cell as GridItem).type === 'image'"
                                         :src="(getSrc((cell as GridItem).id) ?? '')" :alt="(cell as GridItem).label"
                                         class="w-fit h-full border-secondary bg-accent rounded-3xl border-4" />
-                                    <Vid v-if="(cell as GridItem).type === 'video'"
+                                    <video v-if="(cell as GridItem).type === 'video'"
                                         :src="(getSrc((cell as GridItem).id) ?? '')" :alt="(cell as GridItem).label"
-                                        class="w-fit h-full border-secondary bg-accent rounded-3xl border-4" />
-                                    <Aud v-if="(cell as GridItem).type === 'audio'"
+                                        class="w-fit h-full border-secondary bg-accent rounded-3xl border-4" controls ></video>
+                                    <audio v-if="(cell as GridItem).type === 'audio'"
                                         :src="(getSrc((cell as GridItem).id) ?? '')" :alt="(cell as GridItem).label"
                                         :cover="(getCover((cell as GridItem).id) ?? '')"
-                                        class="w-fit h-full border-secondary bg-accent rounded-3xl border-4" />
+                                        class="w-fit h-full border-secondary bg-accent rounded-3xl border-4" ></audio>
                                 </div>
                             </DialogContent>
                         </Dialog>

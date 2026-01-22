@@ -57,7 +57,7 @@ const editPholi = ref(false)
 <template>
     <div class="flex h-fit">
         <Tabs v-model="infoTab" default-value="profile"
-            class="basis-1/5 flex-col flex m-4 h-full w-full gap-4 items-center relative">
+            class="basis-1/4 2xl:basis-1/5 flex-col flex m-4 h-full w-full gap-4 items-center relative">
             <TabsList>
                 <TabsTrigger value="profile">
                     Profile
