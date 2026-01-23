@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { mediaHandler, type SizeType, type GridItem } from '@/lib/mediaHandler'
+import { mediaHandler, type SizeType, type GridItem, type GridMatrix } from '@/lib/mediaHandler'
 import {
     Dialog,
     DialogContent,
@@ -16,8 +16,22 @@ import Aud from '@/components/media/Aud.vue'
 import Vid from '@/components/media/Vid.vue'
 import Image from '@/components/media/Imag.vue'
 import Filler from '@/components/media/Filler.vue'
+import { onMounted, computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { useProfilesStore } from '@/stores/profiles'
 
-const { pholi, widthConfig, heightConfig, getSrc, getCover, viewMedia } = mediaHandler()
+const { widthConfig, heightConfig, getSrc, getCover, viewMedia } = mediaHandler()
+const route = useRoute()
+const profilesStore = useProfilesStore()
+const pholi = ref<GridMatrix>([])
+
+onMounted(async () => {
+    const username = route.params.username as string
+    await profilesStore.fetchProfile(username)
+    await profilesStore.loadFromCache(username)
+
+    pholi.value = computed(() => profilesStore.profiles[username ?? '']?.pholi ?? []).value
+})
 
 </script>
 

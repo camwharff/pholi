@@ -8,7 +8,7 @@ const { shortAlert } = uiHandler()
 
 export type SizeType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16
 export type GridCell = GridItem | BlockCell | SizeCell | null
-type GridMatrix = GridCell[][]
+export type GridMatrix = GridCell[][]
 
 export type GridItem = {
     id: string
@@ -73,7 +73,7 @@ const height = ref([2])
 const preview = ref<NewMedia>()
 const media_raw: Ref<MediaRaw[]> = ref([])
 const media_list: Ref<MediaCell[]> = ref([])
-const pholi: Ref<(GridItem | BlockCell | SizeCell | null)[][], GridMatrix | (GridItem | BlockCell | SizeCell | null)[][]> = ref([])
+const pholi: Ref<(GridCell)[][], GridMatrix | (GridCell)[][]> = ref([])
 const mediaViewable: Ref<GridItem | undefined> = ref()
 
 const filler = ['text', 'blank']
@@ -373,8 +373,15 @@ function onDragFiller() {
     sizing.value = false
 }
 
-function getSrc(id: string) {
-    return media_list.value.find(item => item.id === id)?.src
+async function getSrc(id: string) {
+    try {
+        const { data, error } = await supabase.storage.from('media').download(id)
+        if (error) throw error
+        return URL.createObjectURL(data)
+    }
+    catch (error) {
+        alert(error)
+    }
 }
 
 function getCover(id: string) {

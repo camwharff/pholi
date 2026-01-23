@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import { supabase } from '@/lib/supabaseClient'
 import { interactionHandler } from "@/lib/interactionHandler"
+import { type Post } from '@/lib/postHandler'
+import { type GridMatrix } from '@/lib/mediaHandler'
 
 const { getFollowing, getFollowers, getFollowingCount, getFollowerCount } = interactionHandler()
 
@@ -10,6 +12,9 @@ interface Profile {
   full_name: string
   avatar_url: string
   bio: string
+  media: string
+  pholi: GridMatrix
+  posts: Post[]
   followingData: {
     following: string[]
     followers: string[]
@@ -63,6 +68,9 @@ export const useProfilesStore = defineStore('profiles', {
         full_name: data.full_name,
         avatar_url: data.avatar_url,
         bio: data.bio,
+        media: data.media,
+        pholi: data.pholi,
+        posts: data.posts,
         followingData: {
           following,
           followers,

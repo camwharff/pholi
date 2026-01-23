@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { postHandler } from '@/lib/postHandler'
-import { mediaHandler } from '@/lib/mediaHandler'
 import Image from '@/components/media/Imag.vue'
 import {
     Dialog,
@@ -10,9 +8,26 @@ import {
 } from '@/components/ui/dialog'
 import Card from '@/components/ui/card/Card.vue'
 import { VisuallyHidden } from 'reka-ui'
+import { type Post } from '@/lib/postHandler'
+import { onMounted, computed, ref } from 'vue'
+import { useUserStore } from '@/stores/user'
+import { postHandler } from '@/lib/postHandler'
+import { mediaHandler } from '@/lib/mediaHandler'
 
-const { posts, viewPost } = postHandler()
-const { getSrc, getCover } = mediaHandler()
+const { viewPost } = postHandler()
+const userStore = useUserStore()
+const posts = ref<Post[]>([])
+const { getSrc } = mediaHandler()
+
+onMounted(async () => {
+    await userStore.loadFromCache()
+
+    posts.value = computed(() => userStore.info.posts ?? []).value
+    for (const post of posts.value) {
+        const source = await getSrc(post.id)
+        post.src = source ?? ''
+    }
+})
 
 </script>
 
@@ -28,9 +43,9 @@ const { getSrc, getCover } = mediaHandler()
                     <video v-if="post.type === 'video'" :src="post.src" :alt="post.title"
                         class="cursor-help w-full h-full border-secondary bg-accent rounded-3xl border-4 object-cover"
                         controls></video>
-                    <Image v-if="post.type === 'audio'" :src="(getCover(post.src) ?? '')" :alt="post.title"
+                    <Image v-if="post.type === 'audio'" :src="post.src" :alt="post.title"
                         class="cursor-help w-full h-3/4 border-secondary bg-accent rounded-3xl border-4" />
-                    <audio v-if="post.type === 'audio'" :src="(getSrc(post.src) ?? '')" :alt="post.title"
+                    <audio v-if="post.type === 'audio'" :src="post.src" :alt="post.title"
                         class="cursor-help w-full h-full bg-accent" controls></audio>
                 </DialogTrigger>
                 <DialogContent class="h-3/4 w-auto">
@@ -38,7 +53,8 @@ const { getSrc, getCover } = mediaHandler()
                         <DialogTitle :value="post.title" />
                     </VisuallyHidden>
                     <div class="h-[70vh] w-fit flex flex-row gap-4">
-                        <Card v-if="post.title || post.caption" class="bg-accent border-4 border-secondary p-4 rounded-3xl h-fit max-w-[20vw] flex flex-col gap-4">
+                        <Card v-if="post.title || post.caption"
+                            class="bg-accent border-4 border-secondary p-4 rounded-3xl h-fit max-w-[20vw] flex flex-col gap-4">
                             <p v-if="post.title" class="w-full text-4xl font-bold">{{ post.title }}</p>
                             <p v-if="post.caption" class="w-full text-xl ">{{ post.caption }}</p>
                         </Card>
@@ -48,9 +64,9 @@ const { getSrc, getCover } = mediaHandler()
                             <video v-if="post.type === 'video'" :src="post.src" :alt="post.title"
                                 class="w-full h-full border-secondary bg-accent rounded-3xl border-4 object-cover"
                                 controls></video>
-                            <Image v-if="post.type === 'audio'" :src="(getCover(post.src) ?? '')" :alt="post.title"
+                            <Image v-if="post.type === 'audio'" :src="post.src" :alt="post.title"
                                 class="w-full h-3/4 border-secondary bg-accent rounded-3xl border-4" />
-                            <audio v-if="post.type === 'audio'" :src="(getSrc(post.src) ?? '')" :alt="post.title"
+                            <audio v-if="post.type === 'audio'" :src="post.src" :alt="post.title"
                                 class="w-full h-full bg-accent" controls></audio>
                         </div>
                     </div>
