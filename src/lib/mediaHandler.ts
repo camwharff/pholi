@@ -7,29 +7,39 @@ import { uiHandler } from '@/lib/uiHandler'
 const { shortAlert } = uiHandler()
 
 export type SizeType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16
-export type GridCell = GridItem | BlockCell | SizeCell | null
+export type GridCell = BlockCell | SizeCell | ContentCell | null
 export type GridMatrix = GridCell[][]
 
-export type GridItem = {
+export interface ContentCell {
     id: string
-    label: string
-    description: string
     width: SizeType
     height: SizeType
-    primary: boolean
+    kind: string
+    label?: string
+    url?: string
+    description?: string
+    type?: string
+    coverId?: string
+    coverUrl?: string
+}
+
+export interface MediaCell extends ContentCell {
+    label: string
+    description: string
+    url: string
     type: string
-    cover?: string
+    coverUrl?: string
+    coverId?: string | undefined
     kind: 'media'
 }
 
-interface MediaCell {
-    id: string
+export interface FillCell extends ContentCell {
+    kind: 'filler'
+}
+
+export interface TextCell extends ContentCell {
     label: string
-    description: string
-    src: string
-    type: string
-    coverId?: string
-    cover?: string | undefined
+    kind: 'text'
 }
 
 interface BlockCell {
@@ -74,7 +84,7 @@ const preview = ref<NewMedia>()
 const media_raw: Ref<MediaRaw[]> = ref([])
 const media_list: Ref<MediaCell[]> = ref([])
 const pholi: Ref<(GridCell)[][], GridMatrix | (GridCell)[][]> = ref([])
-const mediaViewable: Ref<GridItem | undefined> = ref()
+const mediaViewable: Ref<ContentCell | undefined> = ref()
 
 const filler = ['text', 'blank']
 const COLS = 16
@@ -99,8 +109,8 @@ const heightConfig: Record<SizeType, string> = {
     1: 'h-[100%]', 2: 'h-[200%]', 3: 'h-[300%]', 4: 'h-[400%]', 5: 'h-[500%]', 6: 'h-[600%]', 7: 'h-[700%]', 8: 'h-[800%]', 9: 'h-[900%]', 10: 'h-[1000%]', 11: 'h-[1100%]', 12: 'h-[1200%]', 13: 'h-[1300%]', 14: 'h-[1400%]', 15: 'h-[1500%]', 16: 'h-[1600%]'
 }
 
-function viewMedia(med: GridCell, view: boolean) {
-    if (view && med && med.kind === 'media' && med.type !== 'filler') {
+function viewMedia(med: ContentCell, view: boolean) {
+    if (view && med && (med.kind === 'media' || med.kind === 'text')) {
         mediaViewable.value = med ?? null
     } else {
         mediaViewable.value = undefined
@@ -216,7 +226,7 @@ const uploadMedia = async (evt: Event) => {
 const unplacedItems = computed(() =>
     media_list.value.filter(
         item => !pholi.value.some(row =>
-            row.some(cell => (cell as GridItem)?.id === item.id)
+            row.some(cell => (cell as MediaCell)?.id === item.id)
         )
     )
 )
@@ -224,7 +234,7 @@ const unplacedItems = computed(() =>
 const stagedItems = computed(() =>
     media_list.value.filter(
         item => pholi.value.some(row =>
-            row.some(cell => (cell as GridItem)?.id === item.id)
+            row.some(cell => (cell as MediaCell)?.id === item.id)
         )
     )
 )
@@ -260,7 +270,7 @@ async function loadMedia() {
 
         if (data) {
             media_raw.value = data.media ?? []
-            pholi.value = JSON.parse(data.pholi) ?? []
+            pholi.value = data.pholi ?? []
         }
         if (pholi.value.length <= 1) {
             pholi.value = nullPholi
@@ -293,10 +303,13 @@ async function downloadMedia() {
                     id: `${item.id}`,
                     label: `${item.label}`,
                     description: `${item.description}`,
-                    src: url,
+                    url: url,
                     type: item.type,
-                    cover: coverUrl.value,
-                    coverId: item.cover
+                    coverUrl: coverUrl.value,
+                    coverId: item.cover,
+                    kind: 'media',
+                    width: 2,
+                    height: 2
                 })
             } catch (error) {
                 if (error instanceof Error) alert(`download error: ${error.message}`)
@@ -318,7 +331,7 @@ async function setMedia(username: string) {
 
         if (data) {
             media_raw.value = data.media ?? []
-            pholi.value = JSON.parse(data.pholi) ?? []
+            pholi.value = data.pholi ?? []
         }
         await downloadMedia()
     } catch (error) {
@@ -326,14 +339,14 @@ async function setMedia(username: string) {
     }
 }
 
-const draggedItem = ref<GridItem | null>(null)
+const draggedItem = ref<ContentCell>()
 const sizing = ref(false)
 
-function changeText(item: GridItem) {
+function changeText(item: TextCell) {
     item.label = "text added"
 }
 
-function onDragStaged(item: GridItem) {
+function onDragStaged(item: ContentCell) {
     draggedItem.value = item
     sizing.value = false
 }
@@ -344,33 +357,20 @@ function onDragUnstaged(item: MediaCell) {
         label: item.label,
         width: 2,
         height: 2,
-        primary: true,
+        url: item.url,
         description: item.description,
         type: item.type,
-        cover: item.cover,
+        coverId: item.coverId,
+        coverUrl: item.coverUrl,
         kind: 'media'
-    }
+    } as MediaCell
     sizing.value = false
 }
 
 function onDragSize(item: SizeCell) {
     const [row, col] = getIndex(item.ownerId)
-    draggedItem.value = (pholi.value[row!]![col!] as GridItem) ?? null
+    draggedItem.value = (pholi.value[row!]![col!] as ContentCell) ?? null
     sizing.value = true
-}
-
-function onDragFiller() {
-    draggedItem.value = {
-        id: `filler-${Date.now()}`,
-        label: '',
-        width: 2,
-        height: 2,
-        primary: true,
-        description: '',
-        type: 'filler',
-        kind: 'media'
-    }
-    sizing.value = false
 }
 
 async function getSrc(id: string) {
@@ -385,12 +385,12 @@ async function getSrc(id: string) {
 }
 
 function getCover(id: string) {
-    return media_list.value.find(item => item.id === id)?.cover
+    return media_list.value.find(item => item.id === id)?.coverId
 }
 
 function resize(r: number, c: number, id: string) {
     const [row, col] = getIndex(id)
-    const target = (pholi.value[row!]![col!] as GridItem)
+    const target = (pholi.value[row!]![col!] as ContentCell)
     const width_new = c - (col as number) + 1
     const height_new = r - (row as number) + 1
     if (width_new * height_new < 2) return
@@ -409,7 +409,7 @@ function resize(r: number, c: number, id: string) {
     pholi.value[(row as number) + target.height - 1]![(col as number) + target.width - 1] = { id: `size-${target.id}`, ownerId: target.id, kind: 'size' }
     pholi.value[row!]![col!] = target
     sizing.value = false
-    draggedItem.value = null
+    draggedItem.value = undefined
 }
 
 function onDrop(row: number, col: number) {
@@ -425,18 +425,18 @@ function onDrop(row: number, col: number) {
         label: draggedItem.value.label,
         width: draggedItem.value.width,
         height: draggedItem.value.height,
-        primary: draggedItem.value.primary,
         description: draggedItem.value.description,
         type: draggedItem.value.type,
-        cover: draggedItem.value.cover,
-        kind: 'media' as const
+        cover: draggedItem.value.coverId,
+        coverUrl: draggedItem.value.coverUrl,
+        kind: draggedItem.value.kind
     }
     const width = item.width
     const height = item.height
 
     if (col + width > COLS || row + height > ROWS) return
 
-    // Clear previous placement
+    // Clear old blocks
     for (let r = 0; r < ROWS; r++) {
         const gridRow = pholi.value[r]
         if (!gridRow) continue
@@ -459,7 +459,7 @@ function onDrop(row: number, col: number) {
 
     pholi.value[row + item.height - 1]![col + item.width - 1] = { id: `size-${item.id}`, ownerId: item.id, kind: 'size' }
     pholi.value[row]![col] = item
-    draggedItem.value = null
+    draggedItem.value = undefined
 }
 
 function removeItem(id: string) {
@@ -488,14 +488,14 @@ function getIndex(id: string) {
 function updateWidth(id: string, w: number) {
     const [row, col] = getIndex(id)
     if (pholi?.value[row!]![col!]) {
-        (pholi.value[row!]![col!] as GridItem).width = w as SizeType
+        (pholi.value[row!]![col!] as ContentCell).width = w as SizeType
     }
 }
 
 function updateHeight(id: string, h: number) {
     const [row, col]: number[] = getIndex(id)
     if (pholi?.value[row!]![col!])
-        (pholi.value[row!]![col!] as GridItem).height = h as SizeType
+        (pholi.value[row!]![col!] as ContentCell).height = h as SizeType
 }
 
 const changeWidth = (newValue: number[] | undefined, id: string) => {
@@ -532,7 +532,6 @@ export function mediaHandler() {
         updatePholi,
         onDragStaged,
         onDragUnstaged,
-        onDragFiller,
         onDragSize,
         onDrop,
         removeItem,
