@@ -68,7 +68,7 @@ onMounted(async () => {
                                     <DialogTitle :value="cell.label" />
                                 </VisuallyHidden>
                                 <div class="object-contain w-fit h-[75vh] overflow-hidden flex justify-center">
-                                    <Card
+                                    <Card v-if="cell.label !== 'undefined' || cell.description !== 'undefined' "
                                         class="mx-4 bg-accent border-secondary border-4 rounded-3xl h-fit w-[15vw] text-white">
                                         <CardHeader>
                                             <h1 class="m-0">{{ cell.label }}</h1>
