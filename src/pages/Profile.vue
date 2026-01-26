@@ -48,8 +48,8 @@ onMounted(async () => {
 
 <template>
     <div class="z-10 m-4 flex flex-row gap-4 justify-between">
-        <ProfileInfoDisplay class="basis-1/4 w-auto h-fit" />
-        <Tabs default-value="pholi" class="basis-3/4 flex-col flex m-4 h-fit w-full gap-4 items-center">
+        <ProfileInfoDisplay class="basis-1/4 2xl:basis-1/5 w-auto h-fit" />
+        <Tabs default-value="pholi" class="flex-1 flex-col flex h-fit w-full gap-4 items-center">
             <TabsList>
                 <TabsTrigger value="pholi">
                     Pholi

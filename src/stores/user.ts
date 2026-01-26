@@ -8,6 +8,7 @@ export const useUserStore = defineStore('user', {
   state: () => ({
     info: null as any | null,
     followingInfo: null as any | null,
+    timestamp: Date.now()
   }),
   actions: {
     async loadUserData(userId: string) {
@@ -30,12 +31,26 @@ export const useUserStore = defineStore('user', {
 
       localStorage.setItem('userInfo', JSON.stringify(info))
       localStorage.setItem('followingInfo', JSON.stringify(this.followingInfo))
+      localStorage.setItem('timestamp', JSON.stringify(Date.now()))
     },
 
-    loadFromCache() {
+    async loadFromCache() {
       const info = localStorage.getItem('userInfo')
-      const following = localStorage.getItem('followingInfo')
+      const timestamp = localStorage.getItem('timestamp')
+      if (timestamp && timestamp !== 'undefined') { this.timestamp = JSON.parse(timestamp) }
+      else { this.timestamp = Date.now() }
+
       if (info) this.info = JSON.parse(info)
+
+      const CACHE_TTL = 1000 * 60 * 5 // 5 mins
+      if (Date.now() - this.timestamp > CACHE_TTL) {
+        const userStore = useUserStore()
+        await userStore.loadUserData(this.info.id)
+        const info = localStorage.getItem('userInfo')
+        if (info) this.info = JSON.parse(info)
+      }
+    
+      const following = localStorage.getItem('followingInfo')
       if (following) this.followingInfo = JSON.parse(following)
       this.info.pholi = JSON.parse(this.info.pholi)
     }

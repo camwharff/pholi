@@ -8,6 +8,7 @@ const { getFollowing, getFollowers, getFollowingCount, getFollowerCount } = inte
 
 interface Profile {
   id: string
+  timestamp: number
   username: string
   full_name: string
   avatar_url: string
@@ -26,14 +27,11 @@ interface Profile {
 export const useProfilesStore = defineStore('profiles', {
   state: () => ({
     profiles: {} as Record<string, Profile>,
-    loading: {} as Record<string, boolean>,
+    loading: {} as Record<string, boolean>
   }),
 
   actions: {
     async fetchProfile(username: string) {
-      if (this.profiles[username]) {
-        return this.profiles[username]
-      }
 
       if (this.loading[username]) return
       this.loading[username] = true
@@ -71,6 +69,7 @@ export const useProfilesStore = defineStore('profiles', {
         media: data.media,
         pholi: data.pholi,
         posts: data.posts,
+        timestamp: Date.now(),
         followingData: {
           following,
           followers,
@@ -91,13 +90,17 @@ export const useProfilesStore = defineStore('profiles', {
 
       this.loading[username] = false
       return profile
-    }
-    ,
+    },
 
     loadFromCache(username: string) {
+      const CACHE_TTL = 1000 * 60 * 5 // 5 mins
+
       const cached = localStorage.getItem(`profile:${username}`)
       if (cached) {
         this.profiles[username] = JSON.parse(cached) as Profile
+        if (Date.now() - this.profiles[username].timestamp > CACHE_TTL) {
+
+        }
       }
     },
 

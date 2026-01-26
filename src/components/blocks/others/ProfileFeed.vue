@@ -15,6 +15,14 @@ const { getSrc } = mediaHandler()
 
 onMounted(async () => {
     const username = route.params.username as string
+    await profilesStore.loadFromCache(username)
+
+    posts.value = computed(() => profilesStore.profiles[username ?? '']?.posts ?? []).value
+    for (const post of posts.value) {
+        const source = await getSrc(post.id)
+        post.src = source ?? ''
+    }
+    
     await profilesStore.fetchProfile(username)
     await profilesStore.loadFromCache(username)
 
@@ -23,7 +31,6 @@ onMounted(async () => {
         const source = await getSrc(post.id)
         post.src = source ?? ''
     }
-    console.log(posts.value)
 })
 
 </script>

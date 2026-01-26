@@ -12,6 +12,18 @@ const pholi = ref<GridMatrix>()
 
 onMounted(async () => {
     const username = route.params.username as string
+    await profilesStore.loadFromCache(username)
+
+    pholi.value = computed(() => profilesStore.profiles[username]?.pholi ?? []).value
+    for (const row of pholi.value) {
+        for (const cell of row) {
+            if (cell && cell.kind === 'media') {
+                const source = await getSrc(cell.id)
+                cell.url = source ?? ''
+            }
+        }
+    }
+
     await profilesStore.fetchProfile(username)
     await profilesStore.loadFromCache(username)
 

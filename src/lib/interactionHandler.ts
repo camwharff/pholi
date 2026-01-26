@@ -1,18 +1,23 @@
 import { supabase } from "@/lib/supabaseClient"
+import { useProfilesStore } from "@/stores/profiles"
 
-async function follow(currId: string, targetId: string) {
+async function follow(currId: string, targetId: string, username: string) {
     await supabase.from('follows').insert({
         follower_id: currId,
         following_id: targetId
     })
+    const profilesStore = useProfilesStore()
+    await profilesStore.fetchProfile(username)
 }
 
-async function unfollow(currId: string, targetId: string) {
+async function unfollow(currId: string, targetId: string, username: string) {
     await supabase
         .from('follows')
         .delete()
         .eq('follower_id', currId)
         .eq('following_id', targetId)
+    const profilesStore = useProfilesStore()
+    await profilesStore.fetchProfile(username)
 }
 
 async function getFollowing(userId: string) {
@@ -47,10 +52,6 @@ async function getFollowerCount(userId: string) {
     return followersCount
 }
 
-const isFollowing = (currId: string, following: string[]) => {
-    return following.includes(currId)
-}
-
 export function interactionHandler() {
     return {
         follow,
@@ -58,7 +59,6 @@ export function interactionHandler() {
         getFollowing,
         getFollowingCount,
         getFollowers,
-        getFollowerCount,
-        isFollowing
+        getFollowerCount
     }
 }
