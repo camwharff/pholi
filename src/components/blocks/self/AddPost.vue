@@ -36,12 +36,12 @@ const { disablePost, newPost, addPost, selectPost } = postHandler()
                 </div>
                 <div v-if="newPost" class="w-full flex flex-col gap-1">
                     <Label class="flex flex-row justify-between">
-                        <p>Title</p>
-                        <Input class="w-2/3" v-model="newPost.title" />
+                        <p>label</p>
+                        <Input class="w-2/3" v-model="newPost.label" />
                     </Label>
                     <Label class="flex flex-row justify-between">
-                        <p>Caption</p>
-                        <Input class="w-2/3" v-model="newPost.caption" />
+                        <p>description</p>
+                        <Input class="w-2/3" v-model="newPost.description" />
                     </Label>
                 </div>
                 <Input class="bg-white w-full text-black" type="file" accept="image/*, audio/*, video/*"

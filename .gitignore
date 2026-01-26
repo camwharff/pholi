@@ -22,3 +22,19 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# AI / Copilot instruction files and agent rules
+# Ignore repository-local Copilot instruction files
+.github/copilot-instructions.md
+**/copilot-instructions.md
+# Common agent instruction files
+AGENT.md
+AGENTS.md
+CLAUDE.md
+# Cursor / Copilot rule directories
+.cursorrules
+.windsurfrules
+.clinerules
+.cursor/rules/
+.windsurf/rules/
+.clinerules/

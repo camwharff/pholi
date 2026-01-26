@@ -3,6 +3,7 @@ import { supabase } from '@/lib/supabaseClient'
 import type { Ref } from 'vue'
 import { authHandler } from '@/lib/authHandler'
 import { uiHandler } from '@/lib/uiHandler'
+import { useUserStore } from '@/stores/user'
 
 const { shortAlert } = uiHandler()
 
@@ -89,7 +90,7 @@ const mediaViewable: Ref<ContentCell | undefined> = ref()
 const filler = ['text', 'blank']
 const COLS = 16
 const ROWS = 9
-const nullPholi = [
+export const nullPholi = [
     [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
@@ -240,6 +241,7 @@ const stagedItems = computed(() =>
 )
 
 async function updatePholi() {
+    
     const { user } = authHandler()
     if (!user.value) return
     try {
@@ -252,7 +254,32 @@ async function updatePholi() {
     } catch (error) {
         if (error instanceof Error) alert(error.message)
     }
+    const userStore = useUserStore()
+    await userStore.loadUserData(user.value.id)
     console.log("pholi saved")
+}
+
+// helper to normalize pholi from DB (may be stringified)
+function normalizePholi(raw: any) {
+    // if string, attempt to parse
+    if (typeof raw === 'string') {
+        try {
+            const parsed = JSON.parse(raw)
+            for (const row of parsed) {
+                for (const cell of row) {
+                    if (cell.kind === 'media') {
+                        cell.url = getSrc(cell.id)
+                    }
+                }
+            }
+            if (Array.isArray(parsed)) return parsed
+        } catch {
+            // fallthrough to return nullPholi
+        }
+    }
+    // if already an array return it, otherwise fallback
+    if (Array.isArray(raw)) return raw
+    return nullPholi
 }
 
 async function loadMedia() {
@@ -270,9 +297,9 @@ async function loadMedia() {
 
         if (data) {
             media_raw.value = data.media ?? []
-            pholi.value = data.pholi ?? []
+            pholi.value = normalizePholi(data.pholi ?? nullPholi)
         }
-        if (pholi.value.length <= 1) {
+        if (!Array.isArray(pholi.value) || pholi.value.length <= 1) {
             pholi.value = nullPholi
         }
         await downloadMedia()
@@ -331,7 +358,10 @@ async function setMedia(username: string) {
 
         if (data) {
             media_raw.value = data.media ?? []
-            pholi.value = data.pholi ?? []
+            pholi.value = normalizePholi(data.pholi ?? nullPholi)
+        }
+        if (!Array.isArray(pholi.value)) {
+            pholi.value = nullPholi
         }
         await downloadMedia()
     } catch (error) {
@@ -367,6 +397,19 @@ function onDragUnstaged(item: MediaCell) {
     sizing.value = false
 }
 
+function onDragFiller() {
+    draggedItem.value = {
+        id: `filler-${Date.now()}`,
+        label: 'Text',
+        width: 2,
+        height: 2,
+        description: '',
+        type: 'text',
+        kind: 'text'
+    } as TextCell
+    sizing.value = false
+}
+
 function onDragSize(item: SizeCell) {
     const [row, col] = getIndex(item.ownerId)
     draggedItem.value = (pholi.value[row!]![col!] as ContentCell) ?? null
@@ -380,7 +423,7 @@ async function getSrc(id: string) {
         return URL.createObjectURL(data)
     }
     catch (error) {
-        alert(error)
+        console.log(error)
     }
 }
 
@@ -533,6 +576,7 @@ export function mediaHandler() {
         onDragStaged,
         onDragUnstaged,
         onDragSize,
+        onDragFiller,
         onDrop,
         removeItem,
         changeHeight,

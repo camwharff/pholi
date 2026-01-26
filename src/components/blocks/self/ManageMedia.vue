@@ -25,7 +25,7 @@ import Button from '@/components/ui/button/Button.vue'
 import { Spinner } from '@/components/ui/spinner'
 import { Clapperboard, Music, Image } from 'lucide-vue-next'
 
-const { disableUpload, newMedia, deleteMedia, addCover, unplacedItems, stagedItems, uploadMedia, onDragUnstaged, onDragFiller, updatePholi, selectMedia } = mediaHandler()
+const { disableUpload, newMedia, deleteMedia, onDragFiller, addCover, unplacedItems, stagedItems, uploadMedia, onDragUnstaged, updatePholi, selectMedia } = mediaHandler()
 
 function getUrl(file: File) {
     return URL.createObjectURL(file)
@@ -122,17 +122,17 @@ function getUrl(file: File) {
                         <ContextMenu>
                             <ContextMenuTrigger>
                                 <img class="aspect-square object-cover border-0 w-full h-full"
-                                    v-if="item.type === 'image'" :src="item.src" />
+                                    v-if="item.type === 'image'" :src="item.url" />
                                 <div v-if="item.type === 'video'" class="relative h-full w-full aspect-square">
                                     <video class="aspect-square object-cover border-0 w-full h-full">
-                                        <source :src="item.src" />
+                                        <source :src="item.url" />
                                     </video>
                                     <div class="absolute inset-0 flex items-center justify-center bg-white/30">
                                         <Clapperboard class="h-3/4 w-3/4" />
                                     </div>
                                 </div>
                                 <div v-if="item.type === 'audio'" class="relative h-full w-full aspect-square">
-                                    <img :src="item.cover" class="absolute inset-0 h-full w-full object-cover" />
+                                    <img :src="item.coverUrl" class="absolute inset-0 h-full w-full object-cover" />
                                     <div class="absolute inset-0 flex items-center justify-center bg-white/30">
                                         <Music class="h-3/4 w-3/4" />
                                     </div>
@@ -156,7 +156,7 @@ function getUrl(file: File) {
                     class="grid grid-cols-2 gap-4 max-h-[65vh] h-fit auto-rows-max w-inherit items-center bg-accent rounded-3xl shadow-md text-white text-sm p-4 z-10 overflow-y-scroll">
                     <div v-for="item in stagedItems" :key="item.id"
                         class="cursor-move border-secondary border-4 text-white aspect-square rounded-3xl overflow-hidden">
-                        <img :src="item.src" :alt="item.label" class="object-cover border-0 w-full h-full" />
+                        <img :src="item.url" :alt="item.label" class="object-cover border-0 w-full h-full" />
                     </div>
                 </div>
             </TabsContent>

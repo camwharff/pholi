@@ -47,11 +47,12 @@ const router = createRouter({
 router.beforeEach(async (to) => {
   const { user, loadUser } = authHandler()
   await loadUser()
-  if (to.meta.guestOnly && user) {
+  // check .value on the ref
+  if (to.meta.guestOnly && user.value) {
     return { name: 'account' }
   }
 
-  if (to.meta.requiresAuth && !user) {
+  if (to.meta.requiresAuth && !user.value) {
     return { name: 'home' }
   }
 

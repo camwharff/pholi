@@ -24,13 +24,16 @@ const { loadPosts } = postHandler()
 const { loadMedia } = mediaHandler()
 const { getProfile } = infoHandler()
 const { user, signOut, openSettings } = authHandler()
-const infoTab = ref<'profile' | 'media' | 'post'>('profile')
+const infoTab = ref<'profile' | 'pholi' | 'post'>('profile')
 const displayTab = ref<'pholi' | 'feed'>('pholi')
+
+const editInfo = ref(false)
+const editPholi = ref(false)
 
 watch(infoTab, (value) => {
     if (value === 'profile') {
         editPholi.value = false
-    } else if (value === 'media') {
+    } else if (value === 'pholi') {
         displayTab.value = 'pholi'
         editPholi.value = true
     } else {
@@ -49,9 +52,6 @@ onMounted(async () => {
     }
 })
 
-const editInfo = ref(false)
-const editPholi = ref(false)
-
 </script>
 
 <template>
@@ -62,7 +62,7 @@ const editPholi = ref(false)
                 <TabsTrigger value="profile">
                     Profile
                 </TabsTrigger>
-                <TabsTrigger value="media">
+                <TabsTrigger value="pholi">
                     Pholi
                 </TabsTrigger>
                 <TabsTrigger value="post">
@@ -92,7 +92,7 @@ const editPholi = ref(false)
                     </div>
                 </div>
             </TabsContent>
-            <TabsContent value="media" class="w-full">
+            <TabsContent value="pholi" class="w-full">
                 <ManageMedia />
             </TabsContent>
             <TabsContent value="post" class="w-full">
