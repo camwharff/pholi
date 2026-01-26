@@ -12,7 +12,7 @@ async function unfollow(currId: string, targetId: string) {
         .from('follows')
         .delete()
         .eq('follower_id', currId)
-        .eq('following_id', targetId);
+        .eq('following_id', targetId)
 }
 
 async function getFollowing(userId: string) {
@@ -34,7 +34,7 @@ async function getFollowingCount(userId: string) {
 async function getFollowers(userId: string) {
     const { data: followers } = await supabase
         .from('follows')
-        .select('follower_id, profiles(username, display_name, avatar_url)')
+        .select('follower_id')
         .eq('following_id', userId)
     return followers
 }

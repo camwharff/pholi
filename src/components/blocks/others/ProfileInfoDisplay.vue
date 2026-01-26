@@ -29,7 +29,7 @@ const route = useRoute()
 const { mediaViewable } = mediaHandler()
 const { postViewable } = postHandler()
 const { follow, unfollow } = interactionHandler()
-const { user } = authHandler()
+const { user, loadUser } = authHandler()
 const profilesStore = useProfilesStore()
 const profile = ref<Profile>({
     id: '',
@@ -49,6 +49,7 @@ onMounted(async () => {
     const username = route.params.username as string
     await profilesStore.fetchProfile(username)
     await profilesStore.loadFromCache(username)
+    await loadUser()
 
     profile.value = {
         id: computed(() => profilesStore.profiles[username ?? '']?.id ?? '').value,
@@ -85,12 +86,12 @@ onMounted(async () => {
                 </div>
                 <div class="flex flex-row justify-between items-center gap-4">
                     <div class="bg-accent p-4 shadow-md flex gap-2 flex-col rounded-xl w-full">
-                        <p>{{ profile.followingData.followerCount ?? '0' }} Followers</p>
+                        <p>{{ profile.followingData.followerCount ?? '0' }} {{ profile.followingData.followerCount === 1 ? 'Follower' : 'Followers' }}</p>
                         <p>{{ profile.followingData.followingCount ?? '0' }} Following</p>
                     </div>
                     <div v-if="user">
-                        <Button v-if="profile.followingData.followers.includes(profile.id)" @click="follow">Follow</Button>
-                        <Button v-else @click="unfollow">unfollow</Button>
+                        <Button v-if="profile.followingData.followers.includes(user.id)" @click="unfollow(user.id, profile.id)">Unfollow</Button>
+                        <Button v-else @click="follow(user.id, profile.id)">Follow</Button>
                     </div>
                 </div>
             </div>

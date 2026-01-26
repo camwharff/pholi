@@ -41,7 +41,7 @@ const followerCount = computed(() => userStore.followingInfo?.followerCount ?? '
                 <p>{{ bio }}</p>
             </div>
             <div class="bg-accent p-4 shadow-md flex gap-2 flex-col rounded-xl">
-                <p>{{ followerCount }} Followers</p>
+                <p>{{ followerCount }} {{ followerCount === 1 ? 'Follower' : 'Followers' }}</p>
                 <p>{{ followingCount }} Following</p>
             </div>
         </div>
