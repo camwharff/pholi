@@ -1,22 +1,8 @@
 <script setup lang="ts">
 import { mediaHandler, type GridMatrix } from '@/lib/mediaHandler'
-import {
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    DialogTrigger
-} from '@/components/ui/dialog'
-import {
-    Card,
-    CardContent,
-    CardHeader
-} from '@/components/ui/card'
-import { VisuallyHidden } from 'reka-ui'
-import Aud from '@/components/media/Aud.vue'
-import Vid from '@/components/media/Vid.vue'
-import Image from '@/components/media/Imag.vue'
 import { onMounted, computed, ref } from 'vue'
 import { useUserStore } from '@/stores/user'
+import MediaDialog from '@/components/blocks/shared/MediaDialog.vue'
 
 const { widthConfig, heightConfig, viewMedia, getSrc } = mediaHandler()
 const userStore = useUserStore()
@@ -27,7 +13,6 @@ onMounted(async () => {
 
     pholi.value = computed(() => userStore.info?.pholi ?? []).value
     if (pholi.value) {
-        // console.log(pholi.value)
         for (const row of pholi.value) {
             for (const cell of row) {
                 if (cell && cell.kind === 'media') {
@@ -51,43 +36,8 @@ onMounted(async () => {
                     heightConfig[cell.height],
                     'absolute top-0 left-0 flex items-center justify-center text-xs text-white overflow-hidden'
                 ]" @mouseover="viewMedia(cell, true)" @mouseleave="viewMedia(cell, false)">
-                    <div class="w-full h-full p-2">
-                        <Dialog class="w-full h-full">
-                            <DialogTrigger class="w-full h-full cursor-help">
-                                <Image v-if="cell.type === 'image'" :src="cell.url ?? ''" :alt="cell.label"
-                                    class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
-                                <Vid v-if="cell.type === 'video'" :src="cell.url ?? ''" :alt="cell.label"
-                                    class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
-                                <Aud v-if="cell.type === 'audio'" :src="cell.url ?? ''" :alt="cell.label"
-                                    :cover="cell.coverUrl"
-                                    class="object-cover w-full h-full border-4 border-secondary bg-secondary rounded-3xl" />
-                            </DialogTrigger>
-                            <DialogContent class="w-auto h-auto p-4 shadow-none" :aria-describedby="undefined">
-                                <VisuallyHidden asChild>
-                                    <DialogTitle :value="cell.label" />
-                                </VisuallyHidden>
-                                <div class="object-contain w-fit h-[75vh] overflow-hidden flex justify-center">
-                                    <Card v-if="cell.label !== 'undefined' || cell.description !== 'undefined'"
-                                        class="mx-4 bg-accent border-secondary border-4 rounded-3xl h-fit w-[15vw] text-white">
-                                        <CardHeader>
-                                            <h1 class="m-0">{{ cell.label }}</h1>
-                                        </CardHeader>
-                                        <div v-if="cell.description">
-                                            <CardContent>
-                                                <h3>{{ cell.description }}</h3>
-                                            </CardContent>
-                                        </div>
-                                    </Card>
-                                    <Image v-if="cell.type === 'image'" :src="cell.url ?? ''" :alt="cell.label"
-                                        class="w-fit h-full border-secondary bg-accent rounded-3xl border-4" />
-                                    <Vid v-if="cell.type === 'video'" :src="cell.url ?? ''" :alt="cell.label"
-                                        class="w-fit h-full border-secondary bg-accent rounded-3xl border-4" />
-                                    <Aud v-if="cell.type === 'audio'" :src="cell.url ?? ''" :alt="cell.label"
-                                        :cover="cell.coverUrl"
-                                        class="w-fit h-full border-secondary bg-accent rounded-3xl border-4" />
-                                </div>
-                            </DialogContent>
-                        </Dialog>
+                    <div class="w-full h-full p-2">            
+                        <MediaDialog :src="cell.url ?? ''" :type="cell.type ?? ''" :alt="cell.id ?? ''" :label="cell.label" :description="cell.description"/>
                     </div>
                 </div>
                 <div v-if="cell && cell.kind === 'text'" :class="[
@@ -95,26 +45,8 @@ onMounted(async () => {
                     heightConfig[cell.height],
                     'absolute top-0 left-0 flex items-center justify-center text-xs text-white overflow-hidden'
                 ]" @mouseover="viewMedia(cell, true)" @mouseleave="viewMedia(cell, false)">
-                    <div class="w-full h-full p-2">
-                        <Dialog class="w-full h-full">
-                            <DialogTrigger class="w-full h-full cursor-help">
-                                <p>{{ cell.description }}</p>
-                            </DialogTrigger>
-                            <DialogContent class="w-auto h-auto p-4 shadow-none" :aria-describedby="undefined">
-                                <VisuallyHidden asChild>
-                                    <DialogTitle :value="cell.label" />
-                                </VisuallyHidden>
-                                <div class="object-contain w-fit h-[75vh] overflow-hidden flex justify-center">
-                                    <Card
-                                        class="mx-4 bg-accent border-secondary border-4 rounded-3xl h-fit w-[15vw] text-white">
-                                        <CardHeader>
-                                            <h1 class="m-0">{{ cell.label }}</h1>
-                                        </CardHeader>
-                                    </Card>
-                                    {{ cell.description }}
-                                </div>
-                            </DialogContent>
-                        </Dialog>
+                    <div class="w-full h-full p-2">            
+                        <MediaDialog :src="cell.url ?? ''" :type="'text'" :alt="cell.id ?? ''" :label="cell.label" :description="cell.description"/>
                     </div>
                 </div>
             </div>
