@@ -24,6 +24,10 @@ defineProps<{ src: string; type: string; alt: string; label?: string; descriptio
                 class="cursor-help w-full h-3/4 border-secondary bg-accent rounded-3xl border-4" />
             <audio v-if="type === 'audio'" :src="src ?? ''" :alt="label" class="cursor-help w-full h-full bg-accent"
                 controls></audio>
+            <div v-if="type === 'text'">
+                <p>{{ label }}</p>
+                <p>{{ description }}</p>
+            </div>
         </DialogTrigger>
         <DialogContent class="h-screen w-screen">
             <VisuallyHidden asChild>
@@ -31,7 +35,7 @@ defineProps<{ src: string; type: string; alt: string; label?: string; descriptio
                 <DialogDescription :value="label" />
             </VisuallyHidden>
             <div class="h-full w-fit flex flex-row gap-4">
-                <Card v-if="label || description"
+                <Card v-if="(label || description) && type !== 'text'"
                     class="bg-accent border-4 border-secondary p-4 rounded-3xl h-fit max-w-[20vw] flex flex-col gap-4">
                     <p v-if="label" class="w-full text-4xl font-bold">{{ label }}</p>
                     <p v-if="description" class="w-full text-xl ">{{ description }}</p>
@@ -45,6 +49,10 @@ defineProps<{ src: string; type: string; alt: string; label?: string; descriptio
                         class="w-full h-3/4 border-secondary bg-accent rounded-3xl border-4" />
                     <audio v-if="type === 'audio'" :src="src ?? ''" :alt="label ?? ''" class="w-full h-full bg-accent"
                         controls></audio>
+                    <div v-if="type === 'text'">
+                        <p>{{ label }}</p>
+                        <p>{{ description }}</p>
+                    </div>
                 </div>
             </div>
         </DialogContent>

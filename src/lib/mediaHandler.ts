@@ -86,6 +86,7 @@ const media_raw: Ref<MediaRaw[]> = ref([])
 const media_list: Ref<MediaCell[]> = ref([])
 const pholi: Ref<(GridCell)[][], GridMatrix | (GridCell)[][]> = ref([])
 const mediaViewable: Ref<ContentCell | undefined> = ref()
+const disableSave = ref(false)
 
 const filler = ['text', 'blank']
 const COLS = 16
@@ -219,7 +220,8 @@ const uploadMedia = async (evt: Event) => {
     }
 
     disableUpload.value = false
-    loadMedia()
+    shortAlert('Upload complete')
+    await loadMedia()
     form.reset()
     newMedia.value = []
 }
@@ -241,7 +243,8 @@ const stagedItems = computed(() =>
 )
 
 async function updatePholi() {
-    
+    disableSave.value = true
+
     const { user } = authHandler()
     if (!user.value) return
     try {
@@ -251,12 +254,14 @@ async function updatePholi() {
         }
         const { error } = await supabase.from('profiles').update(updates).eq('id', user.value.id)
         if (error) throw error
+        const userStore = useUserStore()
+        await userStore.loadUserData(user.value.id)
     } catch (error) {
         if (error instanceof Error) alert(error.message)
+    } finally {
+        shortAlert('Pholi saved')
+        disableSave.value = false
     }
-    const userStore = useUserStore()
-    await userStore.loadUserData(user.value.id)
-    console.log("pholi saved")
 }
 
 // helper to normalize pholi from DB (may be stringified)
@@ -472,7 +477,8 @@ function onDrop(row: number, col: number) {
         type: draggedItem.value.type,
         cover: draggedItem.value.coverId,
         coverUrl: draggedItem.value.coverUrl,
-        kind: draggedItem.value.kind
+        kind: draggedItem.value.kind,
+        url: draggedItem.value.url
     }
     const width = item.width
     const height = item.height
@@ -566,6 +572,7 @@ export function mediaHandler() {
         heightConfig,
         filler,
         mediaViewable,
+        disableSave,
         changeText,
         addCover,
         deleteMedia,

@@ -25,7 +25,7 @@ import Button from '@/components/ui/button/Button.vue'
 import { Spinner } from '@/components/ui/spinner'
 import { Clapperboard, Music, Image } from 'lucide-vue-next'
 
-const { disableUpload, newMedia, deleteMedia, onDragFiller, addCover, unplacedItems, stagedItems, uploadMedia, onDragUnstaged, updatePholi, selectMedia } = mediaHandler()
+const { disableUpload, disableSave, newMedia, deleteMedia, onDragFiller, addCover, unplacedItems, stagedItems, uploadMedia, onDragUnstaged, updatePholi, selectMedia } = mediaHandler()
 
 function getUrl(file: File) {
     return URL.createObjectURL(file)
@@ -163,8 +163,10 @@ function getUrl(file: File) {
         </Tabs>
         <form @submit.prevent="updatePholi">
             <div class="flex flex-row justify-center">
-                <Button type="submit">
-                    Save Pholi
+                <Button :disabled="disableSave" type="submit"
+                    class="rounded-lg text-white p-2 w-fit bg-secondary hover:bg-primary">
+                    <Spinner v-if="disableSave" />
+                    {{ disableSave ? 'saving...' : 'Save Pholi' }}
                 </Button>
             </div>
         </form>
