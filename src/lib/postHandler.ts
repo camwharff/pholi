@@ -16,8 +16,8 @@ const postViewable: Ref<Post | undefined> = ref()
 
 export interface Post {
     id: string
-    title?: string
-    caption?: string
+    label?: string
+    description?: string
     src: string
     type: string
     date: string
@@ -27,8 +27,8 @@ interface PostMedia {
     file: File
     type: string
     url: string
-    title?: string
-    caption?: string
+    label?: string
+    description?: string
 }
 
 function viewPost(post: Post, view: boolean) {
@@ -72,9 +72,9 @@ const addPost = async (evt: Event) => {
         const new_post: MediaRaw = {
             id: filePath,
             path: filePath,
-            label: myPost.title,
+            label: myPost.label,
             timeStamp: Date.now(),
-            description: myPost.caption,
+            description: myPost.description,
             type: myPost.type
         }
         try {
@@ -130,8 +130,8 @@ async function loadPosts() {
                     src: url,
                     type: post.type,
                     date: post.date ?? 'may 22',
-                    title: post.label,
-                    caption: post.description
+                    label: post.label,
+                    description: post.description
                 })
             } catch (error) {
                 if (error instanceof Error) alert(`${error.message} while downloading post media`)

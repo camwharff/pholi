@@ -4,7 +4,8 @@ import {
     Dialog,
     DialogContent,
     DialogTitle,
-    DialogTrigger
+    DialogTrigger,
+    DialogDescription
 } from '@/components/ui/dialog'
 import Card from '@/components/ui/card/Card.vue'
 import { VisuallyHidden } from 'reka-ui'
@@ -26,6 +27,7 @@ onMounted(async () => {
     for (const post of posts.value) {
         const source = await getSrc(post.id)
         post.src = source ?? ''
+        console.log(post)
     }
 })
 
@@ -38,35 +40,36 @@ onMounted(async () => {
             @mouseover="viewPost(post, true)" @mouseleave="viewPost(post, false)">
             <Dialog class="w-full h-full">
                 <DialogTrigger class="w-full h-full">
-                    <Image v-if="post.type === 'image'" :src="post.src" :alt="post.title"
+                    <Image v-if="post.type === 'image'" :src="post.src ?? ''" :alt="post.label"
                         class="cursor-help w-full h-full border-secondary bg-accent rounded-3xl border-4 object-cover" />
-                    <video v-if="post.type === 'video'" :src="post.src" :alt="post.title"
+                    <video v-if="post.type === 'video'" :src="post.src ?? ''" :alt="post.label"
                         class="cursor-help w-full h-full border-secondary bg-accent rounded-3xl border-4 object-cover"
                         controls></video>
-                    <Image v-if="post.type === 'audio'" :src="post.src" :alt="post.title"
+                    <Image v-if="post.type === 'audio'" :src="post.src ?? ''" :alt="post.label"
                         class="cursor-help w-full h-3/4 border-secondary bg-accent rounded-3xl border-4" />
-                    <audio v-if="post.type === 'audio'" :src="post.src" :alt="post.title"
+                    <audio v-if="post.type === 'audio'" :src="post.src ?? ''" :alt="post.label"
                         class="cursor-help w-full h-full bg-accent" controls></audio>
                 </DialogTrigger>
-                <DialogContent class="h-3/4 w-auto">
+                <DialogContent class="h-screen w-screen">
                     <VisuallyHidden asChild>
-                        <DialogTitle :value="post.title" />
+                        <DialogTitle :value="post.label" />
+                        <DialogDescription :value="post.label" />
                     </VisuallyHidden>
-                    <div class="h-[70vh] w-fit flex flex-row gap-4">
-                        <Card v-if="post.title || post.caption"
+                    <div class="h-full w-fit flex flex-row gap-4">
+                        <Card v-if="post.label || post.description"
                             class="bg-accent border-4 border-secondary p-4 rounded-3xl h-fit max-w-[20vw] flex flex-col gap-4">
-                            <p v-if="post.title" class="w-full text-4xl font-bold">{{ post.title }}</p>
-                            <p v-if="post.caption" class="w-full text-xl ">{{ post.caption }}</p>
+                            <p v-if="post.label" class="w-full text-4xl font-bold">{{ post.label }}</p>
+                            <p v-if="post.description" class="w-full text-xl ">{{ post.description }}</p>
                         </Card>
-                        <div class="flex-1 w-full">
-                            <Image v-if="post.type === 'image'" :src="post.src" :alt="post.title"
-                                class="h-full border-secondary bg-accent rounded-3xl border-4 object-cover" />
-                            <video v-if="post.type === 'video'" :src="post.src" :alt="post.title"
-                                class="w-full h-full border-secondary bg-accent rounded-3xl border-4 object-cover"
+                        <div class="flex-1 h-3/4">
+                            <Image v-if="post.type === 'image'" :src="post.src ?? ''" :alt="post.label ?? ''"
+                                class="h-full border-secondary bg-accent rounded-3xl border-4 w-full" />
+                            <video v-if="post.type === 'video'" :src="post.src ?? ''" :alt="post.label ?? ''"
+                                class="w-full h-full border-secondary bg-accent rounded-3xl border-4"
                                 controls></video>
-                            <Image v-if="post.type === 'audio'" :src="post.src" :alt="post.title"
+                            <Image v-if="post.type === 'audio'" :src="post.src ?? ''" :alt="post.label ?? ''"
                                 class="w-full h-3/4 border-secondary bg-accent rounded-3xl border-4" />
-                            <audio v-if="post.type === 'audio'" :src="post.src" :alt="post.title"
+                            <audio v-if="post.type === 'audio'" :src="post.src ?? ''" :alt="post.label ?? ''"
                                 class="w-full h-full bg-accent" controls></audio>
                         </div>
                     </div>

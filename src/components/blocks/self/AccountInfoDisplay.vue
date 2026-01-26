@@ -20,8 +20,6 @@ const avatarUrl = computed(() => userStore.info?.avatar_url ?? '')
 const fullName = computed(() => userStore.info?.full_name ?? '')
 const username = computed(() => userStore.info?.username ?? '')
 const bio = computed(() => userStore.info?.bio ?? '')
-// const websiteUrl = computed(() => userStore.info?.website?.url ?? '')
-// const websiteTitle = computed(() => userStore.info?.website?.title ?? '')
 const followingCount = computed(() => userStore.followingInfo?.followingCount ?? '')
 const followerCount = computed(() => userStore.followingInfo?.followerCount ?? '')
 

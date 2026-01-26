@@ -37,6 +37,7 @@ export const useUserStore = defineStore('user', {
       const following = localStorage.getItem('followingInfo')
       if (info) this.info = JSON.parse(info)
       if (following) this.followingInfo = JSON.parse(following)
+      this.info.pholi = JSON.parse(this.info.pholi)
     }
   }
 })
