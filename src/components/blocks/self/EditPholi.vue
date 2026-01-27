@@ -5,10 +5,28 @@ import {
     ContextMenuContent,
     ContextMenuItem
 } from '@/components/ui/context-menu'
-import { mediaHandler, type SizeCell, type GridMatrix, nullPholi } from '@/lib/mediaHandler'
+import { mediaHandler, type SizeCell, type GridMatrix, type TextCell, nullPholi } from '@/lib/mediaHandler'
 import { onMounted, ref, computed } from 'vue'
 import { useUserStore } from '@/stores/user'
 import MediaDisplay from '@/components/media/MediaDisplay.vue'
+import { Textarea } from '@/components/ui/textarea'
+import { Button } from '@/components/ui/button'
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from '@/components/ui/popover'
 
 const { pholi, onDrop, onDragStaged, onDragSize, widthConfig, heightConfig, removeItem, getSrc } = mediaHandler()
 
@@ -40,7 +58,7 @@ onMounted(async () => {
             <div v-for="(cell, colIndex) in row" :key="`${rowIndex}-${colIndex}`"
                 class="relative overflow-visible aspect-square outline-1 outline-white/30 outline-dashed m-0"
                 @dragover.prevent @drop="onDrop(rowIndex, colIndex)">
-                <div v-if="cell && (cell.kind === 'media' || cell.kind === 'text' || cell.kind === 'filler')" :class="[
+                <div v-if="cell && (cell.kind === 'media' || cell.kind === 'filler' || cell.kind === 'text')" :class="[
                     widthConfig[cell.width],
                     heightConfig[cell.height],
                     'absolute top-0 left-0 flex items-center justify-center text-xs text-white overflow-hidden text-center'
@@ -55,8 +73,11 @@ onMounted(async () => {
                                 class="w-full h-full rounded-3xl" />
                         </ContextMenuTrigger>
                         <ContextMenuContent>
-                            <ContextMenuItem @click="removeItem(cell.id)" inset>
+                            <ContextMenuItem @click="removeItem(cell.id)">
                                 Remove
+                            </ContextMenuItem>
+                            <ContextMenuItem @click="editCellInfo(cell.id)">
+                                Edit Item Info
                             </ContextMenuItem>
                         </ContextMenuContent>
                     </ContextMenu>
@@ -68,4 +89,5 @@ onMounted(async () => {
             </div>
         </template>
     </div>
+
 </template>

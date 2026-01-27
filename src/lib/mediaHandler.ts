@@ -39,6 +39,7 @@ export interface FillCell extends ContentCell {
 
 export interface TextCell extends ContentCell {
     label: string
+    description: string
     kind: 'text'
 }
 
@@ -405,7 +406,18 @@ function onDragUnstaged(item: MediaCell) {
 function onDragFiller() {
     draggedItem.value = {
         id: `filler-${Date.now()}`,
-        label: 'Text',
+        width: 2,
+        height: 2,
+        type: 'filler',
+        kind: 'filler'
+    } as FillCell
+    sizing.value = false
+}
+
+function onDragText() {
+    draggedItem.value = {
+        id: `text-${Date.now()}`,
+        label: 'Your Text',
         width: 2,
         height: 2,
         description: '',
@@ -557,6 +569,13 @@ const changeHeight = (newValue: number[] | undefined, id: string) => {
         updateHeight(id, newValue[0])
 }
 
+function updateText(cell: TextCell, newText: string, label: boolean) {
+    if (label) {
+        cell.label = newText
+    } else {
+        cell.description = newText
+    }
+}
 
 export function mediaHandler() {
     return {
@@ -584,6 +603,7 @@ export function mediaHandler() {
         onDragUnstaged,
         onDragSize,
         onDragFiller,
+        onDragText,
         onDrop,
         removeItem,
         changeHeight,
@@ -592,6 +612,7 @@ export function mediaHandler() {
         setMedia,
         selectMedia,
         downloadMedia,
-        viewMedia
+        viewMedia,
+        updateText
     }
 }

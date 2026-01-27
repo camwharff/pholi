@@ -112,14 +112,14 @@ onMounted(async () => {
             </TabsList>
             <TabsContent value="pholi" class="w-full">
                 <div v-if="editPholi">
-                    <EditPholi class="w-full h-fit" />
+                    <EditPholi />
                 </div>
                 <div v-else>
-                    <AccountMedia class="w-full h-fit" />
+                    <AccountMedia />
                 </div>
             </TabsContent>
             <TabsContent value="feed" class="w-full">
-                <AccountFeed class="w-full h-fit" />
+                <AccountFeed />
             </TabsContent>
         </Tabs>
 

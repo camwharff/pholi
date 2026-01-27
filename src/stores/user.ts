@@ -40,8 +40,6 @@ export const useUserStore = defineStore('user', {
         }
       }
 
-      console.log(info.pholi)
-
       localStorage.setItem('userInfo', JSON.stringify(info))
       localStorage.setItem('followingInfo', JSON.stringify(this.followingInfo))
       localStorage.setItem('timestamp', JSON.stringify(Date.now()))

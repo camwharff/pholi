@@ -25,7 +25,7 @@ import Button from '@/components/ui/button/Button.vue'
 import { Spinner }  from '@/components/ui/spinner'
 import { Clapperboard, Music, Image } from 'lucide-vue-next'
 
-const { disableUpload, disableSave, newMedia, deleteMedia, onDragFiller, addCover, unplacedItems, stagedItems, uploadMedia, onDragUnstaged, updatePholi, selectMedia } = mediaHandler()
+const { disableUpload, disableSave, newMedia, deleteMedia, onDragFiller, addCover, unplacedItems, stagedItems, uploadMedia, onDragUnstaged, onDragText, updatePholi, selectMedia } = mediaHandler()
 
 function getUrl(file: File) {
     return URL.createObjectURL(file)
@@ -115,7 +115,12 @@ function getUrl(file: File) {
                 <div
                     class="grid grid-cols-2 auto-rows-max gap-4 w-inherit items-center bg-accent max-h-[65vh] h-fit rounded-3xl shadow-md text-white text-sm p-4 overflow-y-scroll">
                     <div draggable="true" @dragstart="onDragFiller()"
-                        class="cursor-move border-secondary bg-secondary border-4 text-white aspect-square rounded-3xl overflow-hidden w-full h-full">
+                        class="cursor-move border-secondary bg-secondary border-4 text-white aspect-square rounded-3xl overflow-hidden w-full h-full items-center justify-center flex">
+                        <h2>Filler</h2>
+                    </div>
+                    <div draggable="true" @dragstart="onDragText()"
+                        class="cursor-move border-secondary bg-secondary border-4 text-white aspect-square rounded-3xl overflow-hidden w-full h-full items-center justify-center flex">
+                        <h2>Text</h2>
                     </div>
                     <div v-for="item in unplacedItems" :key="item.id" draggable="true" @dragstart="onDragUnstaged(item)"
                         class="cursor-move border-secondary border-4 text-white aspect-square rounded-3xl overflow-hidden">
