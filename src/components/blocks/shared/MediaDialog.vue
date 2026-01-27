@@ -9,7 +9,6 @@ import {
 import Image from '@/components/media/Imag.vue'
 import Card from '@/components/ui/card/Card.vue'
 import { VisuallyHidden } from 'reka-ui'
-import { onMounted } from 'vue'
 const props = defineProps<{
     src: string
     type: string
@@ -18,17 +17,13 @@ const props = defineProps<{
     description?: string
     cover?: string
 }>()
-onMounted(() => {
-    if (props.src)
-        console.log(props.src)
-})
 </script>
 
 <template>
     <Dialog class="w-full h-full">
         <DialogTrigger class="w-full h-full p-2">
             <div class="w-full h-full relative">
-                <div class="w-full h-full bg-linear-to-t from-sky-800 to-sky-600 animate-pulse absolute z-10 rounded-3xl"></div>
+                <div v-if="type !== 'text'" class="w-full h-full bg-linear-to-t from-sky-800 to-sky-600 animate-pulse absolute z-10 rounded-3xl"></div>
                 <Image v-if="type === 'image'" :src="src ?? ''" :alt="src"
                     class="text-transparent animate-none cursor-help w-full h-full border-secondary rounded-3xl border-4 object-cover absolute z-20" />
                 <video v-if="type === 'video'" :src="src ?? ''" :alt="src"
@@ -38,7 +33,7 @@ onMounted(() => {
                     class="cursor-help w-full h-3/4 border-secondary rounded-3xl border-4 absolute z-20" />
                 <audio v-if="type === 'audio'" :src="src ?? ''" :alt="src" class="cursor-help w-full h-full absolute z-20"
                     controls></audio>
-                <div v-if="type === 'text'">
+                <div v-if="type === 'text'" class="w-full h-full p-4 border-secondary rounded-3xl absolute border-4 ">
                     <p>{{ label }}</p>
                     <p>{{ description }}</p>
                 </div>
