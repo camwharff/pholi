@@ -24,9 +24,9 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="gap-2 grid grid-cols-2 lg:grid-cols-5 w-3/4">
+    <div class="gap-2 grid grid-cols-2 lg:grid-cols-5">
         <div v-for="post in posts" :key="post.id"
-            class="cursor-help bg-accent border-4 border-secondary relative transition-all aspect-square rounded-3xl p-2 flex flex-col gap-4 w-full overflow-hidden"
+            class="cursor-help bg-accent border-4 border-secondary relative transition-all aspect-square rounded-3xl flex flex-col gap-4 w-full overflow-hidden"
             @mouseover="viewPost(post, true)" @mouseleave="viewPost(post, false)">
             <MediaDialog :src="post.src ?? ''" :type="post.type ?? ''" :alt="post.id ?? ''" :label="post.label" :description="post.description"/>
         </div>

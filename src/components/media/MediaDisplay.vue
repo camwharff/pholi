@@ -24,9 +24,10 @@ defineProps<{
             <Image v-if="cover" :src="cover" :alt="alt" class="w-1/2 h-1/2 object-cover rounded-2xl" />
             <audio :src="src" :alt="alt" class="w-full" controls></audio>
         </div>
-        <div v-else-if="type === 'text'" class="w-full h-full p-4 overflow-auto text-white">
-            <p v-if="label">{{ label }}</p>
-            <p v-if="description">{{ description }}</p>
+        <div v-else-if="type === 'text'" class="w-full h-full p-4 overflow-auto flex flex-col gap-2 text-white">
+            <p v-if="label && description === ''" class="font-bold text-5xl">{{ label }}</p>
+            <p v-else-if="label" class="font-bold text-3xl">{{ label }}</p>
+            <p v-if="description" class="text-base">{{ description }}</p>
         </div>
         <div v-else-if="type === 'filler'" class="w-full h-full bg-secondary"></div>
         <div v-else class="w-full h-full flex items-center justify-center">
