@@ -9,24 +9,39 @@ import {
 import Image from '@/components/media/Imag.vue'
 import Card from '@/components/ui/card/Card.vue'
 import { VisuallyHidden } from 'reka-ui'
-defineProps<{ src: string; type: string; alt: string; label?: string; description?: string; cover?: string }>()
+import { onMounted } from 'vue'
+const props = defineProps<{
+    src: string
+    type: string
+    alt: string
+    label?: string
+    description?: string
+    cover?: string
+}>()
+onMounted(() => {
+    if (props.src)
+        console.log(props.src)
+})
 </script>
 
 <template>
     <Dialog class="w-full h-full">
-        <DialogTrigger class="w-full h-full">
-            <Image v-if="type === 'image'" :src="src ?? ''" :alt="label"
-                class="cursor-help w-full h-full border-secondary bg-accent rounded-3xl border-4 object-cover" />
-            <video v-if="type === 'video'" :src="src ?? ''" :alt="label"
-                class="cursor-help w-full h-full border-secondary bg-accent rounded-3xl border-4 object-cover"
-                controls></video>
-            <Image v-if="type === 'audio'" :src="src ?? ''" :alt="label"
-                class="cursor-help w-full h-3/4 border-secondary bg-accent rounded-3xl border-4" />
-            <audio v-if="type === 'audio'" :src="src ?? ''" :alt="label" class="cursor-help w-full h-full bg-accent"
-                controls></audio>
-            <div v-if="type === 'text'">
-                <p>{{ label }}</p>
-                <p>{{ description }}</p>
+        <DialogTrigger class="w-full h-full p-2">
+            <div class="w-full h-full relative">
+                <div class="w-full h-full bg-linear-to-t from-sky-800 to-sky-600 animate-pulse absolute z-10 rounded-3xl"></div>
+                <Image v-if="type === 'image'" :src="src ?? ''" :alt="src"
+                    class="text-transparent animate-none cursor-help w-full h-full border-secondary rounded-3xl border-4 object-cover absolute z-20" />
+                <video v-if="type === 'video'" :src="src ?? ''" :alt="src"
+                    class="cursor-help w-full h-full border-secondary rounded-3xl border-4 object-cover absolute z-20"
+                    controls></video>
+                <Image v-if="type === 'audio'" :src="src ?? ''" :alt="src"
+                    class="cursor-help w-full h-3/4 border-secondary rounded-3xl border-4 absolute z-20" />
+                <audio v-if="type === 'audio'" :src="src ?? ''" :alt="src" class="cursor-help w-full h-full absolute z-20"
+                    controls></audio>
+                <div v-if="type === 'text'">
+                    <p>{{ label }}</p>
+                    <p>{{ description }}</p>
+                </div>
             </div>
         </DialogTrigger>
         <DialogContent class="h-screen w-screen">
@@ -41,13 +56,13 @@ defineProps<{ src: string; type: string; alt: string; label?: string; descriptio
                     <p v-if="description" class="w-full text-xl ">{{ description }}</p>
                 </Card>
                 <div class="flex-1 h-3/4">
-                    <Image v-if="type === 'image'" :src="src ?? ''" :alt="label ?? ''"
+                    <Image v-if="type === 'image'" :src="src ?? ''" :alt="src ?? ''"
                         class="h-full border-secondary bg-accent rounded-3xl border-4 w-full" />
-                    <video v-if="type === 'video'" :src="src ?? ''" :alt="label ?? ''"
+                    <video v-if="type === 'video'" :src="src ?? ''" :alt="src ?? ''"
                         class="w-full h-full border-secondary bg-accent rounded-3xl border-4" controls></video>
-                    <Image v-if="type === 'audio'" :src="src ?? ''" :alt="label ?? ''"
+                    <Image v-if="type === 'audio'" :src="src ?? ''" :alt="src ?? ''"
                         class="w-full h-3/4 border-secondary bg-accent rounded-3xl border-4" />
-                    <audio v-if="type === 'audio'" :src="src ?? ''" :alt="label ?? ''" class="w-full h-full bg-accent"
+                    <audio v-if="type === 'audio'" :src="src ?? ''" :alt="src ?? ''" class="w-full h-full bg-accent"
                         controls></audio>
                     <div v-if="type === 'text'">
                         <p>{{ label }}</p>

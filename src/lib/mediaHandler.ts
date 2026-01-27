@@ -3,7 +3,6 @@ import { supabase } from '@/lib/supabaseClient'
 import type { Ref } from 'vue'
 import { authHandler } from '@/lib/authHandler'
 import { uiHandler } from '@/lib/uiHandler'
-import { useUserStore } from '@/stores/user'
 
 const { shortAlert } = uiHandler()
 
@@ -76,8 +75,6 @@ export interface NewMedia {
     cover?: File
 }
 
-const disableUpload = ref(false)
-
 const newMedia = ref<NewMedia[]>([])
 const width = ref([2])
 const height = ref([2])
@@ -87,6 +84,7 @@ const media_list: Ref<MediaCell[]> = ref([])
 const pholi: Ref<(GridCell)[][], GridMatrix | (GridCell)[][]> = ref([])
 const mediaViewable: Ref<ContentCell | undefined> = ref()
 const disableSave = ref(false)
+const disableUpload = ref(false)
 
 const filler = ['text', 'blank']
 const COLS = 16
@@ -254,7 +252,9 @@ async function updatePholi() {
         }
         const { error } = await supabase.from('profiles').update(updates).eq('id', user.value.id)
         if (error) throw error
-        const userStore = useUserStore()
+        // dynamically import the user store to avoid circular import during module initialization
+        const mod = await import('@/stores/user')
+        const userStore = mod.useUserStore()
         await userStore.loadUserData(user.value.id)
     } catch (error) {
         if (error instanceof Error) alert(error.message)

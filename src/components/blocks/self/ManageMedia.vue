@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/context-menu'
 import { mediaHandler } from '@/lib/mediaHandler'
 import Button from '@/components/ui/button/Button.vue'
-import { Spinner } from '@/components/ui/spinner'
+import { Spinner }  from '@/components/ui/spinner'
 import { Clapperboard, Music, Image } from 'lucide-vue-next'
 
 const { disableUpload, disableSave, newMedia, deleteMedia, onDragFiller, addCover, unplacedItems, stagedItems, uploadMedia, onDragUnstaged, updatePholi, selectMedia } = mediaHandler()

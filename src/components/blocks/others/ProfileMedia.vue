@@ -1,30 +1,19 @@
 <script setup lang="ts">
-import { mediaHandler, type GridMatrix } from '@/lib/mediaHandler'
-import { onMounted, computed, ref } from 'vue'
+import { mediaHandler } from '@/lib/mediaHandler'
+import { onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useProfilesStore } from '@/stores/profiles'
 import MediaDialog from '@/components/blocks/shared/MediaDialog.vue'
 
-const { widthConfig, heightConfig, viewMedia, getSrc } = mediaHandler()
+const { widthConfig, heightConfig, viewMedia } = mediaHandler()
 const route = useRoute()
 const profilesStore = useProfilesStore()
-const pholi = ref<GridMatrix>()
+const username = route.params.username as string
+const pholi = computed(() => profilesStore.profiles[username]?.pholi ?? [])
 
 onMounted(async () => {
-    const username = route.params.username as string
-
     await profilesStore.fetchProfile(username)
     await profilesStore.loadFromCache(username)
-
-    pholi.value = computed(() => profilesStore.profiles[username]?.pholi ?? []).value
-    for (const row of pholi.value) {
-        for (const cell of row) {
-            if (cell && cell.kind === 'media') {
-                const source = await getSrc(cell.id)
-                cell.url = source ?? ''
-            }
-        }
-    }
 })
 
 </script>

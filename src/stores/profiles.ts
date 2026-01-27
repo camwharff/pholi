@@ -2,8 +2,9 @@ import { defineStore } from 'pinia'
 import { supabase } from '@/lib/supabaseClient'
 import { interactionHandler } from "@/lib/interactionHandler"
 import { type Post } from '@/lib/postHandler'
-import { type GridMatrix } from '@/lib/mediaHandler'
+import { mediaHandler, type GridMatrix } from '@/lib/mediaHandler'
 
+const { getSrc } = mediaHandler()
 const { getFollowing, getFollowers, getFollowingCount, getFollowerCount } = interactionHandler()
 
 interface Profile {
@@ -67,7 +68,7 @@ export const useProfilesStore = defineStore('profiles', {
         avatar_url: data.avatar_url,
         bio: data.bio,
         media: data.media,
-        pholi: data.pholi,
+        pholi: JSON.parse(data.pholi),
         posts: data.posts,
         timestamp: Date.now(),
         followingData: {
@@ -77,7 +78,14 @@ export const useProfilesStore = defineStore('profiles', {
           followerCount
         }
       }
-
+      for (const row of profile.pholi) {
+        for (const cell of row) {
+          if (cell && cell.kind === 'media') {
+            const source = await getSrc(cell.id)
+            cell.url = source ?? ''
+          }
+        }
+      }
 
       // Store in Pinia cache
       this.profiles[username] = profile

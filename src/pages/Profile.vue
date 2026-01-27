@@ -12,10 +12,10 @@ import {
     TabsContent,
     TabsList,
     TabsTrigger
- } from '@/components/ui/tabs'
- import ProfileFeed from '@/components/blocks/others/ProfileFeed.vue'
- import ProfileInfoDisplay from '@/components/blocks/others/ProfileInfoDisplay.vue'
- import ProfileMedia from '@/components/blocks/others/ProfileMedia.vue'
+} from '@/components/ui/tabs'
+import ProfileFeed from '@/components/blocks/others/ProfileFeed.vue'
+import ProfileInfoDisplay from '@/components/blocks/others/ProfileInfoDisplay.vue'
+import ProfileMedia from '@/components/blocks/others/ProfileMedia.vue'
 
 const route = useRoute()
 
@@ -25,6 +25,7 @@ const { loadPosts } = postHandler()
 
 const usernameParam = computed(() => route.params.username as string | undefined)
 const isPublicProfile = computed(() => !!usernameParam.value)
+
 
 onMounted(async () => {
     if (isPublicProfile.value) {
