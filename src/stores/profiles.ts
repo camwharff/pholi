@@ -68,7 +68,7 @@ export const useProfilesStore = defineStore('profiles', {
         avatar_url: data.avatar_url,
         bio: data.bio,
         media: data.media,
-        pholi: JSON.parse(data.pholi),
+        pholi: data.pholi,
         posts: data.posts,
         timestamp: Date.now(),
         followingData: {

@@ -1,20 +1,10 @@
 <script setup lang="ts">
-import { mediaHandler, type SizeCell, type GridMatrix, type TextCell, nullPholi } from '@/lib/mediaHandler'
+import { mediaHandler, type SizeCell, type GridMatrix, nullPholi } from '@/lib/mediaHandler'
 import { onMounted, ref, computed } from 'vue'
 import { useUserStore } from '@/stores/user'
 import MediaDisplay from '@/components/media/MediaDisplay.vue'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
     Popover,

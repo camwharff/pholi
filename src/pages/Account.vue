@@ -42,7 +42,7 @@ watch(infoTab, (value) => {
     }
 })
 
-watch(displayTab, (value) => {
+watch(displayTab, () => {
     infoTab.value = 'profile'
     editPholi.value = false
 })
