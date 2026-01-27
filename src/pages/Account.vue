@@ -42,6 +42,11 @@ watch(infoTab, (value) => {
     }
 })
 
+watch(displayTab, (value) => {
+    infoTab.value = 'profile'
+    editPholi.value = false
+})
+
 onMounted(async () => {
     if (user.value) {
         await loadPosts()
@@ -66,7 +71,7 @@ onMounted(async () => {
                     Pholi
                 </TabsTrigger>
                 <TabsTrigger value="post">
-                    Posts
+                    Post
                 </TabsTrigger>
             </TabsList>
             <TabsContent value="profile">
@@ -100,8 +105,7 @@ onMounted(async () => {
             </TabsContent>
         </Tabs>
 
-        <Tabs v-model="displayTab" default-value="pholi"
-            class="flex-1 flex-col flex h-fit w-full gap-4 items-center">
+        <Tabs v-model="displayTab" default-value="pholi" class="flex-1 flex-col flex h-fit w-full gap-4 items-center">
             <TabsList>
                 <TabsTrigger value="pholi">
                     Pholi
