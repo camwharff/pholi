@@ -1,7 +1,9 @@
 import { defineStore } from "pinia"
 import { supabase } from '@/lib/supabaseClient'
 import { interactionHandler } from "@/lib/interactionHandler"
+import { mediaHandler } from "@/lib/mediaHandler"
 
+const { getSrc } = mediaHandler()
 const { getFollowing, getFollowers, getFollowingCount, getFollowerCount } = interactionHandler()
 
 export const useUserStore = defineStore('user', {
@@ -29,6 +31,17 @@ export const useUserStore = defineStore('user', {
       this.info = info
       this.followingInfo = { following, followers, followingCount, followerCount }
 
+      for (const row of info.pholi) {
+        for (const cell of row) {
+          if (cell && cell.kind === 'media') {
+            const source = await getSrc(cell.id)
+            cell.url = source ?? ''
+          }
+        }
+      }
+
+      console.log(info.pholi)
+
       localStorage.setItem('userInfo', JSON.stringify(info))
       localStorage.setItem('followingInfo', JSON.stringify(this.followingInfo))
       localStorage.setItem('timestamp', JSON.stringify(Date.now()))
@@ -52,7 +65,6 @@ export const useUserStore = defineStore('user', {
     
       const following = localStorage.getItem('followingInfo')
       if (following) this.followingInfo = JSON.parse(following)
-      this.info.pholi = JSON.parse(this.info.pholi)
     }
   }
 })

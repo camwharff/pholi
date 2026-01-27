@@ -5,10 +5,10 @@ import {
     ContextMenuContent,
     ContextMenuItem
 } from '@/components/ui/context-menu'
-import Image from '@/components/media/Imag.vue'
 import { mediaHandler, type SizeCell, type GridMatrix, nullPholi } from '@/lib/mediaHandler'
 import { onMounted, ref, computed } from 'vue'
 import { useUserStore } from '@/stores/user'
+import MediaDisplay from '@/components/media/MediaDisplay.vue'
 
 const { pholi, onDrop, onDragStaged, onDragSize, widthConfig, heightConfig, removeItem, getSrc } = mediaHandler()
 
@@ -40,7 +40,7 @@ onMounted(async () => {
             <div v-for="(cell, colIndex) in row" :key="`${rowIndex}-${colIndex}`"
                 class="relative overflow-visible aspect-square outline-1 outline-white/30 outline-dashed m-0"
                 @dragover.prevent @drop="onDrop(rowIndex, colIndex)">
-                <div v-if="cell && cell.kind === 'media'" :class="[
+                <div v-if="cell && (cell.kind === 'media' || cell.kind === 'text' || cell.kind === 'filler')" :class="[
                     widthConfig[cell.width],
                     heightConfig[cell.height],
                     'absolute top-0 left-0 flex items-center justify-center text-xs text-white overflow-hidden text-center'
@@ -50,15 +50,9 @@ onMounted(async () => {
                             <div draggable="true" @dragstart="onDragStaged(cell)"
                                 class="absolute top-0 left-0 w-8 h-8 items-start justify-start cursor-move flex">
                             </div>
-                            <Image v-if="cell.type === 'image'" :src="cell.url ?? ''" :alt="cell.label"
-                                class="w-full h-full border-secondary bg-accent rounded-3xl border-4 object-cover" />
-                            <video v-if="cell.type === 'video'" :src="cell.url ?? ''" :alt="cell.label"
-                                class="w-full h-full border-secondary bg-accent rounded-3xl border-4 object-cover"
-                                controls></video>
-                            <Image v-if="cell.type === 'audio'" :src="cell.url ?? ''" :alt="cell.label"
-                                class="w-full h-3/4 border-secondary bg-accent rounded-3xl border-4" />
-                            <audio v-if="cell.type === 'audio'" :src="cell.url ?? ''" :alt="cell.label"
-                                class="w-full h-full bg-accent" controls></audio>
+                            <MediaDisplay :src="cell.url ?? ''" :type="cell.type ?? ''" :alt="cell.id ?? ''"
+                                :cover="cell.coverUrl" :label="cell.label" :description="cell.description"
+                                class="w-full h-full rounded-3xl" />
                         </ContextMenuTrigger>
                         <ContextMenuContent>
                             <ContextMenuItem @click="removeItem(cell.id)" inset>

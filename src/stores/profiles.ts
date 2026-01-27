@@ -78,6 +78,8 @@ export const useProfilesStore = defineStore('profiles', {
           followerCount
         }
       }
+      
+      // Resolve media URLs in pholi grid
       for (const row of profile.pholi) {
         for (const cell of row) {
           if (cell && cell.kind === 'media') {

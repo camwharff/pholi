@@ -247,7 +247,7 @@ async function updatePholi() {
     if (!user.value) return
     try {
         const updates = {
-            pholi: JSON.stringify(pholi.value),
+            pholi: pholi.value,
             updated_at: new Date()
         }
         const { error } = await supabase.from('profiles').update(updates).eq('id', user.value.id)
