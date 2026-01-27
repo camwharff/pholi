@@ -3,7 +3,7 @@ import { supabase } from '@/lib/supabaseClient'
 import { interactionHandler } from "@/lib/interactionHandler"
 import { mediaHandler } from "@/lib/mediaHandler"
 
-const { getSrc } = mediaHandler()
+const { getSrc, nullPholi, updatePholi, initializePholi } = mediaHandler()
 const { getFollowing, getFollowers, getFollowingCount, getFollowerCount } = interactionHandler()
 
 export const useUserStore = defineStore('user', {
@@ -31,14 +31,19 @@ export const useUserStore = defineStore('user', {
       this.info = info
       this.followingInfo = { following, followers, followingCount, followerCount }
 
-      for (const row of info.pholi) {
-        for (const cell of row) {
-          if (cell && cell.kind === 'media') {
-            const source = await getSrc(cell.id)
-            cell.url = source ?? ''
+      console.log(info.pholi)
+
+      if(info.pholi) {
+        for (const row of info.pholi) {
+          for (const cell of row) {
+            if (cell && cell.kind === 'media') {
+              const source = await getSrc(cell.id)
+              cell.url = source ?? ''
+            }
           }
         }
       }
+      console.log(info)
 
       localStorage.setItem('userInfo', JSON.stringify(info))
       localStorage.setItem('followingInfo', JSON.stringify(this.followingInfo))

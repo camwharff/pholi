@@ -64,6 +64,32 @@ const handleLogin = async () => {
     }
 }
 
+async function initializeAccount() {
+    console.log('initializing account')
+    const { user } = authHandler()
+    if (!user.value) return
+    try {
+        const updates = {
+            pholi: nullPholi,
+            updated_at: new Date(),
+            avatar_url: '',
+            website: '',
+            bio: '',
+            media: [],
+            pholi: nullPholi,
+            posts: []
+        }
+        const { error } = await supabase.from('profiles').update(updates).eq('id', user.value.id)
+        if (error) throw error
+        // dynamically import the user store to avoid circular import during module initialization
+        const mod = await import('@/stores/user')
+        const userStore = mod.useUserStore()
+        await userStore.loadUserData(user.value.id)
+    } catch (error) {
+        if (error instanceof Error) alert(error.message)
+    }
+}
+
 const handleSignUp = async () => {
     error.value = null
 
@@ -84,8 +110,8 @@ const handleSignUp = async () => {
                 }
             }
         })
-        console.log()
         if (supabaseError) throw supabaseError
+        await initializeAccount()
         await loadUser()
         router.push({ name: 'account' })
         success.value = true
