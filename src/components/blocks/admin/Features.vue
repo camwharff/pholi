@@ -27,7 +27,7 @@ const items = [
                 <CarouselItem v-for="item in items" :key="item.id"
                     class="flex items-center w-full justify-center align-middle">
                     <div
-                        class=" border-sky-700 border-2 items-center flex flex-col gap-4 px-32 pb-16 h-fit w-fit justify-center text-white bg-sky-950/90 p-4 rounded-2xl">
+                        class=" border-sky-700 border-2 items-center flex flex-col gap-4 px-32 py-16 h-fit w-fit justify-center text-white bg-sky-950/90 p-4 rounded-2xl">
                         <div class="flex flex-col text-center gap-4 m-auto w-full">
                             <h1 class=" text-5xl lg:text-7xl font-bold">{{ item.title }}</h1>
                             <p class="lg:text-xl text-3xl">{{ item.content }}</p>
