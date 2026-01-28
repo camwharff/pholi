@@ -15,7 +15,9 @@ const downloadImage = async () => {
         try {
             const { data, error } = await supabase.storage.from('avatars').download(path.value)
             if (error) throw error
-            src.value = URL.createObjectURL(data)
+            const reader = new FileReader()
+            reader.onload = () => src.value = reader.result as string
+            reader.readAsDataURL(data)
         } catch (error) {
             if (error instanceof Error) alert(error.message)
         }

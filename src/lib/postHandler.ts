@@ -4,23 +4,21 @@ import { ref } from "vue"
 import { supabase } from '@/lib/supabaseClient'
 import { authHandler } from '@/lib/authHandler'
 import { uiHandler } from '@/lib/uiHandler'
-import { type MediaRaw, mediaHandler } from "./mediaHandler"
+import type { MediaRaw } from '@/lib/types'
 
 const { shortAlert } = uiHandler()
-const { downloadMedia } = mediaHandler()
 const disablePost = ref(false)
 const newPost: Ref<PostMedia | undefined> = ref()
-const posts_raw: Ref<MediaRaw[]> = ref([])
-const posts: Ref<Post[]> = ref([])
 const postViewable: Ref<Post | undefined> = ref()
 
 export interface Post {
     id: string
     label?: string
     description?: string
-    src: string
+    url: string
     type: string
     date: string
+    coverUrl?: string
 }
 
 interface PostMedia {
@@ -29,6 +27,7 @@ interface PostMedia {
     url: string
     label?: string
     description?: string
+    coverFile?: File
 }
 
 function viewPost(post: Post, view: boolean) {
@@ -40,7 +39,6 @@ function viewPost(post: Post, view: boolean) {
 }
 
 async function selectPost(evt: Event) {
-
     const input = evt.target as HTMLInputElement
     const selectedFiles = input.files
 
@@ -86,14 +84,22 @@ const addPost = async (evt: Event) => {
             }
         }
         try {
-            const { error } = await supabase.from('profiles').update({ posts: [...posts_raw.value, new_post] }).eq('id', user.value.id)
+            const { data, error } = await supabase.from('profiles').select('posts').eq('id', user.value.id)
             if (error) throw error
+            try {
+                const { error } = await supabase.from('profiles').update({ posts: [new_post, ...data] }).eq('id', user.value.id)
+                if (error) throw error
+            } catch (error) {
+                if (error instanceof Error) {
+                    alert(error.message)
+                }
+            }
         } catch (error) {
             if (error instanceof Error) {
                 alert(error.message)
             }
         }
-        loadPosts()
+
     }
 
     newPost.value = undefined
@@ -101,57 +107,13 @@ const addPost = async (evt: Event) => {
     form.reset()
 }
 
-async function loadPosts() {
-    const { user } = authHandler()
-    if (!user.value) return
-
-    try {
-        const { data, error, status } = await supabase
-            .from('profiles')
-            .select('posts')
-            .eq('id', user.value.id)
-            .single()
-
-        if (error && status !== 406) throw error
-        if (data) {
-            posts_raw.value = data.posts
-        }
-        if (!posts_raw.value) {
-            posts_raw.value = []
-        }
-        posts.value = []
-        for (const post of posts_raw.value) {
-            try {
-                const { data, error } = await supabase.storage.from('media').download(post.path)
-                if (error) throw error
-                const url = URL.createObjectURL(data)
-                posts.value.push({
-                    id: post.path,
-                    src: url,
-                    type: post.type,
-                    date: post.date ?? 'may 22',
-                    label: post.label,
-                    description: post.description
-                })
-            } catch (error) {
-                if (error instanceof Error) alert(`${error.message} while downloading post media`)
-            }
-        }
-        await downloadMedia()
-    } catch (error) {
-        if (error instanceof Error) alert(`${error.message} while loading posts`)
-    }
-}
-
 export function postHandler() {
     return {
-        posts,
         disablePost,
         newPost,
         postViewable,
         addPost,
         selectPost,
-        loadPosts,
         viewPost
     }
 }

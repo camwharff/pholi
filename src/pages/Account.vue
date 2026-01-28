@@ -10,7 +10,6 @@ import { onMounted } from 'vue'
 import { mediaHandler } from '@/lib/mediaHandler'
 import { infoHandler } from '@/lib/infoHandler'
 import { authHandler } from '@/lib/authHandler'
-import { postHandler } from '@/lib/postHandler'
 import {
     Tabs,
     TabsContent,
@@ -22,8 +21,6 @@ import Button from '@/components/ui/button/Button.vue'
 import { Settings, UserRoundPen } from 'lucide-vue-next'
 // import logoBase from '@/assets/logo-base.vue'
 
-
-const { loadPosts } = postHandler()
 const { loadMedia } = mediaHandler()
 const { getProfile } = infoHandler()
 const { user, signOut, openSettings } = authHandler()
@@ -52,7 +49,6 @@ watch(displayTab, () => {
 
 onMounted(async () => {
     if (user.value) {
-        await loadPosts()
         await loadMedia()
         await getProfile()
     } else {

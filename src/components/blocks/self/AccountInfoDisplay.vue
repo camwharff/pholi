@@ -3,12 +3,12 @@ import Avatar from '@/components/blocks/shared/AvatarDisplay.vue'
 import HoveredPost from '@/components/blocks/shared/HoveredPost.vue'
 import HoveredMedia from '@/components/blocks/shared/HoveredMedia.vue'
 import { useUserStore } from '@/stores/user'
-import { mediaHandler } from '@/lib/mediaHandler'
+import { pholiHelpers } from '@/lib/pholiHelpers'
 import { postHandler } from '@/lib/postHandler'
 import { onMounted, computed } from 'vue'
 import logoCircleFront from '@/assets/logo-circle-front.vue'
 
-const { mediaViewable } = mediaHandler()
+const { mediaViewable } = pholiHelpers()
 const { postViewable } = postHandler()
 
 const userStore = useUserStore()

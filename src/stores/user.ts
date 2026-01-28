@@ -1,19 +1,10 @@
 import { defineStore } from "pinia"
 import { supabase } from '@/lib/supabaseClient'
 import { interactionHandler } from "@/lib/interactionHandler"
+import { mediaHandler } from '@/lib/mediaHandler'
 
 const { getFollowing, getFollowers, getFollowingCount, getFollowerCount } = interactionHandler()
-
-async function getSrc(id: string) {
-    try {
-        const { data, error } = await supabase.storage.from('media').download(id)
-        if (error) throw error
-        return URL.createObjectURL(data)
-    }
-    catch (error) {
-        console.log(error)
-    }
-}
+const { getSrc } = mediaHandler()
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -40,15 +31,34 @@ export const useUserStore = defineStore('user', {
       this.info = info
       this.followingInfo = { following, followers, followingCount, followerCount }
 
-      if(info.pholi) {
-        for (const row of info.pholi) {
-          for (const cell of row) {
-            if (cell && cell.kind === 'media') {
-              const source = await getSrc(cell.id)
-              cell.url = source ?? ''
+      // Resolve media URLs in pholi grid
+      for (const row of this.info.pholi) {
+        for (const cell of row) {
+          if (cell && cell.kind === 'media') {
+            const source = await getSrc(cell.id)
+            cell.url = source ?? ''
+            if (cell.coverId) {
+              const coverSource = await getSrc(cell.coverId)
+              cell.coverUrl = coverSource ?? ''
             }
           }
         }
+      }
+
+      // Resolve media URLs for all media
+      for (const item of this.info.media) {
+        const source = await getSrc(item.id)
+        item.url = source ?? ''
+        if (item.coverId) {
+          const coverSource = await getSrc(item.coverId)
+          item.coverUrl = coverSource ?? ''
+        }
+      }
+
+      // Resolve media URLs in posts
+      for (const item of this.info.posts) {
+        const source = await getSrc(item.id)
+        item.url = source ?? ''
       }
 
       localStorage.setItem('userInfo', JSON.stringify(info))
@@ -71,7 +81,7 @@ export const useUserStore = defineStore('user', {
         const info = localStorage.getItem('userInfo')
         if (info) this.info = JSON.parse(info)
       }
-    
+
       const following = localStorage.getItem('followingInfo')
       if (following) this.followingInfo = JSON.parse(following)
     }

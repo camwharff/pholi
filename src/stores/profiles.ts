@@ -2,7 +2,8 @@ import { defineStore } from 'pinia'
 import { supabase } from '@/lib/supabaseClient'
 import { interactionHandler } from "@/lib/interactionHandler"
 import { type Post } from '@/lib/postHandler'
-import { mediaHandler, type GridMatrix } from '@/lib/mediaHandler'
+import { mediaHandler } from '@/lib/mediaHandler'
+import type { GridMatrix } from '@/lib/types'
 
 const { getSrc } = mediaHandler()
 const { getFollowing, getFollowers, getFollowingCount, getFollowerCount } = interactionHandler()
@@ -87,6 +88,12 @@ export const useProfilesStore = defineStore('profiles', {
             cell.url = source ?? ''
           }
         }
+      }
+
+      // Resolve media URLs in posts
+      for (const item of profile.posts) {
+            const source = await getSrc(item.id)
+            item.url = source ?? ''
       }
 
       // Store in Pinia cache

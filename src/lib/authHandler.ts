@@ -49,7 +49,6 @@ const handleLogin = async (email: string, password: string) => {
         if (supabaseError) throw supabaseError
         if (!data.user) throw new Error("User data not found")
         const userStore = useUserStore()
-        console.log(data.user.id)
         await userStore.loadUserData(data.user.id)
         await loadUser()
         router.push({ name: 'account' })

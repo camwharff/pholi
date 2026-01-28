@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
-
 import { mediaHandler } from '@/lib/mediaHandler'
 import { infoHandler } from '@/lib/infoHandler'
-import { postHandler } from '@/lib/postHandler'
 import { supabase } from '@/lib/supabaseClient'
 
 import {
@@ -19,9 +17,8 @@ import ProfileMedia from '@/components/blocks/others/ProfileMedia.vue'
 
 const route = useRoute()
 
-const { loadMedia, setMedia } = mediaHandler()
+const { loadMedia } = mediaHandler()
 const { getProfile, setProfile } = infoHandler()
-const { loadPosts } = postHandler()
 
 const usernameParam = computed(() => route.params.username as string | undefined)
 const isPublicProfile = computed(() => !!usernameParam.value)
@@ -36,13 +33,11 @@ onMounted(async () => {
             .single()
         if (!error && data) {
             setProfile(data)
-            setMedia(usernameParam.value ?? '')
         }
     } else {
         await getProfile()
     }
     await loadMedia()
-    await loadPosts()
 })
 </script>
 

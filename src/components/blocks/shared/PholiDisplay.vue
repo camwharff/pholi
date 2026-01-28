@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { type GridMatrix, type SizeType, mediaHandler } from '@/lib/mediaHandler'
 import MediaDialog from '@/components/blocks/shared/MediaDialog.vue'
+import type { GridMatrix, SizeType } from '@/lib/types'
+import { widthConfig, heightConfig } from '@/lib/configs'
+import { pholiHelpers } from '@/lib/pholiHelpers'
 
-const { widthConfig, heightConfig, viewMedia } = mediaHandler()
+const { viewMedia } = pholiHelpers()
 
 defineProps<{
     pholi: GridMatrix

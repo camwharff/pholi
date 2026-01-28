@@ -3,7 +3,6 @@ import Avatar from '@/components/blocks/shared/AvatarDisplay.vue'
 import HoveredPost from '@/components/blocks/shared/HoveredPost.vue'
 import HoveredMedia from '@/components/blocks/shared/HoveredMedia.vue'
 import { interactionHandler } from '@/lib/interactionHandler'
-import { mediaHandler } from '@/lib/mediaHandler'
 import { postHandler } from '@/lib/postHandler'
 import Button from '@/components/ui/button/Button.vue'
 import { authHandler } from '@/lib/authHandler'
@@ -11,17 +10,16 @@ import { useRoute } from 'vue-router'
 import { useProfilesStore } from '@/stores/profiles'
 import { onMounted, computed } from 'vue'
 import logoCircleFront from '@/assets/logo-circle-front.vue'
+import { pholiHelpers } from '@/lib/pholiHelpers'
 
+const { mediaViewable } = pholiHelpers()
 const route = useRoute()
-const { mediaViewable } = mediaHandler()
 const { postViewable } = postHandler()
 const { follow, unfollow } = interactionHandler()
 const { user, loadUser } = authHandler()
 const profilesStore = useProfilesStore()
 const username = computed(() => route.params.username as string)
-const profile = computed(() => {
-    return profilesStore.profiles[username.value]
-})
+const profile = computed(() => profilesStore.profiles[username.value])
 
 onMounted(async () => {
     await loadUser()

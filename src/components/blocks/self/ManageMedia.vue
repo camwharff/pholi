@@ -22,14 +22,27 @@ import {
 } from '@/components/ui/context-menu'
 import { mediaHandler } from '@/lib/mediaHandler'
 import Button from '@/components/ui/button/Button.vue'
-import { Spinner }  from '@/components/ui/spinner'
+import { Spinner } from '@/components/ui/spinner'
 import { Clapperboard, Music, Image } from 'lucide-vue-next'
+import { pholiHelpers } from '@/lib/pholiHelpers'
+import { computed, onMounted } from 'vue'
+import { useUserStore } from '@/stores/user'
+import type { MediaCell } from '@/lib/types'
 
-const { disableUpload, disableSave, newMedia, deleteMedia, onDragFiller, addCover, unplacedItems, stagedItems, uploadMedia, onDragUnstaged, onDragText, updatePholi, selectMedia } = mediaHandler()
+const { disableUpload, newMedia, deleteMedia, addCover, uploadMedia, selectMedia } = mediaHandler()
+const { getUnplaced, getStaged, onDragUnstaged, onDragFiller, onDragText, updatePholi, disableSave } = pholiHelpers()
 
 function getUrl(file: File) {
     return URL.createObjectURL(file)
 }
+
+const userStore = useUserStore()
+const unplacedItems = computed(() => getUnplaced(userStore.info.media, userStore.info.pholi) ?? [])
+const stagedItems = computed(() => getStaged(userStore.info.media, userStore.info.pholi) ?? [])
+
+onMounted(async () => {
+    await userStore.loadFromCache()
+})
 
 </script>
 
@@ -122,7 +135,8 @@ function getUrl(file: File) {
                         class="cursor-move border-secondary bg-secondary border-4 text-white aspect-square rounded-3xl overflow-hidden w-full h-full items-center justify-center flex">
                         <h2>Text</h2>
                     </div>
-                    <div v-for="item in unplacedItems" :key="item.id" draggable="true" @dragstart="onDragUnstaged(item)"
+                    <div v-for="item in unplacedItems" :key="item.id" draggable="true"
+                        @dragstart="onDragUnstaged(item as MediaCell)"
                         class="cursor-move border-secondary border-4 text-white aspect-square rounded-3xl overflow-hidden">
                         <ContextMenu>
                             <ContextMenuTrigger>

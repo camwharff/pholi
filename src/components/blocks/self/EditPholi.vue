@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { mediaHandler, type SizeCell, type GridMatrix, nullPholi } from '@/lib/mediaHandler'
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, computed } from 'vue'
 import { useUserStore } from '@/stores/user'
 import MediaDisplay from '@/components/media/MediaDisplay.vue'
 import { Textarea } from '@/components/ui/textarea'
@@ -11,37 +10,27 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover'
-
-const { pholi, onDrop, onDragStaged, onDragSize, widthConfig, heightConfig, removeItem, getSrc } = mediaHandler()
+import type { GridMatrix, SizeCell } from '@/lib/types'
+import { widthConfig, heightConfig } from '@/lib/configs'
+import { pholiHelpers } from '@/lib/pholiHelpers'
+// import VuePictureCropper, { cropper } from 'vue-picture-cropper'
 
 const userStore = useUserStore()
-const pholi_local = ref<GridMatrix>()
+const { onDragStaged, onDragSize, removeItem, onDrop } = pholiHelpers()
+const pholi = computed<GridMatrix>(() => userStore.info?.pholi ?? [])
 
 onMounted(async () => {
     await userStore.loadFromCache()
-
-    pholi_local.value = computed(() => userStore.info?.pholi ?? []).value
-    if (pholi_local.value) {
-        for (const row of pholi_local.value) {
-            for (const cell of row) {
-                if (cell && cell.kind === 'media') {
-                    const source = await getSrc(cell.id)
-                    cell.url = source ?? ''
-                }
-            }
-        }
-    }
-    pholi.value = pholi_local.value ?? nullPholi
 })
 
 </script>
 
 <template>
     <div class="grid grid-cols-16 rounded-3xl bg-accent border-accent border-4 p-2">
-        <template v-for="(row, rowIndex) in pholi_local" :key="rowIndex">
+        <template v-for="(row, rowIndex) in pholi" :key="rowIndex">
             <div v-for="(cell, colIndex) in row" :key="`${rowIndex}-${colIndex}`"
                 class="relative overflow-visible aspect-square outline-1 outline-white/30 outline-dashed m-0"
-                @dragover.prevent @drop="onDrop(rowIndex, colIndex)">
+                @dragover.prevent @drop="onDrop(rowIndex, colIndex, pholi)">
                 <div v-if="cell && (cell.kind === 'media' || cell.kind === 'filler' || cell.kind === 'text')" :class="[
                     widthConfig[cell.width],
                     heightConfig[cell.height],
@@ -55,20 +44,32 @@ onMounted(async () => {
                             <MediaDisplay :src="cell.url ?? ''" :type="cell.type ?? ''" :alt="cell.id ?? ''"
                                 :cover="cell.coverUrl" :label="cell.label" :description="cell.description"
                                 class="w-full h-full rounded-3xl" />
+                            <!-- <VuePictureCropper :boxStyle="{
+                                width: '100%',
+                                height: '100%',
+                                backgroundColor: '#f8f8f8',
+                                margin: 'auto',
+                            }" :img="pic" :options="{
+                                viewMode: 1,
+                                dragMode: 'crop',
+                                aspectRatio: 16 / 9,
+                            }" @ready="ready" /> -->
                         </PopoverTrigger>
                         <PopoverContent class="flex flex-col bg-secondary gap-2 text-white">
                             <Label :for="`label-${cell.id}`">Title</Label>
-                            <Textarea :id="`label-${cell.id}`" v-model="cell.label" class="h-fit border-none bg-accent" rows="1" />
+                            <Textarea :id="`label-${cell.id}`" v-model="cell.label" class="h-fit border-none bg-accent"
+                                rows="1" />
                             <Label :for="`description-${cell.id}`">Description</Label>
-                            <Textarea :id="`description-${cell.id}`" v-model="cell.description" class="h-fit border-none bg-accent" rows="4" />
-                            <Button @click="removeItem(cell.id)">
+                            <Textarea :id="`description-${cell.id}`" v-model="cell.description"
+                                class="h-fit border-none bg-accent" rows="4" />
+                            <Button @click="removeItem(cell.id, pholi)">
                                 Remove from Pholi
                             </Button>
                         </PopoverContent>
                     </Popover>
                 </div>
                 <div v-if="cell && cell.id && cell.id.startsWith('size-')" draggable="true"
-                    @dragstart="onDragSize(cell as SizeCell)"
+                    @dragstart="onDragSize(cell as SizeCell, pholi)"
                     class='absolute bottom-0 right-0 w-8 h-8 flex items-end justify-end text-xs cursor-nwse-resize text-white overflow-hidden'>
                 </div>
             </div>

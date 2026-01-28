@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { mediaHandler } from '@/lib/mediaHandler'
 import Image from '@/components/media/Imag.vue'
+import { pholiHelpers } from '@/lib/pholiHelpers'
 
-const { mediaViewable } = mediaHandler()
+const { mediaViewable } = pholiHelpers()
 </script>
 
 <template>
