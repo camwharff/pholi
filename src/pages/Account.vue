@@ -20,6 +20,9 @@ import {
 import EditPholi from '@/components/blocks/self/EditPholi.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { Settings, UserRoundPen } from 'lucide-vue-next'
+// import logoBase from '@/assets/logo-base.vue'
+
+
 const { loadPosts } = postHandler()
 const { loadMedia } = mediaHandler()
 const { getProfile } = infoHandler()
@@ -63,7 +66,7 @@ onMounted(async () => {
     <div class="flex m-4 h-fit gap-4 justify-between">
         <Tabs v-model="infoTab" default-value="profile"
             class="basis-1/4 2xl:basis-1/5 flex-col flex h-full w-full gap-4 items-center relative">
-            <TabsList>
+            <TabsList class="h-fit">
                 <TabsTrigger value="profile">
                     Profile
                 </TabsTrigger>

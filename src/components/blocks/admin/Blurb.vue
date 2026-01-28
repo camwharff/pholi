@@ -6,7 +6,6 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from '@/components/ui/carousel'
-
 </script>
 
 
