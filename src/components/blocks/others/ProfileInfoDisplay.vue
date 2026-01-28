@@ -10,6 +10,7 @@ import { authHandler } from '@/lib/authHandler'
 import { useRoute } from 'vue-router'
 import { useProfilesStore } from '@/stores/profiles'
 import { onMounted, computed } from 'vue'
+import logoCircleFront from '@/assets/logo-circle-front.vue'
 
 const route = useRoute()
 const { mediaViewable } = mediaHandler()
@@ -40,7 +41,10 @@ onMounted(async () => {
         </div>
         <div v-else class="flex flex-col gap-2 w-full">
             <div class="p-4 bg-secondary rounded-2xl shadow-md text-white text-sm flex flex-col gap-2">
-                <Avatar :path="profile?.avatar_url" />
+            <div class="w-full bg-accent rounded-3xl">
+                <Avatar v-if="profile?.avatar_url" :path="profile?.avatar_url" />
+                <logo-circle-front v-else class="w-full h-full rounded-full mx-auto text-accent" />
+            </div>
                 <div class="bg-accent p-4 shadow-md flex gap-2 flex-col rounded-xl">
                     <h2>{{ profile?.full_name }}</h2>
                     <h3>@{{ profile?.username }}</h3>

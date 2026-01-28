@@ -6,6 +6,7 @@ import { useUserStore } from '@/stores/user'
 import { mediaHandler } from '@/lib/mediaHandler'
 import { postHandler } from '@/lib/postHandler'
 import { onMounted, computed } from 'vue'
+import logoCircleFront from '@/assets/logo-circle-front.vue'
 
 const { mediaViewable } = mediaHandler()
 const { postViewable } = postHandler()
@@ -34,11 +35,14 @@ const followerCount = computed(() => userStore.followingInfo?.followerCount ?? '
     </div>
     <div v-else class="flex flex-col gap-2 w-full">
         <div class="p-4 bg-secondary rounded-2xl shadow-md text-white text-sm flex flex-col gap-2">
-            <Avatar :path="avatarUrl" />
+            <div class="w-full bg-accent rounded-3xl">
+                <Avatar v-if="avatarUrl" :path="avatarUrl" />
+                <logo-circle-front v-else class="w-full h-full rounded-full mx-auto text-accent" />
+            </div>
             <div class="bg-accent p-4 shadow-md flex gap-2 flex-col rounded-xl">
                 <h2>{{ displayName }}</h2>
                 <h3>@{{ username }}</h3>
-                <p>{{ bio }}</p>
+                <p v-if="bio">{{ bio }}</p>
             </div>
             <div class="bg-accent p-4 shadow-md flex gap-2 flex-col rounded-xl">
                 <p>{{ followerCount }} {{ followerCount === 1 ? 'Follower' : 'Followers' }}</p>

@@ -91,7 +91,7 @@ const disableUpload = ref(false)
 const filler = ['text', 'blank']
 const COLS = 16
 const ROWS = 9
-export const nullPholi = [
+export const nullPholi: GridMatrix = [
     [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],

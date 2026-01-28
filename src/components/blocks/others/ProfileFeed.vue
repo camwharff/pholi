@@ -32,7 +32,10 @@ onMounted(async () => {
 
 <template>
     <div class="flex items-center justify-center">
-        <div v-if="posts.length === 0 || loading" class="w-full h-full flex flex-col items-center justify-center gap-4 rounded-full m-10">
+        <div v-if="posts.length === 0" class="w-full h-full flex flex-col items-center justify-center gap-4 rounded-full m-10">
+            <p class="bg-accent rounded-3xl px-8 py-4">Nothing yet... Check back soon!</p>
+        </div>
+        <div v-else-if="loading" class="w-full h-full flex flex-col items-center justify-center gap-4 rounded-full m-10">
             <logoCircleFront width="250" height="250" class="rounded-full animate-pulse" />
         </div>
         <div v-else class="gap-2 grid grid-cols-2 lg:grid-cols-5 w-full">

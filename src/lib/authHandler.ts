@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import { supabase } from "@/lib/supabaseClient"
 import router from "@/router"
 import { useUserStore } from "@/stores/user"
-import { nullPholi } from "@/lib/mediaHandler"
 
 type Mode = 'SIGNUP' | 'LOGIN' | 'MANAGE'
 
@@ -69,7 +68,6 @@ const handleSignUp = async (email: string, password: string, repeatPassword: str
         error.value = "Passwords do not match"
         return
     }
-
     isLoading.value = true
     try {
         const { error: supabaseError, data } = await supabase.auth.signUp({
@@ -78,12 +76,7 @@ const handleSignUp = async (email: string, password: string, repeatPassword: str
             options: {
                 data: {
                     full_name: full_name,
-                    username: username,
-                    avatar_url: '',
-                    bio: '',
-                    media: {},
-                    pholi: nullPholi,
-                    posts: {}
+                    username: username
                 }
             }
         })
