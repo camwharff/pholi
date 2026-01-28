@@ -143,19 +143,7 @@ async function loadMedia() {
 }
 
 async function getSrc(id: string) {
-    try {
-        const { data, error } = await supabase.storage.from('media').download(id)
-        if (error) throw error
-        return new Promise<string>((resolve, reject) => {
-            const reader = new FileReader()
-            reader.onload = () => resolve(reader.result as string)
-            reader.onerror = () => reject(reader.error)
-            reader.readAsDataURL(data)
-        })
-    }
-    catch (error) {
-        console.log(error)
-    }
+    return await supabase.storage.from('media').getPublicUrl(id).data.publicUrl
 }
 
 export function mediaHandler() {
