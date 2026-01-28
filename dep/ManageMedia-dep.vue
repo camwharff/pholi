@@ -42,12 +42,12 @@ onMounted(async () => {
     session.value = currentSession
 
     if (session.value) {
-        await loadMedia()
+        await getCurrentMedia()
     } else {
     }
 })
 
-async function loadMedia() {
+async function getCurrentMedia() {
     if (!session.value) return
 
     try {
@@ -73,7 +73,6 @@ async function loadMedia() {
 async function downloadMedia() {
     for (let item of Object.values(media_raw.value)) {
         if (!media_list.value.find(entry => item.id == entry.id)) {
-            console.log(`adding item ${item.title}`)
             try {
                 const { data, error } = await supabase.storage.from('media').download(item.path);
                 if (error) {
@@ -124,7 +123,7 @@ const uploadMedia = async (evt: Event) => {
         try {
             await supabase.storage.from('media').upload(filePath, file)
             await supabase.from('profiles').update({ media: [...media_raw.value, new_media] }).eq('id', user?.id)
-            loadMedia()
+            getCurrentMedia()
             form.reset()
         } catch (error) {
             if (error instanceof Error) alert(error.message)

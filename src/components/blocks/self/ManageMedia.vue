@@ -29,12 +29,8 @@ import { computed, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 import type { MediaCell } from '@/lib/types'
 
-const { disableUpload, newMedia, deleteMedia, addCover, uploadMedia, selectMedia } = mediaHandler()
+const { disableUpload, newMedia, deleteMedia, addCover, uploadMedia, selectMedia, getFileSrc } = mediaHandler()
 const { getUnplaced, getStaged, onDragUnstaged, onDragFiller, onDragText, updatePholi, disableSave } = pholiHelpers()
-
-function getUrl(file: File) {
-    return URL.createObjectURL(file)
-}
 
 const userStore = useUserStore()
 const unplacedItems = computed(() => getUnplaced(userStore.info.media, userStore.info.pholi) ?? [])
@@ -86,7 +82,7 @@ onMounted(async () => {
                                             class="aspect-square object-cover">
                                             <source :src="media.url" />
                                         </video>
-                                        <img v-if="media.cover" :src="getUrl(media.cover)"
+                                        <img v-if="media.coverFile" :src="getFileSrc(media.coverFile)"
                                             class="aspect-square object-cover" />
                                         <audio v-if="media.type === 'audio'" controls class="w-full">
                                             <source :src="media.url" />
@@ -108,7 +104,7 @@ onMounted(async () => {
                                         <Label v-if="media.type === 'audio'" class="flex flex-row justify-between">
                                             <p>Cover</p>
                                             <Input class="w-2/3" type="file" accept="image/*"
-                                                @change.prevent="media.cover = addCover($event)" />
+                                                @change.prevent="media.coverFile = addCover($event)" />
                                         </Label>
                                     </div>
                                 </AccordionContent>

@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
-
 const prop = defineProps(['src'])
-onMounted(() => {
-    console.log(prop.src)
-})
 </script>
 
 <template>

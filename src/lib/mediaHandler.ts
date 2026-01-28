@@ -37,7 +37,7 @@ function addCover(evt: Event) {
 
 async function deleteMedia(itemId: string) {
     const { user } = authHandler()
-    const media_raw: MediaRaw[] = await loadMedia()
+    const media_raw: MediaRaw[] = await getCurrentMedia()
     if (user.value) {
         const indexRaw = media_raw.findIndex(item => item.id === itemId)
         media_raw.splice(indexRaw, 1)
@@ -62,7 +62,22 @@ const uploadMedia = async (evt: Event) => {
 
     for (const media of newMedia.value) {
         if (media.file) {
+            // upload cover if exists
+            if (media.coverFile) {
+                const coverExt = media.coverFile.name.split('.').pop()
+                const coverPath = `${Math.random()}.${coverExt}`
+                try {
+                    const { error } = await supabase.storage.from('media').upload(coverPath, media.coverFile)
+                    if (error) throw error
+                } catch (error) {
+                    if (error instanceof Error) {
+                        alert(error.message)
+                        continue
+                    }
+                }
+            }
 
+            // initialize and upload media file
             const fileExt = media.file.name.split('.').pop()
             const filePath = `${Math.random()}.${fileExt}`
             const new_media: MediaRaw = {
@@ -75,22 +90,6 @@ const uploadMedia = async (evt: Event) => {
                 date: media.date
             }
 
-            // upload cover if exists
-            if (media.cover) {
-                const coverExt = media.cover.name.split('.').pop()
-                new_media.cover = `${Math.random()}.${coverExt}`
-                try {
-                    const { error } = await supabase.storage.from('media').upload(new_media.cover, media.cover)
-                    if (error) throw error
-                } catch (error) {
-                    if (error instanceof Error) {
-                        alert(error.message)
-                        continue
-                    }
-                }
-            }
-
-            // upload media file
             try {
                 const { error } = await supabase.storage.from('media').upload(filePath, media.file)
                 if (error) throw error
@@ -102,7 +101,7 @@ const uploadMedia = async (evt: Event) => {
             }
 
             // update profile media array
-            const media_raw: MediaRaw[] = await loadMedia()
+            const media_raw: MediaRaw[] = await getCurrentMedia()
             try {
                 const { error } = await supabase.from('profiles').update({ media: [...media_raw, new_media] }).eq('id', user.value.id)
                 if (error) throw error
@@ -121,7 +120,7 @@ const uploadMedia = async (evt: Event) => {
     newMedia.value = []
 }
 
-async function loadMedia() {
+async function getCurrentMedia() {
     const { user } = authHandler()
     if (!user.value) return
 
@@ -143,11 +142,25 @@ async function loadMedia() {
 }
 
 async function getSrc(id: string) {
-    return await supabase.storage.from('media').getPublicUrl(id).data.publicUrl
+    const { data } = await supabase.storage.from('media').getPublicUrl(id)
+    return data.publicUrl
 }
 
 async function getAvatarUrl(id: string) {
     return await supabase.storage.from('avatars').getPublicUrl(id).data.publicUrl
+}
+
+function getFileSrc(file: File) {
+    return URL.createObjectURL(file)
+}
+
+function preloadImage(url: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => resolve()
+    img.onerror = reject
+    img.src = url
+  })
 }
 
 export function mediaHandler() {
@@ -160,7 +173,9 @@ export function mediaHandler() {
         getSrc,
         getAvatarUrl,
         uploadMedia,
-        loadMedia,
-        selectMedia
+        getCurrentMedia,
+        selectMedia,
+        getFileSrc,
+        preloadImage
     }
 }

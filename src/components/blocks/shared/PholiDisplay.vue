@@ -6,9 +6,10 @@ import { pholiHelpers } from '@/lib/pholiHelpers'
 
 const { viewMedia } = pholiHelpers()
 
-defineProps<{
+const props = defineProps<{
     pholi: GridMatrix
 }>()
+
 </script>
 
 <template>

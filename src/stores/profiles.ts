@@ -110,14 +110,15 @@ export const useProfilesStore = defineStore('profiles', {
       return profile
     },
 
-    loadFromCache(username: string) {
+    async loadFromCache(username: string) {
       const CACHE_TTL = 1000 * 60 * 5 // 5 mins
 
       const cached = localStorage.getItem(`profile:${username}`)
       if (cached) {
         this.profiles[username] = JSON.parse(cached) as Profile
         if (Date.now() - this.profiles[username].timestamp > CACHE_TTL) {
-
+          const profilesStore = useProfilesStore()
+          await profilesStore.fetchProfile(username)
         }
       }
     },

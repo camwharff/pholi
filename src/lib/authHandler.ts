@@ -98,7 +98,6 @@ async function handleForgotPassword(e: Event) {
     error.value = null
     e.preventDefault()
     const formInput = e.target as HTMLFormElement
-    console.log(formInput)
     const email = (formInput.querySelector('input[name="email"]') as HTMLInputElement).value
 
     try {

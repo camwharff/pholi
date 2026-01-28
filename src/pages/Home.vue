@@ -6,17 +6,14 @@ import Features from '@/components/blocks//admin/Features.vue'
 import Blurb from '@/components/blocks/admin/Blurb.vue'
 
 import { authHandler } from '@/lib/authHandler'
-import { infoHandler } from '@/lib/infoHandler'
 import { mediaHandler } from '@/lib/mediaHandler'
 
 const { user, signOut } = authHandler()
-const { getProfile } = infoHandler()
-const { loadMedia } = mediaHandler()
+const { getCurrentMedia } = mediaHandler()
 
 onMounted(async () => {
     if (user.value) {
-        await loadMedia()
-        await getProfile()
+        await getCurrentMedia()
     } else {
         signOut()
     }

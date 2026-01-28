@@ -33,13 +33,13 @@ onMounted(async () => {
     session.value = currentSession
 
     if (session.value) {
-        await loadMedia()
+        await getCurrentMedia()
     } else {
         loading.value = false
     }
 })
 
-async function loadMedia() {
+async function getCurrentMedia() {
     if (!session.value) return
 
     try {

@@ -65,5 +65,6 @@ export interface NewMedia {
     title?: string
     date?: string
     description?: string
-    cover?: File
+    coverFile?: File
+    coverUrl?: string
 }

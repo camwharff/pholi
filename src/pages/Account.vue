@@ -8,7 +8,6 @@ import ManageMedia from '@/components/blocks/self/ManageMedia.vue'
 import AddPost from '@/components/blocks/self/AddPost.vue'
 import { onMounted } from 'vue'
 import { mediaHandler } from '@/lib/mediaHandler'
-import { infoHandler } from '@/lib/infoHandler'
 import { authHandler } from '@/lib/authHandler'
 import {
     Tabs,
@@ -19,13 +18,10 @@ import {
 import EditPholi from '@/components/blocks/self/EditPholi.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { Settings, UserRoundPen } from 'lucide-vue-next'
-import { useUserStore } from '@/stores/user'
 // import logoBase from '@/assets/logo-base.vue'
 
-const { loadMedia } = mediaHandler()
-const { getProfile } = infoHandler()
+const { getCurrentMedia } = mediaHandler()
 const { user, signOut, openSettings } = authHandler()
-const userStore = useUserStore()
 const infoTab = ref<'profile' | 'pholi' | 'post'>('profile')
 const displayTab = ref<'pholi' | 'feed'>('pholi')
 
@@ -51,9 +47,7 @@ watch(displayTab, () => {
 
 onMounted(async () => {
     if (user.value) {
-        await userStore.loadUserData(user.value?.id || '')
-        await loadMedia()
-        await getProfile()
+        await getCurrentMedia()
     } else {
         signOut()
     }
@@ -91,7 +85,7 @@ onMounted(async () => {
                             </Button>
                         </div>
                         <div class="w-full">
-                            <AccountInfoEdit v-if="editInfo" />
+                            <AccountInfoEdit v-if="editInfo"/>
                             <AccountInfoDisplay v-else />
                         </div>
                     </div>

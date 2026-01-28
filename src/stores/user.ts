@@ -61,8 +61,7 @@ export const useUserStore = defineStore('user', {
         item.url = source ?? ''
       }
 
-      this.info.avatar_url = info.avatar_url ? (await getAvatarUrl(info.avatar_url))?.toString() : ''
-      console.log(this.info.avatar_url)
+      info.avatar_url = info.avatar_src ? (await getAvatarUrl(info.avatar_src))?.toString() : ''
 
       localStorage.setItem('userInfo', JSON.stringify(info))
       localStorage.setItem('followingInfo', JSON.stringify(this.followingInfo))
