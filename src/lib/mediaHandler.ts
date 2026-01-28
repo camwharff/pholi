@@ -146,6 +146,10 @@ async function getSrc(id: string) {
     return await supabase.storage.from('media').getPublicUrl(id).data.publicUrl
 }
 
+async function getAvatarUrl(id: string) {
+    return await supabase.storage.from('avatars').getPublicUrl(id).data.publicUrl
+}
+
 export function mediaHandler() {
     return {
         disableUpload,
@@ -154,6 +158,7 @@ export function mediaHandler() {
         addCover,
         deleteMedia,
         getSrc,
+        getAvatarUrl,
         uploadMedia,
         loadMedia,
         selectMedia

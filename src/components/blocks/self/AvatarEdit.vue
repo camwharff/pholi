@@ -1,27 +1,19 @@
 <script setup lang="ts">
-import { ref, toRefs, watchEffect } from 'vue'
+import { ref, toRefs } from 'vue'
 import { supabase } from '@/lib/supabaseClient'
 import Input from '@/components/ui/input/Input.vue'
+import { Label } from '@/components/ui/label'
 
-const prop = defineProps(['path'])
-const { path} = toRefs(prop)
+const prop = defineProps(['src'])
+const { src } = toRefs(prop)
 
 const emit = defineEmits(['upload', 'update:path'])
 const uploading = ref(false)
-const src = ref('')
+const newAvatarSrc = ref('')
 
-const downloadImage = async () => {
-    if (path) {
-        try {
-            const { data, error } = await supabase.storage.from('avatars').download(path.value)
-            if (error) throw error
-            const reader = new FileReader()
-            reader.onload = () => src.value = reader.result as string
-            reader.readAsDataURL(data)
-        } catch (error) {
-            if (error instanceof Error) alert(error.message)
-        }
-    }
+const setAvatarPreview = async (newSrc: string) => {
+    const { data } = await supabase.storage.from('avatars').getPublicUrl(newSrc)
+    newAvatarSrc.value = data.publicUrl
 }
 
 const uploadAvatar = async (evt: Event) => {
@@ -46,7 +38,7 @@ const uploadAvatar = async (evt: Event) => {
                 .upload(filePath, file, { upsert: true })
 
             if (error) throw error
-            emit('update:path', filePath)
+            setAvatarPreview(filePath)
             emit('upload')
         } catch (error) {
             if (error instanceof Error) alert(error.message)
@@ -55,24 +47,18 @@ const uploadAvatar = async (evt: Event) => {
         }
     }
 }
-
-watchEffect(() => {
-    if (path) {
-        if (path.value) downloadImage()
-    }
-})
 </script>
 
 <template>
-    <div class="flex flex-col items-center">
+    <div class="flex flex-col items-start gap-4">
         <div class="w-full aspect-square overflow-hidden">
-            <img v-if="src" :src="src" alt="Avatar"
-                class="w-full h-full avatar image rounded-3xl border-accent border-5 object-cover" />
-            <div v-else class="min-w-full min-h-full avatar image rounded-3xl bg-accent border-accent border-5"></div>
+            <img :src="newAvatarSrc === '' ? src : newAvatarSrc" alt="Avatar"
+                class="w-full h-full avatar image rounded-3xl border-accent border-4 object-cover" />
         </div>
-
-        <div class="flex w-auto items-center space-x-2 ml-0 mr-0 mt-6 mb-6">
-            <Input class="bg-white w-full text-black" type="file" id="single" accept="image/*" @change="uploadAvatar"/>
+        <div class="flex flex-col w-full justify-start items-start gap-2">
+            <Label for="avatarUpload">Avatar</Label>
+            <Input class="bg-input h-fit w-full file:font-bold file:text-input-foreground text-input-foreground" type="file" id="avatarUpload" accept="image/*"
+                @change="uploadAvatar" />
         </div>
     </div>
 </template>

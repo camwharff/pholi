@@ -61,12 +61,13 @@ export const useProfilesStore = defineStore('profiles', {
       const followers = followerRows?.map(row => row.follower_id) ?? []
       const followingCount: number = followingCountResult ?? 0
       const followerCount: number = followerCountResult ?? 0
+      const avatar_url = data.avatar_url ? (await getSrc(data.avatar_url))?.toString() : ''
 
       const profile: Profile = {
         id: data.id,
         username: data.username,
         full_name: data.full_name,
-        avatar_url: data.avatar_url,
+        avatar_url: avatar_url,
         bio: data.bio,
         media: data.media,
         pholi: data.pholi,

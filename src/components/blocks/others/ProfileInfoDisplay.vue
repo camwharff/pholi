@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Avatar from '@/components/blocks/shared/AvatarDisplay.vue'
+import AvatarDisplay from '@/components/blocks/shared/AvatarDisplay.vue'
 import HoveredPost from '@/components/blocks/shared/HoveredPost.vue'
 import HoveredMedia from '@/components/blocks/shared/HoveredMedia.vue'
 import { interactionHandler } from '@/lib/interactionHandler'
@@ -40,7 +40,7 @@ onMounted(async () => {
         <div v-else class="flex flex-col gap-2 w-full">
             <div class="p-4 bg-secondary rounded-2xl shadow-md text-white text-sm flex flex-col gap-2">
             <div class="w-full bg-accent rounded-3xl">
-                <Avatar v-if="profile?.avatar_url" :path="profile?.avatar_url" />
+                <AvatarDisplay v-if="profile?.avatar_url" :src="profile?.avatar_url" />
                 <logo-circle-front v-else class="w-full h-full rounded-full mx-auto text-accent" />
             </div>
                 <div class="bg-accent p-4 shadow-md flex gap-2 flex-col rounded-xl">

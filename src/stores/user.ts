@@ -4,7 +4,7 @@ import { interactionHandler } from "@/lib/interactionHandler"
 import { mediaHandler } from '@/lib/mediaHandler'
 
 const { getFollowing, getFollowers, getFollowingCount, getFollowerCount } = interactionHandler()
-const { getSrc } = mediaHandler()
+const { getSrc, getAvatarUrl } = mediaHandler()
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -60,6 +60,9 @@ export const useUserStore = defineStore('user', {
         const source = await getSrc(item.id)
         item.url = source ?? ''
       }
+
+      this.info.avatar_url = info.avatar_url ? (await getAvatarUrl(info.avatar_url))?.toString() : ''
+      console.log(this.info.avatar_url)
 
       localStorage.setItem('userInfo', JSON.stringify(info))
       localStorage.setItem('followingInfo', JSON.stringify(this.followingInfo))

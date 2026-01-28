@@ -19,11 +19,13 @@ import {
 import EditPholi from '@/components/blocks/self/EditPholi.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { Settings, UserRoundPen } from 'lucide-vue-next'
+import { useUserStore } from '@/stores/user'
 // import logoBase from '@/assets/logo-base.vue'
 
 const { loadMedia } = mediaHandler()
 const { getProfile } = infoHandler()
 const { user, signOut, openSettings } = authHandler()
+const userStore = useUserStore()
 const infoTab = ref<'profile' | 'pholi' | 'post'>('profile')
 const displayTab = ref<'pholi' | 'feed'>('pholi')
 
@@ -49,6 +51,7 @@ watch(displayTab, () => {
 
 onMounted(async () => {
     if (user.value) {
+        await userStore.loadUserData(user.value?.id || '')
         await loadMedia()
         await getProfile()
     } else {

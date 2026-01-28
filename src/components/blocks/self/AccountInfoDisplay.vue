@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Avatar from '@/components/blocks/shared/AvatarDisplay.vue'
+import AvatarDisplay from '@/components/blocks/shared/AvatarDisplay.vue'
 import HoveredPost from '@/components/blocks/shared/HoveredPost.vue'
 import HoveredMedia from '@/components/blocks/shared/HoveredMedia.vue'
 import { useUserStore } from '@/stores/user'
@@ -36,7 +36,7 @@ const followerCount = computed(() => userStore.followingInfo?.followerCount ?? '
     <div v-else class="flex flex-col gap-2 w-full">
         <div class="p-4 bg-secondary rounded-2xl shadow-md text-white text-sm flex flex-col gap-2">
             <div class="w-full bg-accent rounded-3xl">
-                <Avatar v-if="avatarUrl" :path="avatarUrl" />
+                <AvatarDisplay v-if="avatarUrl" :src="avatarUrl" />
                 <logo-circle-front v-else class="w-full h-full rounded-full mx-auto text-accent" />
             </div>
             <div class="bg-accent p-4 shadow-md flex gap-2 flex-col rounded-xl">
