@@ -1,10 +1,19 @@
 import { defineStore } from "pinia"
 import { supabase } from '@/lib/supabaseClient'
 import { interactionHandler } from "@/lib/interactionHandler"
-import { mediaHandler } from "@/lib/mediaHandler"
 
-const { getSrc } = mediaHandler()
 const { getFollowing, getFollowers, getFollowingCount, getFollowerCount } = interactionHandler()
+
+async function getSrc(id: string) {
+    try {
+        const { data, error } = await supabase.storage.from('media').download(id)
+        if (error) throw error
+        return URL.createObjectURL(data)
+    }
+    catch (error) {
+        console.log(error)
+    }
+}
 
 export const useUserStore = defineStore('user', {
   state: () => ({
