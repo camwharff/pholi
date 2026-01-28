@@ -10,8 +10,12 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { authHandler } from "@/lib/authHandler"
+import { ref } from 'vue'
 
-const { email, password, handleLogin, error, isLoading, changeMode } = authHandler()
+const { handleLogin, error, isLoading, changeMode } = authHandler()
+
+const email = ref('')
+const password = ref('')
 
 </script>
 
@@ -22,7 +26,7 @@ const { email, password, handleLogin, error, isLoading, changeMode } = authHandl
             <CardDescription class="text-black">Enter your email and password below to log in to your account</CardDescription>
         </CardHeader>
         <CardContent>
-            <form @submit.prevent="handleLogin">
+            <form @submit.prevent="handleLogin(email, password)">
                 <div class="flex flex-col gap-6">
                     <!-- Email -->
                     <div class="grid gap-2">

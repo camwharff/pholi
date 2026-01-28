@@ -74,9 +74,9 @@ onMounted(async () => {
                     Post
                 </TabsTrigger>
             </TabsList>
-            <TabsContent value="profile">
-                <div class="flex flex-row">
-                    <div class="flex flex-col items-center gap-4">
+            <TabsContent value="profile" class="w-full">
+                <div class="flex flex-row w-full items-center justify-center">
+                    <div class="flex flex-col items-center gap-4 w-full">
                         <div class="flex flex-row gap-4 ">
                             <Button v-if="editInfo" @click.prevent="editInfo = false">
                                 Close Editor
@@ -88,11 +88,9 @@ onMounted(async () => {
                                 <Settings />
                             </Button>
                         </div>
-                        <div v-if="editInfo">
-                            <AccountInfoEdit />
-                        </div>
-                        <div v-else>
-                            <AccountInfoDisplay />
+                        <div class="w-full">
+                            <AccountInfoEdit v-if="editInfo" />
+                            <AccountInfoDisplay v-else />
                         </div>
                     </div>
                 </div>

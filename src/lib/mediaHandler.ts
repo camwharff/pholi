@@ -3,6 +3,7 @@ import { supabase } from '@/lib/supabaseClient'
 import type { Ref } from 'vue'
 import { authHandler } from '@/lib/authHandler'
 import { uiHandler } from '@/lib/uiHandler'
+import { useUserStore } from '@/stores/user'
 
 const { shortAlert } = uiHandler()
 
@@ -149,8 +150,6 @@ function addCover(evt: Event) {
 async function deleteMedia(id: string) {
     const { user } = authHandler()
     if (user.value) {
-        console.log(id)
-        console.log(media_raw.value)
         const indexRaw = media_raw.value.findIndex(item => item.id === id)
         media_raw.value.splice(indexRaw, 1)
         await supabase.from('profiles').update({ media: [...media_raw.value] }).eq('id', user.value.id)
@@ -253,9 +252,7 @@ async function updatePholi() {
         }
         const { error } = await supabase.from('profiles').update(updates).eq('id', user.value.id)
         if (error) throw error
-        // dynamically import the user store to avoid circular import during module initialization
-        const mod = await import('@/stores/user')
-        const userStore = mod.useUserStore()
+        const userStore = useUserStore()
         await userStore.loadUserData(user.value.id)
     } catch (error) {
         if (error instanceof Error) alert(error.message)
@@ -321,7 +318,6 @@ async function downloadMedia() {
                 const coverUrl = ref<string>()
                 const { data, error } = await supabase.storage.from('media').download(item.path)
                 if (error) {
-                    console.log(item)
                     throw error
                 }
                 const url = URL.createObjectURL(data)

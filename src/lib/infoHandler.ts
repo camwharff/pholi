@@ -37,7 +37,6 @@ async function searchUsers(userSearchParam: string) {
         if (data?.length) {
             router.push({ name: 'public-profile', params: { username: userSearchParam } })
         } else {
-            console.log(userSearchParam)
             shortAlert(`No user found with username \"${userSearchParam}\"`)
         }
     } catch (error) {
@@ -63,21 +62,17 @@ async function getProfile() {
 
         const { data, error, status } = await supabase
             .from('profiles')
-            .select('username, avatar_url, full_name, bio, website')
+            .select('username, avatar_url, full_name, bio, full_name')
             .eq('id', user.value?.id ?? '')
             .single()
 
         if (error && status !== 406) throw error
 
         if (data) {
-            const website_json = data.website ?? { url: '', title: '' }
-
             username.value = data.username ?? ''
             avatar_url.value = data.avatar_url ?? ''
             full_name.value = data.full_name ?? ''
             bio.value = data.bio ?? ''
-            website_title.value = website_json.title ?? ''
-            website_url.value = website_json.url ?? ''
         }
     } catch (error) {
         if (error instanceof Error) alert(error.message)
@@ -89,14 +84,9 @@ async function updateProfile() {
     if (!user.value) return
 
     try {
-
         const updates = {
             id: user.value.id,
             username: username.value,
-            website: {
-                url: website_url.value,
-                title: website_title.value
-            },
             avatar_url: avatar_url.value,
             full_name: full_name.value,
             bio: bio.value,

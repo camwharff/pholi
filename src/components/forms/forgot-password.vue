@@ -10,8 +10,11 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { authHandler } from "@/lib/authHandler"
+import { ref } from "vue"
 
-const { email, error, success, isLoading, handleForgotPassword } = authHandler()
+const { error, success, isLoading, handleForgotPassword } = authHandler()
+
+const email = ref('')
 
 </script>
 
@@ -41,7 +44,7 @@ const { email, error, success, isLoading, handleForgotPassword } = authHandler()
                     <div class="flex flex-col gap-6">
                         <div class="grid gap-2">
                             <Label for="email">Email</Label>
-                            <Input id="email" type="email" placeholder="m@example.com" required v-model="email" />
+                            <Input id="email" type="email" name="email" placeholder="m@example.com" required v-model="email" />
                         </div>
                         <p v-if="error" class="text-sm text-red-500">{{ error }}</p>
                         <Button type="submit" class="w-full" :disabled="isLoading">

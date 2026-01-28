@@ -10,8 +10,15 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { authHandler } from "@/lib/authHandler"
+import { ref } from "vue"
 
-const { success, handleSignUp, full_name, username, email, password, repeatPassword, error, isLoading, changeMode } = authHandler()
+const { success, handleSignUp, error, isLoading, changeMode } = authHandler()
+
+const full_name = ref('')
+const username = ref('')
+const email = ref('')
+const password = ref('')
+const repeatPassword = ref('')
 
 </script>
 
@@ -36,7 +43,7 @@ const { success, handleSignUp, full_name, username, email, password, repeatPassw
                 <CardDescription class="text-black">Create a new account</CardDescription>
             </CardHeader>
             <CardContent>
-                <form @submit.prevent="handleSignUp">
+                <form @submit.prevent="handleSignUp(email, password, repeatPassword, username, full_name)">
                     <div class="flex flex-col gap-6">
                         <div class="grid gap-2">
                             <Label for="full_name">Name</Label>

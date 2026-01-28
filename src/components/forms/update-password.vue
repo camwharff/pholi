@@ -10,8 +10,12 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { authHandler } from "@/lib/authHandler"
+import { ref } from "vue"
 
-const {password, error, isLoading, handleUpdatePassword } = authHandler()
+const { error, isLoading, handleUpdatePassword } = authHandler()
+
+const password = ref('')
+const repeatPassword = ref('')
 
 </script>
 
@@ -27,8 +31,11 @@ const {password, error, isLoading, handleUpdatePassword } = authHandler()
                     <div class="flex flex-col gap-6">
                         <div class="grid gap-2">
                             <Label for="password">New password</Label>
-                            <Input id="password" type="password" placeholder="New password" required
+                            <Input id="password" type="password" name="password" placeholder="New password" required
                                 v-model="password" />
+                            <Label for="repeatPassword">Retype password</Label>
+                            <Input id="repeatPassword" type="password" name="repeatPassword" placeholder="New password" required
+                                v-model="repeatPassword" />
                         </div>
                         <p v-if="error" class="text-sm text-red-500">{{ error }}</p>
                         <Button type="submit" class="w-full" :disabled="isLoading">

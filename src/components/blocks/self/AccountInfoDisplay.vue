@@ -17,7 +17,7 @@ onMounted(async () => {
 })
 
 const avatarUrl = computed(() => userStore.info?.avatar_url ?? '')
-const fullName = computed(() => userStore.info?.full_name ?? '')
+const displayName = computed(() => userStore.info?.full_name ?? '')
 const username = computed(() => userStore.info?.username ?? '')
 const bio = computed(() => userStore.info?.bio ?? '')
 const followingCount = computed(() => userStore.followingInfo?.followingCount ?? '')
@@ -36,7 +36,7 @@ const followerCount = computed(() => userStore.followingInfo?.followerCount ?? '
         <div class="p-4 bg-secondary rounded-2xl shadow-md text-white text-sm flex flex-col gap-2">
             <Avatar :path="avatarUrl" />
             <div class="bg-accent p-4 shadow-md flex gap-2 flex-col rounded-xl">
-                <h2>{{ fullName }}</h2>
+                <h2>{{ displayName }}</h2>
                 <h3>@{{ username }}</h3>
                 <p>{{ bio }}</p>
             </div>

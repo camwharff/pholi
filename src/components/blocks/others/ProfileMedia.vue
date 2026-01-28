@@ -11,7 +11,6 @@ const pholi = computed(() => profilesStore.profiles[username]?.pholi ?? [])
 onMounted(async () => {
     await profilesStore.fetchProfile(username)
     await profilesStore.loadFromCache(username)
-    console.log(pholi.value)
 })
 
 </script>

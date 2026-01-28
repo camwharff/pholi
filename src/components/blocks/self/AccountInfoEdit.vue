@@ -3,9 +3,19 @@ import Avatar from '@/components/blocks/self/AvatarEdit.vue'
 import { infoHandler } from '@/lib/infoHandler'
 import { authHandler } from '@/lib/authHandler'
 import Button from '@/components/ui/button/Button.vue'
+import { useUserStore } from '@/stores/user'
+import { onMounted, computed } from 'vue'
 
-const { avatar_url, username, bio, full_name, website_title, website_url, updateProfile } = infoHandler()
+const { updateProfile } = infoHandler()
 const { user } = authHandler()
+const userStore = useUserStore()
+const bio = computed(() => userStore.info?.bio ?? [])
+const avatar_url = computed(() => userStore.info?.avatar_url ?? [])
+const display_name = computed(() => userStore.info?.display_name ?? [])
+
+onMounted(async () => {
+    await userStore.loadFromCache()
+})
 
 </script>
 
@@ -16,24 +26,10 @@ const { user } = authHandler()
                 <Avatar v-model:path="avatar_url" @upload="updateProfile" />
 
                 <div class="form-group">
-                    <label for="full_name">Full Name</label>
-                    <input id="full_name" type="text" v-model="full_name" />
+                    <label for="display_name">Display Name</label>
+                    <input id="display_name" type="text" v-model="display_name" />
                 </div>
 
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input id="username" type="text" v-model="username" />
-                </div>
-
-                <div class="form-group">
-                    <label for="website_url">Website URL</label>
-                    <input id="website_url" type="url" v-model="website_url" />
-                </div>
-
-                <div class="form-group">
-                    <label for="website_title">Website Label</label>
-                    <input id="website_title" type="text" v-model="website_title" />
-                </div>
                 <div class="form-group">
                     <label for="bio">Bio</label>
                     <input id="bio" type="text" v-model="bio" />
