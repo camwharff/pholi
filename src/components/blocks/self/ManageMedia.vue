@@ -23,11 +23,12 @@ import {
 import { mediaHandler } from '@/lib/mediaHandler'
 import Button from '@/components/ui/button/Button.vue'
 import { Spinner } from '@/components/ui/spinner'
-import { Clapperboard, Music, Image } from 'lucide-vue-next'
 import { pholiHelpers } from '@/lib/pholiHelpers'
 import { computed, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
-import type { MediaCell } from '@/lib/types'
+import type { MediaCell, MediaType } from '@/lib/types'
+import MediaListItem from '@/components/media/MediaListItem.vue'
+import { Clapperboard, Music, Image } from 'lucide-vue-next'
 
 const { disableUpload, newMedia, deleteMedia, addCover, uploadMedia, selectMedia, getFileSrc } = mediaHandler()
 const { getUnplaced, getStaged, onDragUnstaged, onDragFiller, onDragText, updatePholi, disableSave } = pholiHelpers()
@@ -136,22 +137,9 @@ onMounted(async () => {
                         class="cursor-move border-secondary border-4 text-white aspect-square rounded-3xl overflow-hidden">
                         <ContextMenu>
                             <ContextMenuTrigger>
-                                <img class="aspect-square object-cover border-0 w-full h-full"
-                                    v-if="item.type === 'image'" :src="item.url" />
-                                <div v-if="item.type === 'video'" class="relative h-full w-full aspect-square">
-                                    <video class="aspect-square object-cover border-0 w-full h-full">
-                                        <source :src="item.url" />
-                                    </video>
-                                    <div class="absolute inset-0 flex items-center justify-center bg-white/30">
-                                        <Clapperboard class="h-3/4 w-3/4" />
-                                    </div>
-                                </div>
-                                <div v-if="item.type === 'audio'" class="relative h-full w-full aspect-square">
-                                    <img :src="item.coverUrl" class="absolute inset-0 h-full w-full object-cover" />
-                                    <div class="absolute inset-0 flex items-center justify-center bg-white/30">
-                                        <Music class="h-3/4 w-3/4" />
-                                    </div>
-                                </div>
+                                <MediaListItem :src="item.url ?? ''" :type="item.type as MediaType ?? ''"
+                                    :alt="item.label ?? ''" :cover="item.coverUrl" :label="item.label"
+                                    :description="item.description" />
                             </ContextMenuTrigger>
                             <ContextMenuContent>
                                 <ContextMenuItem @click.prevent="deleteMedia(item.id)" inset>

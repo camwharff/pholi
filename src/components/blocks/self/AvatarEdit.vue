@@ -17,12 +17,12 @@ const emit = defineEmits<{
 
 const loadingPreview = ref(false)
 const newAvatarUrl = ref<string>()
-const { preloadImage } = mediaHandler()
+const { preloadMedia } = mediaHandler()
 
 const setAvatarPreview = async (newSrc: string) => {
     const { data } = await supabase.storage.from('avatars').getPublicUrl(newSrc)
     newAvatarUrl.value = data.publicUrl
-    await preloadImage(data.publicUrl)
+    await preloadMedia(data.publicUrl, 'image')
 }
 
 const uploadAvatar = async (evt: Event) => {

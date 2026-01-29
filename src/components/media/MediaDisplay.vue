@@ -1,19 +1,29 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import { mediaHandler } from '@/lib/mediaHandler'
 import Image from './Imag.vue'
+import type { MediaType } from '@/lib/types';
 
-defineProps<{
+const props = defineProps<{
     src: string
-    type: string
+    type: MediaType
     alt: string
     cover?: string
     label?: string
     description?: string
 }>()
+
+const { preloadMedia } = mediaHandler()
+const mediaLoaded = ref(false)
+
+onMounted(async () => {
+    await preloadMedia(props.src, props.type)
+    mediaLoaded.value = true
+})
 </script>
 
 <template>
-    <div
-        class="w-full h-full flex items-center justify-center overflow-hidden border-4 border-secondary rounded-3xl">
+    <div v-if="mediaLoaded" class="w-full h-full flex items-center justify-center overflow-hidden border-4 border-secondary rounded-3xl">
         <div v-if="type === 'image'" class="w-full h-full">
             <img :src="src" :alt="alt" class="w-full h-full object-cover" />
         </div>
@@ -24,7 +34,8 @@ defineProps<{
             <Image v-if="cover" :src="cover" :alt="alt" class="w-1/2 h-1/2 object-cover rounded-2xl" />
             <audio :src="src" :alt="alt" class="w-full" controls></audio>
         </div>
-        <div v-else-if="type === 'text'" class="w-full h-full p-4 overflow-auto flex flex-col gap-2 text-white items-center justify-center">
+        <div v-else-if="type === 'text'"
+            class="w-full h-full p-4 overflow-auto flex flex-col gap-2 text-white items-center justify-center">
             <p v-if="label && description === ''" class="font-bold text-5xl">{{ label }}</p>
             <p v-else-if="label" class="font-bold text-3xl">{{ label }}</p>
             <p v-if="description" class="text-base">{{ description }}</p>

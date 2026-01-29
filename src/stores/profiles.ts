@@ -5,7 +5,7 @@ import { type Post } from '@/lib/postHandler'
 import { mediaHandler } from '@/lib/mediaHandler'
 import type { GridMatrix } from '@/lib/types'
 
-const { getSrc } = mediaHandler()
+const { getSrc, getAvatarUrl } = mediaHandler()
 const { getFollowing, getFollowers, getFollowingCount, getFollowerCount } = interactionHandler()
 
 interface Profile {
@@ -61,7 +61,7 @@ export const useProfilesStore = defineStore('profiles', {
       const followers = followerRows?.map(row => row.follower_id) ?? []
       const followingCount: number = followingCountResult ?? 0
       const followerCount: number = followerCountResult ?? 0
-      const avatar_url = data.avatar_url ? (await getSrc(data.avatar_url))?.toString() : ''
+      const avatar_url = data.avatar_src ? (await getAvatarUrl(data.avatar_src))?.toString() : ''
 
       const profile: Profile = {
         id: data.id,

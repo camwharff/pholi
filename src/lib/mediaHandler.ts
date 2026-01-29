@@ -3,7 +3,7 @@ import { supabase } from '@/lib/supabaseClient'
 import { authHandler } from '@/lib/authHandler'
 import { uiHandler } from '@/lib/uiHandler'
 import { useUserStore } from '@/stores/user'
-import type { MediaRaw, NewMedia } from '@/lib/types'
+import type { MediaRaw, NewMedia, MediaType } from '@/lib/types'
 
 const { shortAlert } = uiHandler()
 const newMedia = ref<NewMedia[]>([])
@@ -154,13 +154,52 @@ function getFileSrc(file: File) {
     return URL.createObjectURL(file)
 }
 
-function preloadImage(url: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const img = new Image()
-    img.onload = () => resolve()
-    img.onerror = reject
-    img.src = url
-  })
+// function preloadImage(url: string): Promise<void> {
+//     return new Promise((resolve, reject) => {
+//         const media = new Image()
+//         media.onload = () => resolve()
+//         media.onerror = reject
+//         media.src = url
+//     })
+// }
+
+async function preloadMedia(url: string, type: MediaType): Promise<void> {
+    return new Promise((resolve, reject) => {
+        switch (type) {
+            case 'image': {
+                const img = new Image()
+                img.onload = () => resolve()
+                img.onerror = reject
+                img.src = url
+                break
+            }
+
+            case 'audio': {
+                const audio = new Audio()
+                audio.oncanplaythrough = () => resolve()
+                audio.onerror = reject
+                audio.src = url
+                audio.load()
+                break
+            }
+
+            case 'video': {
+                const video = document.createElement('video')
+                video.oncanplaythrough = () => resolve()
+                video.onerror = reject
+                video.src = url
+                video.load()
+                break
+            }
+
+            case 'text': {
+                fetch(url)
+                    .then(r => r.ok ? resolve() : reject())
+                    .catch(reject)
+                break
+            }
+        }
+    })
 }
 
 export function mediaHandler() {
@@ -176,6 +215,6 @@ export function mediaHandler() {
         getCurrentMedia,
         selectMedia,
         getFileSrc,
-        preloadImage
+        preloadMedia
     }
 }
