@@ -180,8 +180,8 @@ button svg {
 }
 
 .hover-transition {
-  transition: background-color 1s ease,
-              box-shadow 1s ease,
-              transform 1s ease,
-              opacity 1s ease;
+  transition: background-color .2s ease,
+              box-shadow .2s ease,
+              transform .2s ease,
+              opacity .2s ease;
 }

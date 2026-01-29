@@ -10,7 +10,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover'
-import type { GridMatrix, SizeCell } from '@/lib/types'
+import type { GridMatrix, MediaType, SizeCell } from '@/lib/types'
 import { widthConfig, heightConfig } from '@/lib/configs'
 import { pholiHelpers } from '@/lib/pholiHelpers'
 // import VuePictureCropper, { cropper } from 'vue-picture-cropper'
@@ -41,7 +41,7 @@ onMounted(async () => {
                             <div draggable="true" @dragstart="onDragStaged(cell)"
                                 class="absolute top-0 left-0 w-8 h-8 items-start justify-start cursor-move flex">
                             </div>
-                            <MediaDisplay :src="cell.url ?? ''" :type="cell.type ?? ''" :alt="cell.id ?? ''"
+                            <MediaDisplay :src="cell.url ?? ''" :type="(cell.type as MediaType) ?? ''" :alt="cell.id ?? ''"
                                 :cover="cell.coverUrl" :label="cell.label" :description="cell.description"
                                 class="w-full h-full rounded-3xl" />
                             <!-- <VuePictureCropper :boxStyle="{
