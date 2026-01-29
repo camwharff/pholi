@@ -50,13 +50,13 @@ function toggleSearch() {
         </button>
     </div>
     <LogoCircleBack width="175" height="175"
-        class="rounded-full mx-auto z-10 shadow-md shadow-shadow m-0 fixed inset-0 inline border-4 border-transparent border-none" />
+        class="rounded-full mx-auto z-10 shadow-md shadow-shadow/50 m-0 fixed inset-0 inline border-4 border-transparent border-none" />
     <div
-        class="z-40 shadow-md shadow-shadow fixed flex w-full items-center justify-between px-20 text-center flex-row gap-18 p-4 py-0 bg-accent h-[10vh] min-h-25">
+        class="z-40 shadow-md shadow-shadow/50 fixed flex w-full items-center justify-between px-20 text-center flex-row gap-18 p-4 py-0 bg-accent h-[10vh] min-h-25">
         <div class="h-inherit w-fit inset-0 m-auto">
             <RouterLink to="/home" class="h-fit w-fit p-0 m-auto inset-0">
                 <logoCircleFront width="175" height="175"
-                    class="rounded-full mx-auto z-50 fixed inset-0 inline border-4 border-transparent border-none" />
+                    class="hover-transition hover:shadow-[0px_0px_20px_rgba(0,0,0,1)] shadow-shadow rounded-full mx-auto z-50 fixed inset-0 inline border-4 border-transparent border-none" />
             </RouterLink>
         </div>
         <NavigationMenu :viewport="false" class="z-40 w-fit flex-initial">

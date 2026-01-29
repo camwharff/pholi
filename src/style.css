@@ -178,3 +178,10 @@ button svg {
   width: auto;
   height: auto;
 }
+
+.hover-transition {
+  transition: background-color 1s ease,
+              box-shadow 1s ease,
+              transform 1s ease,
+              opacity 1s ease;
+}
