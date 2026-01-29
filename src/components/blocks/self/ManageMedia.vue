@@ -159,7 +159,9 @@ onMounted(async () => {
                     class="grid grid-cols-2 gap-4 max-h-[65vh] h-fit auto-rows-max w-inherit items-center bg-accent rounded-3xl shadow-md text-white text-sm p-4 z-10 overflow-y-scroll">
                     <div v-for="item in stagedItems" :key="item.id"
                         class="cursor-move border-secondary border-4 text-white aspect-square rounded-3xl overflow-hidden">
-                        <img :src="item.url" :alt="item.label" class="object-cover border-0 w-full h-full" />
+                        <MediaListItem :src="item.url ?? ''" :type="item.type as MediaType ?? ''"
+                            :alt="item.label ?? ''" :cover="item.coverUrl" :label="item.label"
+                            :description="item.description" />
                     </div>
                 </div>
             </TabsContent>

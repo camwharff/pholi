@@ -10,6 +10,7 @@ import Image from '@/components/media/Imag.vue'
 import Card from '@/components/ui/card/Card.vue'
 import { VisuallyHidden } from 'reka-ui'
 import MediaDisplay from '@/components/media/MediaDisplay.vue'
+import type { MediaType } from '@/lib/types'
 const props = defineProps<{
     src: string
     type: string
@@ -23,9 +24,12 @@ const props = defineProps<{
 <template>
     <Dialog class="w-full h-full">
         <DialogTrigger class="w-full h-full p-2">
-            <div class="w-full h-full relative">
-                <div v-if="type !== 'text'" class="w-full h-full bg-linear-to-t from-sky-800 to-sky-600 animate-pulse absolute z-10 rounded-3xl"></div>
-                <MediaDisplay :src="src" :type="type" :alt="alt" :cover="cover" :label="label" :description="description" class="absolute text-transparent animate-none z-20"/>
+            <div class="w-full h-full relative rounded-3xl shadow-sm hover:shadow-lg shadow-shadow">
+                <div v-if="type !== 'text'"
+                    class="w-full h-full bg-linear-to-t from-sky-800 to-sky-600 animate-pulse absolute z-10 rounded-3xl">
+                </div>
+                <MediaDisplay :src="src" :type="(type as MediaType)" :alt="alt" :cover="cover" :label="label"
+                    :description="description" class="absolute text-transparent animate-none z-20" />
             </div>
         </DialogTrigger>
         <DialogContent class="h-screen w-screen">

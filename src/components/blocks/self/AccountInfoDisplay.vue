@@ -33,18 +33,18 @@ const followerCount = computed(() => userStore.followingInfo?.followerCount ?? '
     <div v-else-if="postViewable" class="w-full">
         <HoveredPost />
     </div>
-    <div v-else class="flex flex-col gap-2 w-full">
-        <div class="p-4 bg-secondary rounded-2xl shadow-md text-white text-sm flex flex-col gap-2">
-            <div class="w-full bg-accent rounded-3xl">
+    <div v-else class="flex flex-col gap-2 w-full shadow-md shadow-shadow rounded-2xl">
+        <div class="p-4 bg-secondary rounded-2xl text-white text-sm flex flex-col gap-2">
+            <div class="w-full bg-accent rounded-3xl shadow-sm hover:shadow-lg shadow-shadow">
                 <AvatarDisplay v-if="avatarUrl" :src="avatarUrl" />
                 <logo-circle-front v-else class="w-full h-full rounded-full mx-auto text-accent" />
             </div>
-            <div class="bg-accent p-4 shadow-md flex gap-2 flex-col rounded-xl">
+            <div class="bg-accent p-4 flex gap-2 flex-col rounded-xl shadow-sm hover:shadow-lg shadow-shadow">
                 <h2>{{ displayName }}</h2>
                 <h3>@{{ username }}</h3>
                 <p v-if="bio">{{ bio }}</p>
             </div>
-            <div class="bg-accent p-4 shadow-md flex gap-2 flex-col rounded-xl">
+            <div class="bg-accent p-4 shadow-sm hover:shadow-lg shadow-shadow flex gap-2 flex-col rounded-xl">
                 <p>{{ followerCount }} {{ followerCount === 1 ? 'Follower' : 'Followers' }}</p>
                 <p>{{ followingCount }} Following</p>
             </div>
