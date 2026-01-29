@@ -56,7 +56,7 @@ async function updateWrapper(bio: string, avatar_src: string, full_name: string)
                 </div>
 
                 <div class="flex flex-row justify-center">
-                    <Button type="submit" :disabled="savingInfo" class="hover:bg-primary">
+                    <Button type="submit" :disabled="savingInfo" class="hover-transition hover:bg-primary">
                         {{ savingInfo ? 'uploading...' : 'Save Updates' }}
                     </Button>
                 </div>

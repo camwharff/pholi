@@ -114,7 +114,7 @@ onMounted(async () => {
                         <Input class="bg-white w-full text-black" type="file" multiple
                             accept="image/*, audio/*, video/*" @change.prevent="selectMedia" />
                         <Button :disabled="disableUpload" type="submit"
-                            class="rounded-lg text-white p-2 w-fit bg-secondary hover:bg-primary">
+                            class="rounded-lg text-white p-2 w-fit bg-secondary hover-transition hover:bg-primary">
                             <Spinner v-if="disableUpload" />
                             {{ disableUpload ? 'uploading...' : 'Upload' }}
                         </Button>
@@ -169,7 +169,7 @@ onMounted(async () => {
         <form @submit.prevent="updatePholi">
             <div class="flex flex-row justify-center">
                 <Button :disabled="disableSave" type="submit"
-                    class="rounded-lg text-white p-2 w-fit bg-secondary hover:bg-primary">
+                    class="rounded-lg text-white p-2 w-fit bg-secondary hover-transition hover:bg-primary">
                     <Spinner v-if="disableSave" />
                     {{ disableSave ? 'saving...' : 'Save Pholi' }}
                 </Button>

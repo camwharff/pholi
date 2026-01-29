@@ -56,7 +56,7 @@ function toggleSearch() {
         <div class="h-inherit w-fit inset-0 m-auto">
             <RouterLink to="/home" class="h-fit w-fit p-0 m-auto inset-0">
                 <logoCircleFront width="175" height="175"
-                    class="hover-transition hover:shadow-[0px_0px_20px_rgba(0,0,0,1)] shadow-shadow rounded-full mx-auto z-50 fixed inset-0 inline border-4 border-transparent border-none" />
+                    class="hover-transition hover-transition hover-transition hover:shadow-[0px_0px_20px_rgba(0,0,0,1)] shadow-shadow rounded-full mx-auto z-50 fixed inset-0 inline border-4 border-transparent border-none" />
             </RouterLink>
         </div>
         <NavigationMenu :viewport="false" class="z-40 w-fit flex-initial">
@@ -67,24 +67,24 @@ function toggleSearch() {
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                     <button v-if="username" @click.prevent="searchUsers(username)"
-                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center hover:bg-secondary transition rounded-lg">
+                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center hover-transition hover:bg-secondary transition rounded-lg">
                         <Search />
                     </button>
                     <button v-else @click.prevent="toggleSearch"
-                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center hover:bg-secondary transition rounded-lg">
+                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center hover-transition hover:bg-secondary transition rounded-lg">
                         <Search />
                     </button>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                     <RouterLink v-if="user" to="/account"
-                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center hover:bg-secondary transition rounded-lg">
+                        class="cursor-pointer h-[45px] aspect-square items-center flex justify-center hover-transition hover:bg-secondary transition rounded-lg">
                         <UserRound />
                     </RouterLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                     <template v-if="user">
                         <Button
-                            class="shadow-none cursor-pointer h-full hover:bg-secondary px-4 py-2 transition rounded-lg text-base flex-row flex items-center gap-1"
+                            class="shadow-none cursor-pointer h-full hover-transition hover:bg-secondary px-4 py-2 transition rounded-lg text-base flex-row flex items-center gap-1"
                             @click.prevent="signOut">
                             <LogOut />
                         </Button>
@@ -93,7 +93,7 @@ function toggleSearch() {
                         <Dialog>
                             <DialogTrigger as-child>
                                 <Button
-                                    class="cursor-pointer h-full hover:bg-secondary px-4 py-2 leading-none transition rounded-lg text-base flex-row flex items-center gap-1"
+                                    class="cursor-pointer h-full hover-transition hover:bg-secondary px-4 py-2 leading-none transition rounded-lg text-base flex-row flex items-center gap-1"
                                     @click.prevent="changeMode('LOGIN')">
                                     <LogIn />
                                 </Button>

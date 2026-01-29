@@ -86,7 +86,7 @@ const repeatPassword = ref('')
 
                     <div class="mt-4 text-center text-sm">
                         Already have an account?
-                    <a href="#" class="hover:underline" @click.prevent="changeMode('LOGIN')">Log In!</a>
+                    <a href="#" class="hover-transition hover:underline" @click.prevent="changeMode('LOGIN')">Log In!</a>
                     </div>
                 </form>
             </CardContent>

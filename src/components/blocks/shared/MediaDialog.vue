@@ -24,7 +24,7 @@ const props = defineProps<{
 <template>
     <Dialog class="w-full h-full">
         <DialogTrigger class="w-full h-full p-2">
-            <div class="w-full h-full relative rounded-3xl shadow-sm hover:shadow-lg shadow-shadow">
+            <div class="w-full h-full relative rounded-3xl shadow-sm hover-transition hover:shadow-lg shadow-shadow">
                 <div v-if="type !== 'text'"
                     class="w-full h-full bg-linear-to-t from-sky-800 to-sky-600 animate-pulse absolute z-10 rounded-3xl">
                 </div>

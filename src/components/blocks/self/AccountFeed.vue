@@ -27,7 +27,7 @@ onMounted(async () => {
         </div>
         <div v-else class="gap-2 grid grid-cols-2 lg:grid-cols-5 w-full">
             <div v-for="post in posts" :key="post.id"
-                class="bg-accent border-4 border-secondary relative transition-all aspect-square rounded-3xl flex flex-col gap-4 w-full overflow-hidden shadow-sm hover:shadow-lg shadow-shadow"
+                class="bg-accent border-4 border-secondary relative transition-all aspect-square rounded-3xl flex flex-col gap-4 w-full overflow-hidden shadow-sm hover-transition hover:shadow-lg shadow-shadow"
                 @mouseover="viewPost(post, true)" @mouseleave="viewPost(post, false)">
                 <MediaDialog :src="post.url ?? ''" :type="post.type ?? ''" :alt="post.id ?? ''" :label="post.label"
                     :description="post.description" />

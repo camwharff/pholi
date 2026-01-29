@@ -30,7 +30,7 @@
                 your
                 desires into the platform, and you can gain access to early features, testing, and more!
             </p>
-            <a target="_blank" class="bg-sky-200 hover:bg-white/90 transition-color text-sky-950 py-2 px-4 rounded-2xl w-fit" href="https://docs.google.com/forms/d/e/1FAIpQLSe_gzW5VG9u6oQZ_xmdZMFe4SFQUm2ZVy7f6ac5Aw6jdOyobQ/viewform?usp=dialog">Questionaire</a>
+            <a target="_blank" class="bg-sky-200 hover-transition hover:bg-white/90 transition-color text-sky-950 py-2 px-4 rounded-2xl w-fit" href="https://docs.google.com/forms/d/e/1FAIpQLSe_gzW5VG9u6oQZ_xmdZMFe4SFQUm2ZVy7f6ac5Aw6jdOyobQ/viewform?usp=dialog">Questionaire</a>
         </div>
     </div>
 </template>

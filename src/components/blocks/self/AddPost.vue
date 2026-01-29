@@ -47,7 +47,7 @@ const { disablePost, newPost, addPost, selectPost } = postHandler()
                 <Input class="bg-white w-full text-black" type="file" accept="image/*, audio/*, video/*"
                     @change.prevent="selectPost" v-if="!newPost" />
                 <Button :disabled="disablePost" type="submit"
-                    class="rounded-lg text-white p-2 w-fit bg-secondary hover:bg-primary">
+                    class="rounded-lg text-white p-2 w-fit bg-secondary hover-transition hover:bg-primary">
                     <Spinner v-if="disablePost" />
                     {{ disablePost ? 'uploading...' : 'Post' }}
                 </Button>

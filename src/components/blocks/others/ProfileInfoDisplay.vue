@@ -40,18 +40,18 @@ onMounted(async () => {
             </div>
             <div v-else class="flex flex-col gap-2 w-full shadow-md shadow-shadow rounded-2xl absolute">
                 <div class="p-4 bg-secondary rounded-2xl text-white text-sm flex flex-col gap-2">
-                    <div class="w-full bg-accent rounded-3xl shadow-sm hover:shadow-lg shadow-shadow">
+                    <div class="w-full bg-accent rounded-3xl shadow-sm hover-transition hover:shadow-lg shadow-shadow">
                         <AvatarDisplay v-if="profile?.avatar_url" :src="profile?.avatar_url" />
                         <logo-circle-front v-else class="w-full h-full rounded-full mx-auto text-accent" />
                     </div>
-                    <div class="bg-accent p-4 flex gap-2 flex-col rounded-xl shadow-sm hover:shadow-lg shadow-shadow">
+                    <div class="bg-accent p-4 flex gap-2 flex-col rounded-xl shadow-sm hover-transition hover:shadow-lg shadow-shadow">
                         <h2>{{ profile?.full_name }}</h2>
                         <h3>@{{ profile?.username }}</h3>
                         <p>{{ profile?.bio }}</p>
                     </div>
                     <div class="flex flex-row justify-between items-center gap-4">
                         <div
-                            class="bg-accent p-4 flex gap-2 flex-col rounded-xl w-full shadow-sm hover:shadow-lg shadow-shadow">
+                            class="bg-accent p-4 flex gap-2 flex-col rounded-xl w-full shadow-sm hover-transition hover:shadow-lg shadow-shadow">
                             <p>{{ profile?.followingData.followerCount ?? '0' }} {{ profile?.followingData.followerCount
                                 === 1
                                 ? 'Follower' : 'Followers' }}</p>
@@ -60,9 +60,9 @@ onMounted(async () => {
                         <div v-if="user">
                             <Button v-if="profile?.followingData.followers.includes(user.id)"
                                 @click="unfollow(user.id, profile?.id, profile?.username)"
-                                class="hover:bg-primary">Unfollow</Button>
+                                class="hover-transition hover:bg-primary">Unfollow</Button>
                             <Button v-else @click="follow(user.id, profile?.id || '', profile?.username || '')"
-                                class="hover:bg-primary">Follow</Button>
+                                class="hover-transition hover:bg-primary">Follow</Button>
                         </div>
                     </div>
                 </div>

@@ -39,7 +39,7 @@ const password = ref('')
                         <div class="flex items-center">
                             <Label for="password">Password</Label>
                             <a href="#" @click.prevent="changeMode('MANAGE')"
-                                className="ml-auto inline-block text-sm underline-offset-4 hover:underline">
+                                className="ml-auto inline-block text-sm underline-offset-4 hover-transition hover:underline">
                                 Forgot your password?
                             </a>
                         </div>
@@ -57,7 +57,7 @@ const password = ref('')
 
                 <div class="mt-4 text-center text-sm">
                     New to Pholi?
-                    <a href="#" class="hover:underline" @click.prevent="changeMode('SIGNUP')">Sign Up!</a>
+                    <a href="#" class="hover-transition hover:underline" @click.prevent="changeMode('SIGNUP')">Sign Up!</a>
                 </div>
             </form>
         </CardContent>

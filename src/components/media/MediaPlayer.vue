@@ -41,12 +41,12 @@ onMounted(() => {
         </div>
         <video v-if="type === 'video'" ref="mediaRef" :src="src" class="w-full h-full object-cover"></video>
         <div
-            class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 w-fit bg-black/30 hover:bg-black/70 rounded-md flex items-center gap-4 p-2 justify-center">
-            <button @click.stop="togglePlay" class="text-white p-2 rounded hover:bg-gray-700">
+            class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 w-fit bg-black/30 hover-transition hover:bg-black/70 rounded-md flex items-center gap-4 p-2 justify-center">
+            <button @click.stop="togglePlay" class="text-white p-2 rounded hover-transition hover:bg-gray-700">
                 <component :is="isPlaying ? Pause : Play" class="w-6 h-6" />
             </button>
 
-            <button @click.stop="toggleMute" class="text-white p-2 rounded hover:bg-gray-700">
+            <button @click.stop="toggleMute" class="text-white p-2 rounded hover-transition hover:bg-gray-700">
                 <component :is="isMuted ? VolumeX : Volume2" class="w-6 h-6" />
             </button>
         </div>
