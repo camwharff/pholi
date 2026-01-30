@@ -93,7 +93,7 @@ function toggleSearch() {
                         <Dialog>
                             <DialogTrigger as-child>
                                 <Button
-                                    class="cursor-pointer h-full hover-transition hover:bg-secondary px-4 py-2 leading-none transition rounded-lg text-base flex-row flex items-center gap-1"
+                                    class="shadow-none cursor-pointer h-full hover-transition hover:bg-secondary px-4 py-2 leading-none transition rounded-lg text-base flex-row flex items-center gap-1"
                                     @click.prevent="changeMode('LOGIN')">
                                     <LogIn />
                                 </Button>
